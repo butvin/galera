@@ -1,0 +1,19 @@
+version: "3"
+services:
+
+  nginx:
+    ports:
+      - "80:80"
+    build:
+      args:
+        env: dev
+
+  php-fpm:
+    build:
+      args:
+        env: dev
+    volumes:
+      - ~/.composer/docker-cache/:/root/.composer:cached
+      - ../../:/app
+    environment:
+      - PHP_IDE_CONFIG="serverName=PHPSTORM"

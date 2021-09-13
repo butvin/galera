@@ -1,0 +1,48 @@
+version: "3"
+services:
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    container_name: nginx
+    working_dir: /app
+    depends_on:
+      - php-fpm
+
+
+  database:
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    container_name: mariadb
+    working_dir: /app
+    volumes:
+      - ../.db:/var/lib/mysql
+    env_file:
+      - ../../.env
+
+
+  php-fpm:
+    build: php-fpm
+    container_name: php-fpm
+    working_dir: /app
+    environment:
+      - DATABASE_TIMEZONE=UTC
+
+  redis:
+    image: redis:alpine
+#    image: bitnami/redis
+    container_name: redis
+    env_file:
+      - ../../.env
+
+#  rabbitmq:
+#    image: "rabbitmq:3-management"
+#    container_name: rabbitmq
+#    env_file:
+#      - ../../.env
+#    ports:
+#      - "15672:15672"
+#      - "5672:5672"
+
