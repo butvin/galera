@@ -3,12 +3,17 @@ FROM php:8.0.10-fpm
 ARG DEBIAN_FRONTEND=noninteractive
 ARG env
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y apt-utils
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends apt-utils
 
-RUN apt-get install -y \
+RUN apt-get install -y --no-install-recommends \
+    wget \
+    git \
     zip \
     curl \
     unzip \
+    bzip2 \
     p7zip-full \
     libimage-exiftool-perl \
     sendmail \
@@ -16,7 +21,9 @@ RUN apt-get install -y \
     libzip-dev \
     libonig-dev \
     libxml2-dev \
-    ca-certificates
+    ca-certificates \
+    ; \
+    	rm -rf /var/lib/apt/lists/*
 #    wget \
 #    make \
 #    tree \
@@ -52,8 +59,7 @@ RUN docker-php-ext-enable xdebug
 
 #redis
 RUN pecl install -o -f redis
-RUN docker-php-ext-enable redis \
-     && rm -rf /tmp/pear
+RUN docker-php-ext-enable redis && rm -rf /tmp/pear
 
 #composer install
 RUN curl -sS https://getcomposer.org/installer | php -- \
@@ -66,6 +72,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 RUN sed -i "/#!\/bin\/sh/aservice sendmail restart" /usr/local/bin/docker-php-entrypoint
 RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
+
+WORKDIR '/app'
 
 # configs
 COPY www.conf /usr/local/etc/php-fpm.d
@@ -81,7 +89,7 @@ RUN apt-get autoremove --purge -y \
     && apt-get autoclean -y \
     && apt-get clean -y
 
-WORKDIR '/app'
+
 #calendar ctype  dba dom
 #enchant exif ffi fileinfo filter ftp gd gettext gmp
 #hash iconv imap intl  ldap mbstring mysqli oci8

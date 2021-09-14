@@ -10,7 +10,6 @@ services:
     links:
       - php_fpm
 
-
   db:
     image: mariadb:10
     container_name: db
@@ -23,23 +22,9 @@ services:
       MYSQL_USER: '${MYSQL_USER}'
       MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_LOG_CONSOLE: 'true'
     env_file:
       - ../.env
-
-
-  php_fpm:
-    build: php-fpm
-    container_name: php_fpm
-    working_dir: /app
-    environment:
-      - DATABASE_TIMEZONE=UTC
-      - PHP_REDIS_SESSION_HOST=redis
-    env_file:
-      - ../.env
-    depends_on:
-      - db
-      - redis
-
 
   redis:
     image: redis:latest
@@ -47,9 +32,20 @@ services:
     env_file:
       - ../.env
 
-
   rabbitmq:
-    image: rabbitmq:3.9.5-management
+    image: rabbitmq:3-management
     container_name: rabbitmq
     env_file:
       - ../.env
+
+  php_fpm:
+    build: php-fpm
+    container_name: php_fpm
+    working_dir: /app
+    environment:
+      - DATABASE_TIMEZONE=UTC
+    env_file:
+      - ../.env
+    depends_on:
+      - db
+      - redis

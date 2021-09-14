@@ -1,13 +1,18 @@
 build: \
-	common \
-	dev \
-	cli \
+	up \
 	composer \
-	migrations \
-	mk-dev-user
+	migrations
 
-common:
-	docker-compose -f .docker/docker-compose.common.yml up -d --build
+main:
+	docker-compose -f .docker/docker-compose.yml up -d --build
+
+up:
+	docker-compose \
+		-f .docker/docker-compose.prod.yml \
+		-f .docker/docker-compose.dev.yml \
+		-f .docker/docker-compose.cli.yml \
+		up -d --build
+
 
 dev:
 	docker-compose -f .docker/docker-compose.dev.yml up -d --build
@@ -32,7 +37,9 @@ php:
 	docker exec -it php-fpm bash
 
 remake:
-	docker stop $(docker ps -q -a) && docker rm $(docker ps -q -a) && make
+	docker stop $(docker ps -q -a) \
+		&& docker rm $(docker ps -q -a) \
+		&& make
 
 permissions:
 	sh ./run.sh
