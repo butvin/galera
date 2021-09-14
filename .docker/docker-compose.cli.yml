@@ -3,7 +3,7 @@ services:
 
   async_consumer:
     build: cli
-    container_name: async_consumer_cli
+    container_name: async_consumer
     working_dir: /app
     restart: always
     volumes:

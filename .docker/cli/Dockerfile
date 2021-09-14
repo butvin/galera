@@ -1,14 +1,12 @@
 FROM php:8.0.10-cli
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG env
 
+ARG env
 #RUN apk update && apk upgrade
 RUN apt-get update && apt-get upgrade -y && apt-get install apt-utils -y
 #RUN apk add --no-cache git
 RUN apt-get install -y \
-    wget \
-    make \
     zip \
     curl \
     unzip \
@@ -22,51 +20,47 @@ RUN apt-get install -y \
 #    libffi-dev \
 #    libssl-dev \
 
-RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
-
-RUN docker-php-ext-install mbstring
-RUN docker-php-ext-install bcmath
-RUN docker-php-ext-install exif
-RUN docker-php-ext-install sockets
-RUN docker-php-ext-install gmp
-RUN docker-php-ext-install pcntl
-RUN docker-php-ext-install ffi
-
-
-#RUN docker-php-ext-install -j$(nproc)
-
-
-# RabbitMQ
+# rabbitmq
 RUN pecl install -o -f amqp-1.11.0beta
 RUN docker-php-ext-enable amqp
 
-# xDebug
+RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
+#RUN docker-php-ext-install mbstring
+#RUN docker-php-ext-install bcmath
+#RUN docker-php-ext-install exif
+#RUN docker-php-ext-install sockets
+#RUN docker-php-ext-install gmp
+#RUN docker-php-ext-install pcntl
+#RUN docker-php-ext-install ffi
+#RUN docker-php-ext-install -j$(nproc)
+
+# xdebug
 RUN pecl install -o -f  xdebug-3.0.4
 RUN docker-php-ext-enable xdebug
 RUN touch /var/log/xdebug.log
 
-# Redis
+# redis
 RUN pecl install -o -f redis
 RUN docker-php-ext-enable redis
 RUN rm -rf /tmp/pear
 
-# Composer
+# composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin && \
     echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc && \
     composer
 
-# Set up locales
+# settings
 RUN sed -i "/en_US.UTF-8/s/^# //g" /etc/locale.gen
 RUN locale-gen
 
-# Locales & languages
+# locales & languages
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# Sendmail
+# sendmail
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 RUN sed -i '/#!\/bin\/sh/aservice sendmail restart' /usr/local/bin/docker-php-entrypoint
 RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
@@ -77,7 +71,10 @@ COPY xdebug.ini "$PHP_INI_DIR"/conf.d
 
 # Drop temporary files
 RUN docker-php-source delete
-RUN apt-get autoremove --purge -y && apt-get autoclean -y && apt-get clean -y
+# Clean temp files
+RUN apt-get autoremove --purge -y \
+    && apt-get autoclean -y \
+    && apt-get clean -y
 
 WORKDIR '/app'
 
