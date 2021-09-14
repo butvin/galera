@@ -1,6 +1,7 @@
 version: "3"
 services:
 
+
   nginx:
     ports:
       - "80:80"
@@ -8,12 +9,36 @@ services:
       args:
         env: dev
 
-  php-fpm:
+
+  db:
+    ports:
+      - "3333:3306"
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', 'ping' ]
+
+
+  rabbitmq:
+    ports:
+      - "15674:15674"
+      - "5677:5677"
+    healthcheck:
+      test: [ 'CMD', 'redis-cli', 'ping' ]
+
+
+  php_fpm:
+    ports:
+      - "127.0.0.1:80:80"
+    restart: unless-stopped
     build:
       args:
         env: dev
     volumes:
       - ~/.composer/docker-cache/:/root/.composer:cached
-      - ../../:/app
+      - ../:/app
     environment:
-      - PHP_IDE_CONFIG="serverName=PHPSTORM"
+      PHP_IDE_CONFIG: "serverName=PHPSTORM"
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '1024k'
+        max-file: '2'

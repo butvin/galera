@@ -1,0 +1,4 @@
+SHELL=/bin/bash
+
+0 */4 * * * docker exec php-fpm bin/console app:parse:publishers
+0 */24 * * * docker exec php-fpm bin/console app:parse:positions
