@@ -1,43 +1,95 @@
-version: "3"
+version: "3.3"
+
 services:
 
-  nginx:
-    ports:
-      - "80:80"
-    build:
-      context: .
-      dockerfile: ./nginx/Dockerfile
-      args:
-        env: dev
-
-  db:
-    ports:
-      - "3324:3324"
-    healthcheck:
-      test: [ 'CMD', 'mysqladmin', 'ping' ]
-
   rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
     ports:
       - "15674:15674"
       - "5677:5677"
+    networks:
+      - backend
+    env_file:
+      - ../.env
     healthcheck:
-      test: [ 'CMD', 'redis-cli', 'ping' ]
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1m30s
+      timeout: 5s
+      retries: 3
 
-  php_fpm:
-    ports:
-      - "127.0.0.1:80:80"
-    restart: unless-stopped
-    build:
-      args:
-        env: dev
-    volumes:
-      - ~/.composer/docker-cache/:/root/.composer:cached
-      - ../:/app
+
+
+
+
+
+#  nginx:
+#    ports:
+#      - "80:80"
+#    build:
+#      context: .
+#      dockerfile: ./nginx/Dockerfile
+#      args:
+#        env: dev
+
+
+
+  redis:
+    container_name: redis
+    image: redis:alpine
     environment:
-      PHP_IDE_CONFIG: "serverName=PHPSTORM"
-      PHP_REDIS_SESSION_HOST: "redis"
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '1024k'
-        max-file: '2'
+      REDIS_PASSWORD: 'app'
+#    env_file:
+#      - ../.env
+    networks:
+      - backend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+
+
+#  database:
+#    ports:
+#      - "3324:3324"
+#    healthcheck:
+#      test: [ 'CMD', 'mysqladmin', 'ping' ]
+
+#  rabbitmq:
+#    ports:
+#      - "15674:15674"
+#      - "5677:5677"
+#    healthcheck:
+#      test: [ 'CMD', 'redis-cli', 'ping' ]
+
+#  rabbitmq:
+#    ports:
+#      - "15674:15674"
+#      - "5677:5677"
+#    healthcheck:
+#      test: [ 'CMD', 'redis-cli', 'ping' ]
+
+#  php_fpm:
+#    ports:
+#      - "127.0.0.1:80:80"
+#    restart: unless-stopped
+#    build:
+#      args:
+#        env: dev
+#    volumes:
+#      - ~/.composer/docker-cache/:/root/.composer:cached
+#      - ../:/app
+#    environment:
+#      PHP_IDE_CONFIG: "serverName=PHPSTORM"
+#      PHP_REDIS_SESSION_HOST: "redis"
+#    logging:
+#      driver: 'json-file'
+#      options:
+#        max-size: '1024k'
+#        max-file: '2'
+
+
+networks:
+  backend:

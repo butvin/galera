@@ -1,51 +1,80 @@
-version: "3"
+version: "3.3"
 services:
 
+
   nginx:
+    container_name: nginx
+    ports:
+      - "8080:80"
     build:
       context: .
       dockerfile: ./nginx/Dockerfile
-    container_name: nginx
+      args:
+        env: dev
+    networks:
+      - backend
     working_dir: /app
-    links:
-      - php_fpm
+#    links:
+#      - mariadb
 
-  db:
-    image: mariadb:10
-    container_name: db
+
+
+  mariadb:
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    image: mariadb:10.6.4
     working_dir: /app
+    networks:
+      - backend
+    env_file:
+      - ../.env
     volumes:
-      - .db:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
-      MYSQL_DATABASE: '${MYSQL_DATABASE}'
-      MYSQL_USER: '${MYSQL_USER}'
-      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_LOG_CONSOLE: 'true'
-    env_file:
-      - ../.env
+      - .data:/var/lib/mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "root"
+#      MYSQL_DATABASE: "app"
+#      MYSQL_USER: "app"
+#      MYSQL_PASSWORD: "app"
+#      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+#      MYSQL_LOG_CONSOLE: "yes"
+    depends_on:
+      - nginx
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping" ]
 
-  redis:
-    image: redis:latest
-    container_name: redis
-    env_file:
-      - ../.env
 
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    env_file:
-      - ../.env
 
-  php_fpm:
+  php-fpm:
+    container_name: php-fpm
     build: php-fpm
-    container_name: php_fpm
+    ports:
+      - "9000:9000"
+    networks:
+      - backend
     working_dir: /app
     environment:
-      - DATABASE_TIMEZONE=UTC
-    env_file:
-      - ../.env
+    volumes:
+      - ~/.composer/docker-cache/:/root/.composer:cached
+      - ../:/app
+    environment:
+      PHP_IDE_CONFIG: "PHPSTORM"
+#      PHP_REDIS_SESSION_HOST: "redis"
+      DATABASE_TIMEZONE: "UTC"
+#    env_file:
+#      - ../.env
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '1024k'
+        max-file: '2'
+    restart: unless-stopped
     depends_on:
-      - db
-      - redis
+      - nginx
+
+volumes:
+  data:
+    external: false
+
+networks:
+  backend:

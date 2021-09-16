@@ -1,15 +1,30 @@
 FROM php:8.0.10-fpm
+LABEL author="butvin"
 
 ARG DEBIAN_FRONTEND=noninteractive
+
 ARG env
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends apt-utils
+ARG DB_DATA_FOLDER='.data'
 
+RUN mkdir .data/
+RUN chmod 777 .data -R
+RUN chown 'www-data':'www-data' -R .data
+#RUN chown $(whoami):$(whoami) -R .data
+#COPY $DB_DATA_FOLDER /var/lib/mysql
+
+#RUN apk update && apk upgrade
+RUN apt-get update \
+    && apt-get upgrade -y
+
+#RUN apk add --no-cache tree git aptitude
+#RUN rm -rf /var/cache/apk/*
 RUN apt-get install -y --no-install-recommends \
+    apt-utils \
     wget \
     git \
+    tree \
+    make \
     zip \
     curl \
     unzip \
@@ -19,43 +34,41 @@ RUN apt-get install -y --no-install-recommends \
     sendmail \
     librabbitmq-dev \
     libzip-dev \
-    libonig-dev \
     libxml2-dev \
+    libgmp-dev \
+    libffi-dev \
+    libssl-dev \
+    libcurl4-openssl-dev \
+    gcc \
+    g++ \
     ca-certificates \
-    ; \
-    	rm -rf /var/lib/apt/lists/*
-#    wget \
-#    make \
-#    tree \
-#    gcc \
-#    g++ \
-#    libgmp-dev \
-#    libffi-dev \
-#    libxml2-dev \
-#    libssl-dev \
-#    libcurl4-openssl-dev
+    libonig-dev
 
+RUN rm -rf /var/lib/apt/lists/*
 
 # rabbitmq
 RUN pecl install amqp-1.11.0beta
 RUN docker-php-ext-enable amqp
 
-
+#required extensions
 RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
-#RUN docker-php-ext-install mbstring
-#RUN docker-php-ext-install bcmath
-#RUN docker-php-ext-install simplexml
-#RUN docker-php-ext-install exif
-#RUN docker-php-ext-install sockets
-#RUN docker-php-ext-install pcntl
-#RUN docker-php-ext-install gmp
-#RUN docker-php-ext-install ffi
-#RUN docker-php-ext-install -j$(nproc)
+
+# additional extensions
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install simplexml
+RUN docker-php-ext-install exif #read meta data of pictures
+RUN docker-php-ext-install sockets
+RUN docker-php-ext-install pcntl #PCNTL is the abbreviation of process control)
+RUN docker-php-ext-install gmp
+RUN docker-php-ext-install ffi #communication with 'C'
+#RUN docker-php-ext-install nproc #PHP CPU Core Detection https://github.com/WyriHaximus/php-cpu-core-detector
+#RUN docker-php-ext-install -j$(nproc) #PHP CPU Core Detection https://github.com/WyriHaximus/php-cpu-core-detector
 
 #xdebug
 RUN pecl install -o -f xdebug-3.0.4
 RUN docker-php-ext-enable xdebug
-#    && touch /var/log/xdebug.log
+RUN touch /var/log/xdebug.log
 
 #redis
 RUN pecl install -o -f redis
@@ -65,37 +78,59 @@ RUN docker-php-ext-enable redis && rm -rf /tmp/pear
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin && \
-    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc && \
-    composer
+    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc \
+    && composer
 
 # sendmail
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 RUN sed -i "/#!\/bin\/sh/aservice sendmail restart" /usr/local/bin/docker-php-entrypoint
 RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
 
-WORKDIR '/app'
 
-# configs
+#COPY ../../run.sh /run.sh
+#RUN chmod +x /run.sh
+#RUN chmod 777 /app/.docker/.data -R
+
+#ADD ./.data/ /var/lib/mysql
+
+#RUN chown $(whoami):$(whoami) -R /app/.docker/.data
+
+
+#config
 COPY www.conf /usr/local/etc/php-fpm.d
 
+#ext configs
 COPY ./dev/php.ini "$PHP_INI_DIR"/conf.d
 COPY ./dev/opcache.ini "$PHP_INI_DIR"/conf.d
 COPY ./dev/xdebug.ini "$PHP_INI_DIR"/conf.d
 
-# Drop temp files
+# drop temp files
 RUN docker-php-source delete
-# Clean temp files
+
+# clean temp installation files
 RUN apt-get autoremove --purge -y \
     && apt-get autoclean -y \
     && apt-get clean -y
 
+EXPOSE 9000
+
+WORKDIR "/app"
+
+
+
+#########################################################################
+
+#make: Circular jit/zend_jit.lo <- jit/zend_jit.lo dependency dropped.
+#make: Circular jit/zend_jit.lo <- jit/zend_jit.lo dependency dropped.
+
+
 
 #calendar ctype  dba dom
-#enchant exif ffi fileinfo filter ftp gd gettext gmp
-#hash iconv imap intl  ldap mbstring mysqli oci8
+#enchant exif ffi fileinfo filter ftp gd gettext
+#hash iconv imap intl  ldap   oci8
 #odbc  pcntl
 # pdo_dblib pdo_firebird  pdo_oci pdo_odbc pdo_pgsql pdo_sqlite
 #pgsql phar posix pspell readline reflection session
-# shmop simplexml snmp soap  sodium
+# shmop  snmp soap  sodium
 #spl standard sysvmsg sysvsem sysvshm tidy
 # tokenizer  xmlreader xmlwriter xsl zend_test

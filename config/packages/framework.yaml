@@ -1,7 +1,7 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    #csrf_protection: true
+    csrf_protection: false
     http_method_override: false
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
@@ -12,10 +12,17 @@ framework:
         cookie_samesite: lax
         storage_factory_id: session.storage.factory.native
 
+#    session:
+#        handler_id: session.handler.native_file
+#        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+#        cookie_secure: auto
+#        cookie_samesite: lax
+
     #esi: true
     #fragments: true
     php_errors:
         log: true
+
 
 when@test:
     framework:

@@ -1,14 +1,56 @@
 framework:
     messenger:
+        serializer:
+#            default_serializer: messenger.transport.symfony_serializer
+#            symfony_serializer:
+#                format: json
+#                context: { }
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         # failure_transport: failed
 
+        # https://symfony.com/doc/current/messenger.html#transport-configuration
         transports:
-            # https://symfony.com/doc/current/messenger.html#transport-configuration
-             async: '%env(MESSENGER_TRANSPORT_DSN)%'
-             sync: 'sync://'
-            # failed: 'doctrine://default?queue_name=failed'
+            async_priority_high:
+                dsn: '%env(HIGH_PRIORITY_MESSENGER_TRANSPORT_DSN)%'
+#                serializer: messenger.transport.symfony_serializer
+                retry_strategy:
+                    max_retries: 3
+                    delay: 1000
+                    multiplier: 2 # causes the delay to be higher before each retry e.g. 1 second delay, 2 seconds, 4 seconds
+                    max_delay: 0
+                    # override all of this with a service that
+                    # implements Symfony\Component\Messenger\Retry\RetryStrategyInterface
+                    # service: null
+            sync: 'sync://'
+            failed: 'doctrine://default?queue_name=failed'
+            async_priority_low:
+                dsn: '%env(LOW_PRIORITY_MESSENGER_TRANSPORT_DSN)%'
 
         routing:
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
+
+        buses:
+            command_bus:
+                middleware:
+                    # each time a message is handled, the Doctrine connection
+                    # is "pinged" and reconnected if it's closed. Useful
+                    # if your workers run for a long time and the database
+                    # connection is sometimes lost
+                    - doctrine_ping_connection
+
+                    # After handling, the Doctrine connection is closed,
+                    # which can free up database connections in a worker,
+                    # instead of keeping them open forever
+                    - doctrine_close_connection
+
+                    # wraps all handlers in a single Doctrine transaction
+                    # handlers do not need to call flush() and an error
+                    # in any handler will cause a rollback
+                    - doctrine_transaction
+
+                    # or pass a different entity manager to any
+                    #- doctrine_transaction: ['custom']
+
+                    # Add the router_context middleware if you need to generate absolute URLs in the consumer (e.g. render a template with links). This middleware stores the original request context (i.e. the host, the HTTP port, etc.) which is needed when building absolute URLs.
+                    - router_context

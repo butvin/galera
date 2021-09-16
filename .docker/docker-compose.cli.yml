@@ -1,12 +1,12 @@
-version: "3"
-services:
+version: "3.3"
 
-  async_consumer:
-    build: cli
-    container_name: async_consumer
-    working_dir: /app
-    restart: always
-    volumes:
-      - ..:/app
-      - /var/log/app:/app/var/log
-    command: php -d memory_limit=2048 bin/console messenger:consume async_transport --limit=7 -vvv
+services:
+    async_worker:
+        build: cli
+        container_name: async_worker
+        working_dir: /app
+        restart: always #unless-stopped
+        volumes:
+          - ..:/app
+          - /var/log/app:/app/var/log
+        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vvv

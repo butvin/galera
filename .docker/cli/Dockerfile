@@ -3,9 +3,9 @@ FROM php:8.0.10-cli
 ARG DEBIAN_FRONTEND=noninteractive
 
 ARG env
-#RUN apk update && apk upgrade
+
 RUN apt-get update && apt-get upgrade -y && apt-get install apt-utils -y
-#RUN apk add --no-cache git
+
 RUN apt-get install -y \
     zip \
     curl \
@@ -16,28 +16,18 @@ RUN apt-get install -y \
     libzip-dev \
     locales \
     sendmail
-#    libgmp-dev \
-#    libffi-dev \
-#    libssl-dev \
 
-# rabbitmq
+# rabbitmq/amqp
 RUN pecl install -o -f amqp-1.11.0beta
 RUN docker-php-ext-enable amqp
 
+#required ext
 RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
-#RUN docker-php-ext-install mbstring
-#RUN docker-php-ext-install bcmath
-#RUN docker-php-ext-install exif
-#RUN docker-php-ext-install sockets
-#RUN docker-php-ext-install gmp
-#RUN docker-php-ext-install pcntl
-#RUN docker-php-ext-install ffi
-#RUN docker-php-ext-install -j$(nproc)
 
 # xdebug
-RUN pecl install -o -f  xdebug-3.0.4
-RUN docker-php-ext-enable xdebug
-RUN touch /var/log/xdebug.log
+RUN pecl install -o -f xdebug-3.0.4
+RUN docker-php-ext-enable xdebug \
+    && touch /var/log/xdebug.log
 
 # redis
 RUN pecl install -o -f redis
@@ -69,13 +59,14 @@ RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhos
 COPY php.ini "$PHP_INI_DIR"/conf.d
 COPY xdebug.ini "$PHP_INI_DIR"/conf.d
 
-# Drop temporary files
+#delete temporary files
 RUN docker-php-source delete
-# Clean temp files
+
+#clean temp files
 RUN apt-get autoremove --purge -y \
     && apt-get autoclean -y \
     && apt-get clean -y
 
-WORKDIR '/app'
+WORKDIR "/app"
 
-#CMD cron -f
+CMD cron -f
