@@ -1,84 +1,85 @@
-FROM php:8.0.10-fpm
-LABEL author="butvin"
+ARG VERSION='8.0.10'
+FROM php:${VERSION}-fpm
+LABEL version=${VERSION}
 
-ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND noninteractive
 
-ARG env
+ARG DATA_STORAGE='.db/'
 
-ARG DB_DATA_FOLDER='.data'
+#ARG env
 
-RUN mkdir .data/
-RUN chmod 777 .data -R
-RUN chown 'www-data':'www-data' -R .data
-#RUN chown $(whoami):$(whoami) -R .data
-#COPY $DB_DATA_FOLDER /var/lib/mysql
+RUN mkdir $DATA_STORAGE
+#RUN chmod 777 -R $DATA_STORAGE
+#RUN chown 'www-data':'www-data' -R $DB_STORAGE
+RUN chown $(whoami):$(whoami) -R $DATA_STORAGE
 
 #RUN apk update && apk upgrade
-RUN apt-get update \
-    && apt-get upgrade -y
-
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends curl wget
 #RUN apk add --no-cache tree git aptitude
 #RUN rm -rf /var/cache/apk/*
 RUN apt-get install -y --no-install-recommends \
-    apt-utils \
-    wget \
-    git \
-    tree \
-    make \
     zip \
-    curl \
     unzip \
-    bzip2 \
     p7zip-full \
     libimage-exiftool-perl \
     sendmail \
     librabbitmq-dev \
-    libzip-dev \
-    libxml2-dev \
-    libgmp-dev \
-    libffi-dev \
-    libssl-dev \
-    libcurl4-openssl-dev \
-    gcc \
-    g++ \
-    ca-certificates \
-    libonig-dev
+    libzip-dev
+#     ca-certificates \
+#     tree \
+#     make \
+#     git \
+#     bzip2 \
+#    libxml2-dev \
+#    libgmp-dev \
+#    libffi-dev \
+#    libssl-dev \
+#    libcurl4-openssl-dev \
+#    gcc \
+#    g++ \
+#    libonig-dev
 
-RUN rm -rf /var/lib/apt/lists/*
+#RUN rm -rf /var/lib/apt/lists/*
 
 # rabbitmq
 RUN pecl install amqp-1.11.0beta
 RUN docker-php-ext-enable amqp
 
-#required extensions
+# required exts
 RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
 
 # additional extensions
-RUN docker-php-ext-install mbstring
-RUN docker-php-ext-install bcmath
-RUN docker-php-ext-install simplexml
-RUN docker-php-ext-install exif #read meta data of pictures
-RUN docker-php-ext-install sockets
-RUN docker-php-ext-install pcntl #PCNTL is the abbreviation of process control)
-RUN docker-php-ext-install gmp
-RUN docker-php-ext-install ffi #communication with 'C'
-#RUN docker-php-ext-install nproc #PHP CPU Core Detection https://github.com/WyriHaximus/php-cpu-core-detector
-#RUN docker-php-ext-install -j$(nproc) #PHP CPU Core Detection https://github.com/WyriHaximus/php-cpu-core-detector
+#RUN docker-php-ext-install mbstring
+#RUN docker-php-ext-install bcmath
+#RUN docker-php-ext-install simplexml
+#RUN docker-php-ext-install exif #read meta data of pictures
+#RUN docker-php-ext-install sockets
+#RUN docker-php-ext-install pcntl #PCNTL is the abbreviation of process control)
+#RUN docker-php-ext-install gmp
+#RUN docker-php-ext-install ffi #communication with 'C'
+#№RUN docker-php-ext-install -j$(nproc) #PHP CPU Core Detection https://github.com/WyriHaximus/php-cpu-core-detector
 
 #xdebug
-RUN pecl install -o -f xdebug-3.0.4
-RUN docker-php-ext-enable xdebug
-RUN touch /var/log/xdebug.log
+#RUN pecl install -o -f xdebug-3.0.4
+#RUN docker-php-ext-enable xdebug
+#RUN touch /var/log/xdebug.log
 
 #redis
 RUN pecl install -o -f redis
-RUN docker-php-ext-enable redis && rm -rf /tmp/pear
+RUN docker-php-ext-enable redis
+#RUN rm -rf /tmp/pear
+
+WORKDIR "/app"
+
+RUN wget https://get.symfony.com/cli/installer -O - | bash
+
+#VOLUME ["/var/www", "/var/log/apache2", "/etc/apache2"]
 
 #composer install
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin && \
-    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc \
+    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /$HOME/.bashrc \
     && composer
 
 # sendmail
@@ -92,7 +93,6 @@ RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhos
 #RUN chmod 777 /app/.docker/.data -R
 
 #ADD ./.data/ /var/lib/mysql
-
 #RUN chown $(whoami):$(whoami) -R /app/.docker/.data
 
 
@@ -114,13 +114,12 @@ RUN apt-get autoremove --purge -y \
 
 EXPOSE 9000
 
-WORKDIR "/app"
+
 
 
 
 #########################################################################
-
-#make: Circular jit/zend_jit.lo <- jit/zend_jit.lo dependency dropped.
+#debconf: delaying package configuration, since apt-utils is not installed
 #make: Circular jit/zend_jit.lo <- jit/zend_jit.lo dependency dropped.
 
 

@@ -25,9 +25,9 @@ RUN docker-php-ext-enable amqp
 RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
 
 # xdebug
-RUN pecl install -o -f xdebug-3.0.4
-RUN docker-php-ext-enable xdebug \
-    && touch /var/log/xdebug.log
+#RUN pecl install -o -f xdebug-3.0.4
+#RUN docker-php-ext-enable xdebug
+#RUN touch /var/log/xdebug.log
 
 # redis
 RUN pecl install -o -f redis
@@ -38,7 +38,7 @@ RUN rm -rf /tmp/pear
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin && \
-    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc && \
+    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /$HOME/.bashrc && \
     composer
 
 # settings

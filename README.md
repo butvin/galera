@@ -8,11 +8,20 @@
 
 `docker network rm $(docker network ls -q)`
 
+```docker network ls -q```
 
-    docker stop $(docker ps -a -q); docker rm $(docker ps -a -q); docker volume rm $(docker volume ls -qf dangling=true)
+
+    docker stop $(docker ps -a -q) && \
+    docker rm $(docker ps -a -q)
+    
+    docker volume rm $(docker volume ls -qf)
 
     docker network rm $(docker network ls -q)
 
+    docker rmi $(docker images -qa)
+
+    docker network rm $(docker network ls -q)
+<hr>
     sudo lsof -nP | grep LISTEN
 
     sudo kill -9 1548
@@ -31,7 +40,7 @@
 <hr>    
 docker run -it --add-host db-static:86.75.30.9 ubuntu cat /etc/hosts
 
-`add localhost`
+`add localhost record`
 
 
 
@@ -95,3 +104,19 @@ docker run -it --add-host db-static:86.75.30.9 ubuntu cat /etc/hosts
 
 ```docker stop $(docker ps -qa) && docker rm $(docker ps -qa) && make```
 
+you can see a full list env values by running:
+
+    `php bin/console debug:container --env-vars`
+    `php bin/console debug:container --parameters`
+
+
+
+
+displays the default config values DEFINED by Symfony
+
+    `php bin/console config:dump-reference doctrine`
+
+
+
+displays the actual config values used by current app
+    `php bin/console debug:config doctrine`

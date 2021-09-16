@@ -10,12 +10,14 @@ framework:
 
         # https://symfony.com/doc/current/messenger.html#transport-configuration
         transports:
+            async_priority_low:
+                dsn: '%env(LOW_PRIORITY_MESSENGER_TRANSPORT_DSN)%'
             async_priority_high:
                 dsn: '%env(HIGH_PRIORITY_MESSENGER_TRANSPORT_DSN)%'
 #                serializer: messenger.transport.symfony_serializer
                 retry_strategy:
                     max_retries: 3
-                    delay: 1000
+                    delay: 750
                     multiplier: 2 # causes the delay to be higher before each retry e.g. 1 second delay, 2 seconds, 4 seconds
                     max_delay: 0
                     # override all of this with a service that
@@ -23,8 +25,6 @@ framework:
                     # service: null
             sync: 'sync://'
             failed: 'doctrine://default?queue_name=failed'
-            async_priority_low:
-                dsn: '%env(LOW_PRIORITY_MESSENGER_TRANSPORT_DSN)%'
 
         routing:
             # Route your messages to the transports

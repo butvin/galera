@@ -1,11 +1,11 @@
 version: "3.3"
-services:
 
+services:
 
   nginx:
     container_name: nginx
     ports:
-      - "8080:80"
+      - "80:80"
     build:
       context: .
       dockerfile: ./nginx/Dockerfile
@@ -14,34 +14,31 @@ services:
     networks:
       - backend
     working_dir: /app
-#    links:
-#      - mariadb
 
 
-
-  mariadb:
-    container_name: mariadb
-    ports:
-      - "3306:3306"
+  db:
     image: mariadb:10.6.4
+    container_name: db
+    ports:
+      - "3306:3324"
     working_dir: /app
     networks:
       - backend
-    env_file:
-      - ../.env
     volumes:
-      - .data:/var/lib/mysql
-#    environment:
-#      MYSQL_ROOT_PASSWORD: "root"
-#      MYSQL_DATABASE: "app"
-#      MYSQL_USER: "app"
-#      MYSQL_PASSWORD: "app"
-#      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-#      MYSQL_LOG_CONSOLE: "yes"
+      - .db:/var/lib/mysql
+    environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'no'
+      MARIADB_ROOT_PASSWORD: 'root'
+      MARIADB_ROOT_HOST: 'localhost'
+      MARIADB_DATABASE: 'app'
+      MARIADB_USER: 'app'
+      MARIADB_PASSWORD: 'app'
+    restart: unless-stopped
     depends_on:
-      - nginx
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping" ]
+      - php-fpm
+#    command: docker exec -it db bash -c "mysql -u app -p app -h localhost app"
+#    healthcheck:
+#      test: [ "mysql", "-uroot", "-proot" ]
 
 
 
@@ -49,31 +46,28 @@ services:
     container_name: php-fpm
     build: php-fpm
     ports:
-      - "9000:9000"
+      - "9000:9002"
     networks:
       - backend
     working_dir: /app
-    environment:
     volumes:
       - ~/.composer/docker-cache/:/root/.composer:cached
       - ../:/app
     environment:
-      PHP_IDE_CONFIG: "PHPSTORM"
-#      PHP_REDIS_SESSION_HOST: "redis"
-      DATABASE_TIMEZONE: "UTC"
-#    env_file:
-#      - ../.env
+      DATABASE_TIMEZONE: 'UTC'
+      PHP_REDIS_SESSION_HOST: 'redis'
     logging:
       driver: 'json-file'
       options:
         max-size: '1024k'
         max-file: '2'
-    restart: unless-stopped
     depends_on:
       - nginx
+    restart: always
+
 
 volumes:
-  data:
+  db:
     external: false
 
 networks:

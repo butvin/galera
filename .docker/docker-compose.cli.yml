@@ -5,7 +5,7 @@ services:
         build: cli
         container_name: async_worker
         working_dir: /app
-        restart: always #unless-stopped
+        restart: unless-stopped
         volumes:
           - ..:/app
           - /var/log/app:/app/var/log
