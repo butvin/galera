@@ -2,73 +2,125 @@ version: "3.3"
 
 services:
 
-  nginx:
-    container_name: nginx
-    ports:
-      - "80:80"
-    build:
-      context: .
-      dockerfile: ./nginx/Dockerfile
-      args:
-        env: dev
-    networks:
-      - backend
-    working_dir: /app
 
-
-  db:
-    image: mariadb:10.6.4
-    container_name: db
-    ports:
-      - "3306:3324"
-    working_dir: /app
-    networks:
-      - backend
-    volumes:
-      - .db:/var/lib/mysql
-    environment:
-      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'no'
-      MARIADB_ROOT_PASSWORD: 'root'
-      MARIADB_ROOT_HOST: 'localhost'
-      MARIADB_DATABASE: 'app'
-      MARIADB_USER: 'app'
-      MARIADB_PASSWORD: 'app'
-    restart: unless-stopped
-    depends_on:
-      - php-fpm
-#    command: docker exec -it db bash -c "mysql -u app -p app -h localhost app"
-#    healthcheck:
-#      test: [ "mysql", "-uroot", "-proot" ]
+    php-fpm:
+        container_name: php-fpm
+        build:
+            context: .
+            dockerfile: ./php-fpm/Dockerfile
+        ports:
+            - "9000:9000"
+        networks:
+            - backend
+        working_dir: /app
+        volumes:
+            - ~/.composer/docker-cache/:/root/.composer:cached
+            - ../:/app
+        environment:
+#            DATABASE_TIMEZONE: UTC
+            PHP_REDIS_SESSION_HOST: redis
+#        logging:
+#            driver: 'json-file'
+#            options:
+#                max-size: '1024k'
+#                max-file: '2'
+        restart: on-failure
+#        depends_on:
+#            - nginx
 
 
 
-  php-fpm:
-    container_name: php-fpm
-    build: php-fpm
-    ports:
-      - "9000:9002"
-    networks:
-      - backend
-    working_dir: /app
-    volumes:
-      - ~/.composer/docker-cache/:/root/.composer:cached
-      - ../:/app
-    environment:
-      DATABASE_TIMEZONE: 'UTC'
-      PHP_REDIS_SESSION_HOST: 'redis'
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '1024k'
-        max-file: '2'
-    depends_on:
-      - nginx
-    restart: always
+    nginx:
+        container_name: nginx
+        ports:
+            - "8080:80"
+        build:
+            context: .
+            dockerfile: ./nginx/Dockerfile
+            args:
+                env: dev
+#        configs:
+#            http_config:
+#                file: ./httpd.conf
+        networks:
+            - backend
+        working_dir: /app
+        depends_on:
+            - php-fpm
+
+
+    db:
+        container_name: db
+        ports:
+            - "3306:3307"
+        image: mariadb:10.6.4
+        working_dir: /app
+        networks:
+            - backend
+        volumes:
+            - .dbdata:/var/lib/mysql
+        environment:
+            MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'no'
+            MARIADB_ROOT_PASSWORD: root
+            MARIADB_ROOT_HOST: localhost
+            MARIADB_DATABASE: app
+            MARIADB_USER: app
+            MARIADB_PASSWORD: app
+        restart: "no"
+        depends_on:
+            - php-fpm
+#        command: mysql -uapp -papp -hlocalhost app
+#        healthcheck:
+#            test: [ "CMD", "mysqladmin", "ping" ]
+
+
+
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+            - "15673:15674"
+            - "5677:5678"
+        environment:
+            RABBITMQ_DEFAULT_USER: 'app'
+            RABBITMQ_DEFAULT_PASS: 'app'
+            RABBITMQ_DEFAULT_VHOST: '/'
+        networks:
+            - backend
+#        healthcheck:
+#            test: ["CMD", "redis-cli", "ping"]
+#            interval: 1m30s
+#            timeout: 5s
+#            retries: 3
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '1024k'
+                max-file: '2'
+#        restart: unless-stopped
+
+
+    redis:
+        container_name: redis
+        image: redis:latest
+        environment:
+            REDIS_PASSWORD: app
+        networks:
+            - backend
+        restart: on-failure
+#        env_file:
+#            -   env
 
 
 volumes:
-  db:
-    external: false
+    dbdata:
+        external: false
+
+#        driver_opts:
+#            type: "nfs"
+#            o: "addr=10.40.0.199, nolock, soft, rw"
+#            device: ":/docker/example"
 
 networks:
-  backend:
+    backend:
+        driver: bridge

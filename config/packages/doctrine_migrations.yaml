@@ -4,3 +4,11 @@ doctrine_migrations:
         # as migrations classes should NOT be autoloaded
         'DoctrineMigrations': '%kernel.project_dir%/migrations'
     enable_profiler: '%kernel.debug%'
+    connection: root
+#    em: default
+    check_database_platform: true
+    all_or_nothing: false
+    custom_template: ~
+    organize_migrations: false
+
+

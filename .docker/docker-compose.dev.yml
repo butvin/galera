@@ -1,24 +1,24 @@
 version: "3.3"
 
-services:
+#services:
 
-  rabbitmq:
-    container_name: rabbitmq
-    image: rabbitmq:3-management
-    ports:
-      - "15674:15674"
-      - "5677:5677"
-    environment:
-      RABBITMQ_DEFAULT_USER: 'app'
-      RABBITMQ_DEFAULT_PASS: 'app'
-      RABBITMQ_DEFAULT_VHOST: '/'
-    networks:
-      - backend
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 1m30s
-      timeout: 5s
-      retries: 3
+#  rabbitmq:
+#    container_name: rabbitmq
+#    image: rabbitmq:3-management
+#    ports:
+#      - "15674:15674"
+#      - "5677:5677"
+#    environment:
+#      RABBITMQ_DEFAULT_USER: 'app'
+#      RABBITMQ_DEFAULT_PASS: 'app'
+#      RABBITMQ_DEFAULT_VHOST: '/'
+#    networks:
+#      - backend
+#    healthcheck:
+#      test: ["CMD", "redis-cli", "ping"]
+#      interval: 1m30s
+#      timeout: 5s
+#      retries: 3
 #    logging:
 #      driver: 'json-file'
 #      options:
@@ -27,22 +27,24 @@ services:
 #    restart: unless-stopped
 
 
-  redis:
-    container_name: redis
-    image: redis:alpine
-    environment:
-      REDIS_PASSWORD: app
-    networks:
-      - backend
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
+
+#  redis:
+#    container_name: redis
+#    image: redis:alpine
+#    environment:
+#      REDIS_PASSWORD: app
+#    networks:
+#      - backend
+#    deploy:
+#      restart_policy:
+#        condition: on-failure
+#        delay: 5s
+#        max_attempts: 3
+#    restart: no
 
 
-networks:
-  backend:
+#networks:
+#  backend:
 
 
 
