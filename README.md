@@ -4,20 +4,24 @@
 ###Symfony 5.3
 
 
-<i style="color: tomato">`HOT cpmmands:`</i>
+<i style="color: tomato"></i>
 ---------
 
-<blockquote style="background: #566270; color: tomato; border-radius: 4px">
 
-###<b>docker exec -t php-fpm bash -c "php bin/console fos:user:create `dev` `developer@email.com` `dev` --super-admin"</b><br>
-###<b>docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)</b><br>
-###<b>docker rmi $(docker images -qa)</b><br>
-###<b>docker volume rm $(docker volume ls -q)</b><br>
-###<b>docker network rm $(docker network ls -q)</b><br>
-###<b>docker system prune -a -f</b><br>
-###<b>docker network ls -q</b><br>
-###<b>docker volume ls -q</b><br>
-###`volume operations:`
+<div style="background: linear-gradient(to right, #6E7783, #566270); color: #FFFFFF; border-radius: 2px; padding: 10px;">
+
+###`HOT`
+<b style="color: tomato">docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"</b> - <span>create account in db container.<br><small>login: dev<br>email: developer@email.com<br>password:'dev'<br></small></span>
+<b style="color: tomato">docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)</b> - <span>stopping & remove all created containers</span><br>
+<b style="color: tomato">docker rmi $(docker images -qa)</b> - remove all downloaded docker images<br>
+<b style="color: tomato">docker volume rm $(docker volume ls -q)</b> - remove all volumes<br>
+<b style="color: tomato">docker network rm $(docker network ls -q)</b> - remove all networks<br>
+<b style="color: tomato">docker system prune -a -f</b> - clear system from temp-files<br>
+<b style="color: tomato">docker network ls -q</b> - display networks<br>
+<b style="color: tomato">docker volume ls -q</b> - display active volumes<br>
+
+###`VOLUMES`
+
 <ul>
     <li>
         <b style="color: tomato">docker volume create</b> - Create a volume
@@ -38,13 +42,13 @@
 
 
 
-</blockquote>
+</div>
 <hr style="background-image: linear-gradient(to right, #ea350e, #ff9600); height: 1px;">
 
 
 
 
-<div style="background-image: radial-gradient( circle farthest-corner at 22.4% 21.7%, rgba(4,189,228,.2) 0%, rgba(2,83,185,.2) 100.2% ); padding: 20px">
+<div style="background-image: radial-gradient( circle farthest-corner at 22.4% 21.7%, rgba(4,189,228,.2) 0%, rgba(2,83,185,.2) 0.2% ); padding: 20px">
 
 </div>
 
@@ -71,6 +75,7 @@
     docker ps -a -s (with size)
 
 <hr style="background-image: linear-gradient(to right, rgba(131,96,195,0.42), #2ebf91); height: 1px;">
+<hr style="background: linear-gradient(to right, #6E7783, #E0E3DA);">
 
 `docker run -it --add-host db-static:86.75.30.9 ubuntu cat /etc/hosts` -  adds localhost uri to /etc/hosts
 
@@ -123,7 +128,7 @@ sudo setfacl -R -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX var<br>
 
 
 
-<b>`docker system df -v`</b> - <i>displays information regarding the amount of disk space used by the docker daemon</i>
+<b style="color: tomato">`docker system df -v`</b> - <i>displays information regarding the amount of disk space used by the docker daemon</i>
 
 
 
