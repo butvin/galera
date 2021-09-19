@@ -53,6 +53,9 @@ WORKDIR "/app"
 #make: Circular jit/zend_jit.lo <- jit/zend_jit.lo dependency dropped.
 
 
+
+
+
 #calendar ctype  dba dom
 #enchant exif ffi fileinfo filter ftp gd gettext
 #hash iconv imap intl  ldap   oci8
@@ -64,8 +67,13 @@ WORKDIR "/app"
 # tokenizer  xmlreader xmlwriter xsl zend_test
 
 
+
+
 # docker run -p 127.0.0.1:3306:3306  --name some-mariadb -e MARIADB_ROOT_PASSWORD=my-secret-pw -d mariadb:tag
 #docker run -p 127.0.0.1:3306:3306  --name db -e MARIADB_ROOT_PASSWORD=root -d mariadb:10.6.4
+
+
+
 
 
 #ARG DBVOLUME=$DATABASE_VOLUME
@@ -78,8 +86,3 @@ WORKDIR "/app"
 #RUN chmod +x /run.sh
 #RUN chmod 777 /app/.docker/$DATABASE_VOLUME -R
 #ADD ../$DATABASE_VOLUME/ /var/lib/mysql
-#RUN chown $(whoami):$(whoami) -R /app/.docker/$DATABASE_VOLUME
-#RUN chown $(whoami):$(whoami) -R $DATABASE_VOLUME
-
-#docker: Error response from daemon: driver failed programming external connectivity on endpoint app (517653e3beae08d6b306fa2d2ec288319def83a12be814d808510e4f79fb3919): Error starting userland proxy: listen tcp4 127.0.0.1:3306: bind: address already in use.
-
