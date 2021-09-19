@@ -6,13 +6,13 @@ build: \
 	migrate-database
 
 docker-compose:
-	docker-compose -f .docker/docker-compose.yml up -d --build --verbose
+	docker-compose -f .docker/docker-compose.yml up -d --build
 
 dev:
-	docker-compose -f .docker/docker-compose.dev.yml up -d --build --verbose
+	docker-compose -f .docker/docker-compose.dev.yml up -d --build
 
 cli:
-	docker-compose -f .docker/docker-compose.cli.yml up -d --build --verbose
+	docker-compose -f .docker/docker-compose.cli.yml up -d --build
 
 prod:
 	docker-compose -f .docker/docker-compose.prod.yml up -d --build
@@ -52,8 +52,8 @@ php:
 
 
 
-
-
+nginx:
+	docker run --name web1 -d -p 8080:80 nginx:
 
 migrate:
 	docker run -ti \
@@ -63,8 +63,14 @@ migrate:
 		  -e MIGRATIONS_NAMESPACE='DoctrineMigrations' \
 		  --network=project \
 		  pashak09/docker-doctrine-migrations migrations:execute --up 'DoctrineMigrations\Version20210602174439'
+
 	docker build -f Dockerfile -t docker-doctrine-migrations --target final
 
+redis:
+	docker run \
+		-e ALLOW_EMPTY_PASSWORD=yes \
+		-v /path/to/redis-persistence:/bitnami/redis/data \
+		bitnami/redis:latest
 
 
 clear-data:
@@ -100,3 +106,9 @@ drop-all:
 
 sh-run:
 	sh ./run.sh
+
+
+misc:
+	docker run \
+	--name some-mariadb -v .docker/.dbdata:/var/lib/mysql -e \
+	MARIADB_ROOT_PASSWORD=root -d mariadb:10.6.4

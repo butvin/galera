@@ -3,8 +3,8 @@ version: "3.3"
 services:
     async_worker:
         build: cli
-        container_name: async_worker
         working_dir: /app
+        container_name: async_worker
         restart: unless-stopped
         volumes:
           - ..:/app

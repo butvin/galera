@@ -32,5 +32,10 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+    Doctrine\Migrations\Version\DbalMigrationFactory: ~
+    App\Migrations\Factory\MigrationFactoryDecorator:
+        decorates: Doctrine\Migrations\Version\DbalMigrationFactory
+        arguments: [ '@App\Migrations\Factory\MigrationFactoryDecorator.inner', '@service_container' ]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

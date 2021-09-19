@@ -1,33 +1,56 @@
 doctrine:
     dbal:
-        default_connection: root
+        driver: 'pdo_mysql'
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
+        url: '%env(resolve:DATABASE_URL)%'
         types:
             datetime: TS\DoctrineExtensions\DBAL\FixedDbTimezone\DateTimeType
             datetime_immutable: TS\DoctrineExtensions\DBAL\FixedDbTimezone\DateTimeImmutableType
-        connections:
-            root:
-                server_version: 'mariadb-10.6.4'
-                driver: pdo_mysql
-                host: db
-                port: '3306'
-                dbname: app
-                override_url: true
-                user: root
-                password: root
-                charset: 'utf8'
-                mapping_types:
-                    bit: boolean
-                    tsvector: string
-                url: '%env(resolve:DATABASE_URL)%'
+#        default_connection: default
+#        connections:
+#            default:
+#                server_version: 'mariadb-10.6.4'
+#                driver: pdo_mysql
+#                host: localhost
+#                port: 3306
+#                dbname: app
+#                override_url: true
+#                user: root
+#                password: root
+#                charset: 'utf8'
+#                path: ~
+#                memory: ~
+#                mapping_types:
+#                    bit: boolean
+#                    tsvector: string
+#                    name: [ ]
+#                url: '%env(resolve:DATABASE_URL)%'
+#                unix_socket: ~
+#                persistent: ~
+#                protocol: ~
+#                service: ~
+#                sessionMode: ~
+#                pooled: ~
+#                MultipleActiveResultSets: ~
+#                platform_service: ~
+#                logging: '%kernel.debug%'
+#                profiling: '%kernel.debug%'
+#                driver_class: ~
+#                wrapper_class: ~
+#                keep_slave: false
+#                options:
+#                    key: [ ]
+#                slaves:
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '13'
     orm:
+        auto_mapping: true
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        auto_mapping: true
-        class_metadata_factory_name: Doctrine\ORM\Mapping\ClassMetadataFactory
-        default_repository_class: Doctrine\ORM\EntityRepository
         mappings:
             App:
                 is_bundle: false
@@ -35,3 +58,86 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+#        proxy_namespace: Proxies
+#        proxy_dir: '%kernel.cache_dir%/doctrine/orm/Proxies'
+#        metadata_cache_driver: apc
+#        default_entity_manager: default
+#        query_cache_driver:
+#            type: service
+#            id: my_doctrine_common_cache_service
+#        result_cache_driver:
+#            type: memcache
+#            host: localhost
+#            port: 11211
+#            instance_class: Memcache
+
+#        auto_mapping: true
+#        default_entity_manager:  ~
+#        auto_generate_proxy_classes: false
+#        proxy_dir: '%kernel.cache_dir%/doctrine/orm/Proxies'
+#        proxy_namespace: Proxies
+#        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+#        class_metadata_factory_name: Doctrine\ORM\Mapping\ClassMetadataFactory
+#        default_repository_class: Doctrine\ORM\EntityRepository
+#        # search for the "ResolveTargetEntityListener" class for an article about this
+#        resolve_target_entities: [ ]
+#        entity_managers:
+#            # A collection of different named entity managers (e.g. some_em, another_em)
+#            some_em:
+#                query_cache_driver:
+#                    type: array # Required
+#                    host: ~
+#                    port: ~
+#                    instance_class: ~
+#                    class: ~
+#                metadata_cache_driver:
+#                    type: array # Required
+#                    host: ~
+#                    port: ~
+#                    instance_class: ~
+#                    class: ~
+#                result_cache_driver:
+#                    type: array # Required
+#                    host: ~
+#                    port: ~
+#                    instance_class: ~
+#                    class: ~
+#                connection: ~
+#                class_metadata_factory_name: Doctrine\ORM\Mapping\ClassMetadataFactory
+#                default_repository_class: Doctrine\ORM\EntityRepository
+#                auto_mapping: false
+#                hydrators:
+#                    # An array of hydrator names
+#                    hydrator_name: [ ]
+#                mappings:
+#                    # An array of mappings, which may be a bundle name or something else
+#                    mapping_name:
+#                        mapping: true
+#                        type: ~
+#                        dir: ~
+#                        alias: ~
+#                        prefix: ~
+#                        is_bundle: ~
+#                dql:
+#                    # a collection of string functions
+#                    string_functions:
+#                    # example
+#                    # test_string: Acme\HelloBundle\DQL\StringFunction
+#
+#                    # a collection of numeric functions
+#                    numeric_functions:
+#                    # example
+#                    # test_numeric: Acme\HelloBundle\DQL\NumericFunction
+#
+#                    # a collection of datetime functions
+#                    datetime_functions:
+#                    # example
+#                    # test_datetime: Acme\HelloBundle\DQL\DatetimeFunction
+#
+#                # Register SQL Filters in the entity manager
+#                filters:
+#                    # An array of filters
+#                    some_filter:
+#                        class: ~ # Required
+#                        enabled: false
+

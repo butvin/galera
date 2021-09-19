@@ -1,16 +1,19 @@
 <main style="font-family: 'Lucida Console', monospace;">
 
-## ___the Galley RESTFull API___
-###Symfony 5.3
+<h1 style="color: #f7797d; font-weight: 400; font-family: 'DejaVu Sans Light', monospace; font-size: 7em; letter-spacing: 7px;">G&nbsp;A&nbsp;L&nbsp;E&nbsp;R&nbsp;A</h1>
 
-
-<i style="color: tomato"></i>
+<i style="color: tomato">Symfony 5.3</i>
 ---------
 
 
 <div style="background: linear-gradient(to right, #6E7783, #566270); color: #FFFFFF; border-radius: 2px; padding: 10px;">
 
+<h2 style="color: #f7797d; font-weight: 400; font-family: 'Lato Heavy', monospace; font-size: 5em; letter-spacing: 7px;">DOCKER</h2>
+
+<hr>
+
 `HOT`
+----
 
 <b style="color: tomato">docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"</b> - <span>create account in db container.<br><small>login: dev<br>email: developer@email.com<br>password:'dev'<br></small></span>
 
@@ -29,7 +32,7 @@
 <b style="color: tomato">docker volume ls -q</b> - display active volumes<br>
 
 `VOLUMES`
-
+--------
 <ul>
     <li>
         <b style="color: tomato">docker volume create</b> - Create a volume
@@ -48,17 +51,8 @@
     </li>
 </ul>
 
-
-
 </div>
 <hr style="background-image: linear-gradient(to right, #ea350e, #ff9600); height: 1px;">
-
-
-
-
-
-
-
 
 <div style="background-image: linear-gradient(to right, rgba(131,96,195,0.42), #2ebf91);">
 
@@ -70,7 +64,7 @@
 
 </div>
 
-###sudo lsof -nP | grep LISTEN
+<h2>sudo lsof -nP | grep LISTEN</h2>
 
 <hr style="background-image: linear-gradient(to right, rgba(131,96,195,0.42), #2ebf91); height: 1px;">
 
@@ -95,7 +89,6 @@
     docker-compose up -d
 
 
-
 <hr style="background-image: linear-gradient(to right, rgba(131,96,195,0.42), #2ebf91); height: 1px;">
 
 <p style="background-image: linear-gradient(to right, #2c3e50, #4ca1af);">
@@ -107,7 +100,9 @@
 
 <h2 style="background-image: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d); color: #444f59; padding: 20px; margin: 10px; border-radius: 2px">
 <span style="color: black;">
+
 Script automatic set permissions for directories (SF-4.4)
+
 </span>
 </h2>
 
@@ -121,32 +116,23 @@ sudo setfacl -R -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX var<br>
 </section>
 <hr style="background-image: linear-gradient(to right, rgba(131,96,195,0.42), #2ebf91); height: 1px;">
 
-
-
-
     docker-php-ext-configure
-
-
 
 <b style="color: tomato">`docker system df -v`</b> - <i>displays information regarding the amount of disk space used by the docker daemon</i>
 
-
-
-
-
 <div style="background-image: linear-gradient(to right, #1e2022, #444f59);">
 
-docker stop $(docker ps -qa) && docker rm $(docker ps -qa)    Stop & Drop all containers
+`docker stop $(docker ps -qa) && docker rm $(docker ps -qa)`    Stop & Drop all containers
 
-docker system df       Show docker disk usage
-
-<hr>
-
-docker system events    Get real time events from the server
+`docker system df`       Show docker disk usage
 
 <hr>
 
-docker system info     Display system-wide information
+`docker system events`    Get real time events from the server
+
+<hr>
+
+`docker system info`     Display system-wide information
 
 <hr>
 
@@ -154,17 +140,11 @@ docker system info     Display system-wide information
 
 </div>
 
-<hr>
-
-<hr>
-
 
 <p>you can see a full list env values by running:</p>
 
     `php bin/console debug:container --env-vars`
     `php bin/console debug:container --parameters`
-
-
 
 
 <p>displays the default config values DEFINED by Symfony</p>
@@ -176,7 +156,8 @@ docker system info     Display system-wide information
 <p>displays the actual config values used by current app</p>
     `php bin/console debug:config doctrine`
 
-#___DOCKER___
+<h2 style="color: #fffff3; font-weight: 200; font-family: 'Lato Heavy', monospace; font-size: 3em; letter-spacing: 7px;">Containers, tools & features in Docker</h2>
+
 
 <small>https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-ru/ </small>
 
@@ -337,18 +318,228 @@ TODO:
 <li>composer require doctrine/coding-standard</li>
 <li>squizlabs/php_codesniffer</li>
 <li>composer require --dev debug</li>
+<li></li>
+
+!!! _*docker network inspect bridge*_
+
 </ul>
 </section>
 
 
+<hr>
+
+<h1 style="font-family: 'Ubuntu Light', monospace;font-size: 7em; letter-spacing: 24px;">R&nbsp;E&nbsp;D&nbsp;I&nbsp;S</h1>
+
+
+Redis(TM)
+-----
+<small>https://registry.hub.docker.com/r/bitnami/redis#configuration </small>
+
+<section>
+
+`bridge-utils`
+--------------
+
+    sudo apt-get install bridge-utils
+    brctl show
+    ip a
+
+command utility `brctl show`  and use it to list the Linux bridges on your Docker host.
+
+use the `ip` command to view details of the `docker0` bridge
+<hr>
+            
+    docker run --name redis -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
+
+    curl -sSL https://raw.githubusercontent.com/bitnami/bitnami-docker-redis/master/docker-compose.yml > docker-compose.yml
+
+    docker-compose up -d
+
+    docker pull bitnami/redis:[TAG]
+
+you can also build the image yourself.
+
+    docker build -t bitnami/redis:latest 'https://github.com/bitnami/bitnami-docker-redis.git#master:6.2/debian-10'
+
+</section>
+
 <div>
 
-`App`
+`Step 1`
+--------
+Create a network
+        
+    docker network create app-tier --driver bridge
+
+`Step 2`
+------
+Launch the Redis(TM) server instance
+Use the --network app-tier argument to the docker run command to attach the Redis(TM) container to the app-tier network.
+
+    docker run -d --name redis-server \
+        -e ALLOW_EMPTY_PASSWORD=yes \
+        --network app-tier \
+        bitnami/redis:latest
+
+`Step 3`
+--------
+Launch your Redis(TM) client instance
+Finally we create a new container instance to launch the Redis(TM) client and connect to the server created in the previous step:
+
+    docker run -it --rm \
+        --network app-tier \
+        bitnami/redis:latest redis-cli -h redis-server
+
+
+Using Docker Compose
+When not specified, Docker Compose automatically sets up a new network and attaches all deployed services to that network. However, we will explicitly define a new bridge network named app-tier. In this example we assume that you want to connect to the Redis(TM) server from your own custom application image which is identified in the following snippet by the service name myapp.
+
+        version: '2'
+        
+        networks:
+              app-tier:
+                    driver: bridge
+        
+        
+        services:
+              redis:
+                    image: 'bitnami/redis:latest'
+                    environment:
+                        - ALLOW_EMPTY_PASSWORD=yes
+                    networks:
+                        - app-tier
+              myapp:
+                    image: 'YOUR_APPLICATION_IMAGE'
+                    networks:
+                        - app-tier
+
+
+`IMPORTANT`:
+---------
+Please update the `YOUR_APPLICATION_IMAGE_` placeholder in the above snippet with your application image
+In your application container, use the hostname redis to connect to the Redis(TM) server
+Launch the containers using:
+
+    docker-compose up -d
+
+</div>
+
+<hr>
+<h1>Disabling Redis(TM) commands</h1>
+
+<pre>
+For security reasons, you may want to disable some commands. You can specify them by using the following environment variable on the first run:
+
+REDIS_DISABLE_COMMANDS: Comma-separated list of Redis(TM) commands to disable. Defaults to empty.
+
+
+<h3>docker run --name redis -e REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG bitnami/redis:latest</h3>
+
+
+Alternatively, modify the docker-compose.yml file present in this repository:
+
+services:
+  redis:
+  ...
+    environment:
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
+  ...
+As specified in the docker-compose, FLUSHDB and FLUSHALL commands are disabled. Comment out or remove the environment variable if you don't want to disable any commands:
+
+services:
+  redis:
+  ...
+    environment:
+      # - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+</pre>
+
+
+Passing extra command-line flags to the redis service command is possible by adding them as arguments to run.sh script:
+
+`docker run --name redis -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb`
+
+<hr>
+<pre>
+services:
+    redis:
+        ...
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+        ...
+</pre>
+
+
+Passing the `REDIS_PASSWORD` environment variable when running the image for the first time will set the Redis(TM) server password to the value of `REDIS_PASSWORD` (or the content of the file specified in `REDIS_PASSWORD_FILE`).
+
+    docker run --name redis -e REDIS_PASSWORD=password123 bitnami/redis:latest
+
+Alternatively, modify the docker-compose.yml file present in this repository:
+
+    services:
+        redis:
+        ...
+            environment:
+                - REDIS_PASSWORD=password123
+
+        ...
+
+`NOTE`: The at sign (@) is not supported for `REDIS_PASSWORD`.
+
+Warning The Redis(TM) database is always configured with remote access enabled. It's suggested that the `REDIS_PASSWORD` env variable is always specified to set a password. In case you want to access the database without a password set the environment variable `ALLOW_EMPTY_PASSWORD`=`yes`. This is recommended only for development.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section style="font-family: 'Source Code Pro', monospace ; font-weight: 200; font-size: .85rem;">
+<div>
+
+<h1>THE END</h1>
+<h2>to be continued...</h2>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<hr>
+
+`APP ENV:`
 -----
 `APP_ENV`=dev<br>
 `APP_SECRET`=ff647a684b3c27a710daec988484f83e<br>
 `APP_DEBUG`=true<br>
-`APP_NAME`=GALERA<br>
+`APP_NAME`=GALERA
+<hr>
 
 `DB`
 ---------
@@ -363,7 +554,7 @@ TODO:
 `DATABASE_PASSWORD`=app<br>
 `DB_CHARSET`='UTF8'<br>
 `DATABASE_VOLUME`=".dbdata"<br>
-`DATABASE_URL`=<small>"mysql://app:app@localhost:3306/app?serverVersion=mariadb-10.6.4"</small><br>
+`DATABASE_URL`="mysql://app:app@localhost:3306/app?serverVersion=mariadb-10.6.4"<br>
 `SERVER_VERSION`="mariadb-10.6.4"<br>
 
 
@@ -397,3 +588,4 @@ TODO:
 `LOW_PRIORITY_MESSENGER_TRANSPORT_DSN`=amqp://rabbitmq:rabbitmq@rabbitmq:5677/%2f/?connection_timeout=5<br>
 `MAILER_DSN`=sendmail://default<br>
 </div>
+</section>
