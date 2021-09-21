@@ -1,4 +1,5 @@
-FROM php:8.0.10-cli
+ARG PHP_VERSION='8.0.10'
+FROM php:${PHP_VERSION}-cli
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -9,7 +10,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
 
 RUN apt-get install -y --no-install-recommends \
     zip \
-    curl \
+    iputils-ping \
+    net-tools \
     unzip \
     p7zip-full \
     librabbitmq-dev \

@@ -14,7 +14,7 @@ doctrine:
 #                host: localhost
 #                port: 3306
                 dbname: app
-#                charset: utf8mb4
+                charset: utf8mb4
 #                user: app
 #                password: app
 #                url: '%env(resolve:DATABASE_URL)%'
@@ -82,7 +82,7 @@ doctrine:
 #        proxy_namespace: Proxies
 #        proxy_dir: '%kernel.cache_dir%/doctrine/orm/Proxies'
 #        metadata_cache_driver: apc
-#        default_entity_manager: default
+        default_entity_manager: default
 #        query_cache_driver:
 #            type: service
 #            id: my_doctrine_common_cache_service

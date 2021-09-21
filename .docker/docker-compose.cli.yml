@@ -3,10 +3,16 @@ version: "3.3"
 services:
     async_worker:
         build: cli
+        networks:
+            - app_network
         working_dir: /app
         container_name: async_worker
-        restart: unless-stopped
+        restart: always
         volumes:
           - ..:/app
           - /var/log/app:/app/var/log
         command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vvv
+
+networks:
+    app_network:
+        driver: bridge

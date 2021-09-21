@@ -13,7 +13,7 @@ services:
             args:
                 env: dev
         networks:
-            - app-lan
+            - app_network
         working_dir: /app
         volumes:
             - /var/log/nginx:/var/log/nginx/
@@ -30,7 +30,7 @@ services:
 #        image: bitnami/mariadb:latest
         working_dir: /app
         networks:
-             - app-lan
+             - app_network
 #                ipv4_address: 172.17.0.4
         volumes:
             - .dbdata:/var/lib/mysql
@@ -65,7 +65,7 @@ services:
             - "9000:9001"
         build: php-fpm
         networks:
-            - app-lan
+            - app_network
         working_dir: /app
         volumes:
             - .dbdata:/var/lib/mysql
@@ -100,7 +100,7 @@ services:
             RABBITMQ_DEFAULT_PASS: 'app'
             RABBITMQ_DEFAULT_VHOST: '/'
         networks:
-            - app-lan
+            - app_network
         logging:
             driver: 'json-file'
             options:
@@ -115,14 +115,15 @@ services:
         environment:
             REDIS_PASSWORD: app
         networks:
-            - app-lan
+            - app_network
         volumes:
-            - .redisdata:/bitnami/redis/data
+            - .dbdata:/bitnami/redis/data
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
             interval: 2m15s
             timeout: 7s
             retries: 4
+
 
 
 volumes:
@@ -132,5 +133,5 @@ volumes:
 
 
 networks:
-    app-lan:
+    app_network:
         driver: bridge

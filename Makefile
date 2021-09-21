@@ -41,8 +41,12 @@ worker-re:
 # technic common commands:
 db:
 	docker exec -it db bash
+db-log:
+	docker logs db
 php:
 	docker exec -it php-fpm bash
+nginx:
+	docker exec -it nginx bash
 #######################################################################################################################
 
 
@@ -54,8 +58,7 @@ php:
 
 
 
-nginx:
-	docker run --name web1 -d -p 8080:80 nginx:
+
 
 migrate:
 	docker run -ti \
@@ -77,9 +80,6 @@ redis:
 
 clear-data:
 	docker exec -t php-fpm bash -c "rm -R /app/.docker/.dbdata"
-
-db-log:
-	docker logs db
 
 db-up:
 	docker exec -it db bash

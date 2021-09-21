@@ -10,6 +10,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
 
 RUN apt-get install -y --no-install-recommends \
     zip \
+    iputils-ping \
+    net-tools \
     unzip \
     p7zip-full \
     libimage-exiftool-perl \
