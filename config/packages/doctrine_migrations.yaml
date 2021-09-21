@@ -1,7 +1,7 @@
 doctrine_migrations:
     # List of namespace/path pairs to search for migrations, at least one required
     migrations_paths:
-        'App\Migrations': '%kernel.project_dir%/src/App'
+#        'App\Migrations': '%kernel.project_dir%/src/App'
         # namespace is arbitrary but should be different from App\Migrations
         # as migrations classes should NOT be autoloaded
         'DoctrineMigrations': '%kernel.project_dir%/migrations'
@@ -11,8 +11,8 @@ doctrine_migrations:
 
     # Connection to use for the migrations
     connection: default
-    # Entity manager to use for migrations. This overrides the "connection" setting.
-    em: default
+#    # Entity manager to use for migrations. This overrides the "connection" setting.
+    em: ~
     storage:
         # Default (SQL table) metadata storage configuration
         table_storage:
@@ -28,14 +28,14 @@ doctrine_migrations:
     all_or_nothing: false
     # Adds an extra check in the generated migrations to ensure that is executed on the same database type.
     check_database_platform: true
-    services:
-        # Custom migration sorting service id
-        'Doctrine\Migrations\Version\Comparator': ~
-        # Custom migration classes factory
-        'Doctrine\Migrations\Version\MigrationFactory': 'App\Migrations\Factory\MigrationFactoryDecorator'
-#        'Doctrine\Migrations\Version\MigrationFactory': ~
-    factories:
-        # Custom migration sorting service id via callables (MyCallableFactory must be a callable)
-        'Doctrine\Migrations\Version\Comparator': 'MyCallableFactory'
+#    services:
+#        # Custom migration sorting service id
+#        'Doctrine\Migrations\Version\Comparator': ~
+#        # Custom migration classes factory
+#        'Doctrine\Migrations\Version\MigrationFactory': 'App\Migrations\Factory\MigrationFactoryDecorator'
+##        'Doctrine\Migrations\Version\MigrationFactory': ~
+#    factories:
+#        # Custom migration sorting service id via callables (MyCallableFactory must be a callable)
+#        'Doctrine\Migrations\Version\Comparator': 'MyCallableFactory'
 
 

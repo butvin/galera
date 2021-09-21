@@ -1,13 +1,12 @@
-#ARG PHP_VERSION='8.0.10'
-#FROM php:${PHP_VERSION}-fpm
-FROM php:8.0.10-fpm
+ARG PHP_VERSION='8.0.10'
+FROM php:${PHP_VERSION}-fpm
 
-ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND noninteractive
 
 ARG env
 
-RUN apt-get update && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends curl wget  apt-utils
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+     wget curl apt-utils ca-certificates
 
 RUN apt-get install -y --no-install-recommends \
     zip \
@@ -16,12 +15,16 @@ RUN apt-get install -y --no-install-recommends \
     libimage-exiftool-perl \
     sendmail \
     librabbitmq-dev \
+    libicu-dev \
     libzip-dev
-
+#  libicu-dev \
 RUN pecl install amqp-1.11.0beta
 RUN docker-php-ext-enable amqp
 
 RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
+
+RUN docker-php-ext-configure intl
+RUN docker-php-ext-install intl
 
 RUN pecl install -o -f redis
 RUN docker-php-ext-enable redis
@@ -31,8 +34,9 @@ RUN rm -rf /tmp/pear
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin && \
-    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc && \
+    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /$USER/.bashrc && \
     composer
+#    composer diagnose ;
 
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 RUN sed -i "/#!\/bin\/sh/aservice sendmail restart" /usr/local/bin/docker-php-entrypoint
@@ -40,10 +44,10 @@ RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhos
 
 COPY www.conf /usr/local/etc/php-fpm.d
 
-RUN echo "${APP_ENV}"
-COPY $APP_ENV/php.ini "$PHP_INI_DIR"/conf.d
-COPY ${env}/opcache.ini "$PHP_INI_DIR"/conf.d
-COPY ${env}/xdebug.ini "$PHP_INI_DIR"/conf.d
+#todo: change env
+COPY dev/php.ini "$PHP_INI_DIR"/conf.d
+COPY dev/opcache.ini "$PHP_INI_DIR"/conf.d
+COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d
 
 WORKDIR "/app"
 

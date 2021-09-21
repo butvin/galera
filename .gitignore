@@ -3,7 +3,8 @@
 /.env.local
 /.env.local.php
 /.env.*.local
-.docker/.db/
+.docker/.dbdata/
+_temp/
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/

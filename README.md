@@ -1,39 +1,68 @@
+<style>
+    .title-shadow {
+        position: absolute;
+        top: 50%; 
+        right: 50%;
+        transform: translate(50%,-50%);
+        text-transform: uppercase;
+        font-family: Lucida" Grande, sans-serif;;
+        font-size: 12em;
+        font-weight: 700;
+        color: #f5f5f5;
+        text-shadow: 1px 1px 1px #919191,
+            1px 2px 1px #919191,
+            1px 3px 1px #919191,
+            1px 4px 1px #919191,
+            1px 5px 1px #919191,
+            1px 6px 1px #919191,
+            1px 7px 1px #919191,
+            1px 8px 1px #919191,
+            1px 9px 1px #919191,
+            1px 10px 1px #919191,
+        1px 18px 6px rgba(16,16,16,0.4),
+        1px 22px 10px rgba(16,16,16,0.2),
+        1px 25px 35px rgba(16,16,16,0.2),
+        1px 30px 60px rgba(16,16,16,0.4);
+    }
+</style>
+
 <main style="font-family: 'Lucida Console', monospace;">
+<h1 style="color: #E0E3DA; font-size: 7rem; font-weight: normal; letter-spacing: 12px; line-height: 1; text-align: left; height: auto;" class="title-shadow">
+GALERA.
+</h1>
 
-<h1 style="color: #f7797d; font-weight: 400; font-family: 'DejaVu Sans Light', monospace; font-size: 7em; letter-spacing: 7px;">G&nbsp;A&nbsp;L&nbsp;E&nbsp;R&nbsp;A</h1>
+<h2 style="color: #111; font-family: 'Open Sans', sans-serif; font-size: 30px; font-weight: 900; line-height: 32px; margin: 0 0 72px; text-align: center">
 
-<i style="color: tomato">Symfony 5.3</i>
----------
+</h2>
 
 
-<div style="background: linear-gradient(to right, #6E7783, #566270); color: #FFFFFF; border-radius: 2px; padding: 10px;">
+<hr style="background: #E0E3DA; height: 2px;">
 
-<h2 style="color: #f7797d; font-weight: 400; font-family: 'Lato Heavy', monospace; font-size: 5em; letter-spacing: 7px;">DOCKER</h2>
-
-<hr>
-
-`HOT`
+`HOT ACTIONS`
 ----
 
-<b style="color: tomato">docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"</b> - <span>create account in db container.<br><small>login: dev<br>email: developer@email.com<br>password:'dev'<br></small></span>
-
+<b style="color: tomato">
+docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"
+</b> - <span>create account in db container.<br><small>login: dev<br>email: developer@email.com<br>password:'dev'<br></small></span>
+<hr>
 <b style="color: tomato">docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)</b> - <span>stopping & remove all created containers</span><br>
-
+<hr>
 <b style="color: tomato">docker rmi $(docker images -qa)</b> - remove all downloaded docker images<br>
-
 <b style="color: tomato">docker volume rm $(docker volume ls -q)</b> - remove all volumes<br>
-
+<hr>
 <b style="color: tomato">docker network rm $(docker network ls -q)</b> - remove all networks<br>
-
+<hr>
 <b style="color: tomato">docker system prune -a -f</b> - clear system from temp-files<br>
-
-<b style="color: tomato">docker network ls -q</b> - display networks<br>
-
+<hr>
+<b style="color: tomato">docker network ls -q</b> - display n<hr>etworks<br>
+<hr>
 <b style="color: tomato">docker volume ls -q</b> - display active volumes<br>
 
-`VOLUMES`
+
+`VOLUMES ACTIONS`
 --------
-<ul>
+<hr>
+<ul style="list-style: none;">
     <li>
         <b style="color: tomato">docker volume create</b> - Create a volume
     </li>
@@ -51,22 +80,45 @@
     </li>
 </ul>
 
-</div>
 <hr style="background-image: linear-gradient(to right, #ea350e, #ff9600); height: 1px;">
 
-<div style="background-image: linear-gradient(to right, rgba(131,96,195,0.42), #2ebf91);">
-
-    docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
-    docker volume rm $(docker volume ls -q)
-    docker network rm $(docker network ls -q)
-    docker rmi $(docker images -qa)
-    docker system prune -a -f
+<div style="background-image: linear-gradient(to right, rgba(131,96,195,0.9), rgba(46,191,145,0.1));">
+    <p>
+        <b style="color: tomato">
+            docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+        </b>
+    </p>
+    <p>
+        <b style="color: tomato">
+            docker volume rm $(docker volume ls -q)
+        </b>
+    </p>
+    <p>
+        <b style="color: tomato">
+            docker network rm $(docker network ls -q)
+        </b>
+    </p>
+    <p>
+        <b style="color: tomato">
+            docker rmi $(docker images -qa)
+        </b>
+    </p>
+    <p>
+        <b style="color: tomato">
+            docker system prune -a -f
+        </b>
+    </p>
+    
+    
+    
+    
+    
 
 </div>
 
 <h2>sudo lsof -nP | grep LISTEN</h2>
 
-<hr style="background-image: linear-gradient(to right, rgba(131,96,195,0.42), #2ebf91); height: 1px;">
+<hr style="background-image: linear-gradient(to right, rgba(131,96,195,0.42), #2ebf91); height: 2px;">
 
     sudo kill -9 1548
     sudo systemctl stop docker
@@ -310,63 +362,66 @@ Usage: config [options]<br>
 </blockquote>
 </main>
 
-<section>
 
-TODO:
------
-<ul>
-<li>composer require doctrine/coding-standard</li>
-<li>squizlabs/php_codesniffer</li>
-<li>composer require --dev debug</li>
-<li></li>
-
-!!! _*docker network inspect bridge*_
-
-</ul>
-</section>
 
 
 <hr>
 
-<h1 style="font-family: 'Ubuntu Light', monospace;font-size: 7em; letter-spacing: 24px;">R&nbsp;E&nbsp;D&nbsp;I&nbsp;S</h1>
+<h1 style="font-family: 'Ubuntu Light', monospace; font-size: 10em; line-height: 1.3em; border-radius: 28px; letter-spacing: 24px; border-bottom: 4px solid whitesmoke; border-left: 4px solid whitesmoke; padding-left: 20px; margin-top: 40px;">R&nbsp;E&nbsp;D&nbsp;I&nbsp;S</h1>
 
 
-Redis(TM)
------
-<small>https://registry.hub.docker.com/r/bitnami/redis#configuration </small>
+
+
+<p>
+
+_Redis(TM)_ *https://registry.hub.docker.com/r/bitnami/redis#configuration*
+</p>
 
 <section>
 
 `bridge-utils`
 --------------
-
-    sudo apt-get install bridge-utils
-    brctl show
-    ip a
-
-command utility `brctl show`  and use it to list the Linux bridges on your Docker host.
-
-use the `ip` command to view details of the `docker0` bridge
 <hr>
-            
-    docker run --name redis -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
+<p>
+</p>
+shell
+sudo apt-get install bridge-utils -y
+brctl show
 
-    curl -sSL https://raw.githubusercontent.com/bitnami/bitnami-docker-redis/master/docker-compose.yml > docker-compose.yml
+ip a
+```
 
-    docker-compose up -d
+<p>
 
-    docker pull bitnami/redis:[TAG]
+`bridge-utils` command utility `brctl show` and use it to list the Linux bridges on your Docker host.
+</p>
 
-you can also build the image yourself.
+Use the `ip` command to view details of the `docker0` bridge
+
+
+```dockerfile            
+docker run --name redis -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
+curl -sSL https://raw.githubusercontent
+com/bitnami/bitnami-docker-redis/master/docker-compose.yml > docker-compose.yml
+docker-compose up -d
+docker pull bitnami/redis:[TAG]
+```
+
+<p>
+
+you can also build the image yourself:
+</p>
+
 
     docker build -t bitnami/redis:latest 'https://github.com/bitnami/bitnami-docker-redis.git#master:6.2/debian-10'
 
 </section>
 
-<div>
+<div style="background: #919191;">
 
 `Step 1`
 --------
+
 Create a network
         
     docker network create app-tier --driver bridge
@@ -391,40 +446,56 @@ Finally we create a new container instance to launch the Redis(TM) client and co
         bitnami/redis:latest redis-cli -h redis-server
 
 
-Using Docker Compose
-When not specified, Docker Compose automatically sets up a new network and attaches all deployed services to that network. However, we will explicitly define a new bridge network named app-tier. In this example we assume that you want to connect to the Redis(TM) server from your own custom application image which is identified in the following snippet by the service name myapp.
+**Using Docker Compose**
+------------------------
 
-        version: '2'
-        
-        networks:
-              app-tier:
-                    driver: bridge
-        
-        
-        services:
-              redis:
-                    image: 'bitnami/redis:latest'
-                    environment:
-                        - ALLOW_EMPTY_PASSWORD=yes
-                    networks:
-                        - app-tier
-              myapp:
-                    image: 'YOUR_APPLICATION_IMAGE'
-                    networks:
-                        - app-tier
+<p>
+
+When not specified, Docker Compose automatically sets up a new network and attaches all deployed services to that network. However, we will explicitly define a new bridge network named app-tier. In this example we assume that you want to connect to the Redis(TM) server from your own custom application image which is identified in the following snippet by the service name myapp.
+</p>
+<pre style="font-family: 'Lucida Sans', monospace">
+
+version: '2'
+
+networks:
+  app-tier:
+    driver: bridge
+services:
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+    - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+    - app-tier
+  app:
+    image: YOUR_APPLICATION_IMAGE
+    networks:
+    - app-tier
+</pre>
+
+
 
 
 `IMPORTANT`:
 ---------
-Please update the `YOUR_APPLICATION_IMAGE_` placeholder in the above snippet with your application image
+<p>
+
+Please update the `YOUR_APPLICATION_IMAGE` placeholder in the above snippet with your application image.
+</p>
+<p>
+
 In your application container, use the hostname redis to connect to the Redis(TM) server
-Launch the containers using:
+Launch the containers using: `docker-compose up -d`
+</p>
 
-    docker-compose up -d
+```docker
 
-</div>
+
+
+```
 
 <hr>
+
 <h1>Disabling Redis(TM) commands</h1>
 
 <pre>
@@ -456,119 +527,186 @@ services:
 
 Passing extra command-line flags to the redis service command is possible by adding them as arguments to run.sh script:
 
-`docker run --name redis -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb`
+
+```dockerfile
+docker run \
+    --name redis \
+    -e ALLOW_EMPTY_PASSWORD=yes \
+    bitnami/redis:latest /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+```
+
 
 <hr>
-<pre>
+
+
+```dockerfile
 services:
     redis:
-        ...
         environment:
             - ALLOW_EMPTY_PASSWORD=yes
         command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
-        ...
-</pre>
+```
 
+
+<p>
 
 Passing the `REDIS_PASSWORD` environment variable when running the image for the first time will set the Redis(TM) server password to the value of `REDIS_PASSWORD` (or the content of the file specified in `REDIS_PASSWORD_FILE`).
+</p>
 
-    docker run --name redis -e REDIS_PASSWORD=password123 bitnami/redis:latest
+```dockerfile
 
-Alternatively, modify the docker-compose.yml file present in this repository:
+docker run --name redis -e REDIS_PASSWORD=password123 bitnami/redis:latest
+
+```
+
+<p>Alternatively, modify the docker-compose.yml file present in this repository:</p>
 
     services:
         redis:
         ...
             environment:
-                - REDIS_PASSWORD=password123
+                - REDIS_PASSWORD=redis
 
         ...
 
-`NOTE`: The at sign (@) is not supported for `REDIS_PASSWORD`.
+<p>
 
-Warning The Redis(TM) database is always configured with remote access enabled. It's suggested that the `REDIS_PASSWORD` env variable is always specified to set a password. In case you want to access the database without a password set the environment variable `ALLOW_EMPTY_PASSWORD`=`yes`. This is recommended only for development.
+[`NOTE`](https://tilburgsciencehub.com/building-blocks/store-and-document-your-data/document-data/readme-best-practices/)
+The at sign **`@`** is  supported for **REDIS_PASSWORD**.
+</p>
 
+<p>
 
+[`WARNING`]() The Redis(TM) database is always configured with remote access enabled. It's suggested that the **REDIS_PASSWORD** env variable is always specified to set a password. In case you want to access the database without a password set the environment variable **ALLOW_EMPTY_PASSWORD = yes**. This is recommended only for development.
+</p>
 
+<p>
 
-
-
-
-
-
-
-
-
-
-
+connecting via `redis-cli` utility
+</p>
 
 
+docker run -it --network some-network --rm redis redis-cli -h some-redis
+
+<section>
+
+<p>
+
+Files for database connection and migrations configuration are located in `/srv/doctrine` folder
+</p>
+
+<section>
+
+```dockerfile
+docker run -ti \
+    -v $PWD/src/Migrations:/migrations \
+    -e MIGRATIONS_PATH='/migrations' \
+    -e DATABASE_URL='mysql://user:user_password@db/app' \
+    -e MIGRATIONS_NAMESPACE='DoctrineMigrations' \
+    --network=project
+    
+docker-doctrine-migrations migrations:execute --up 'DoctrineMigrations\Version'
+```
+</section>
+
+<h4>Run build:</h4>
+
+<p style="color: rgba(142,45,226,0.8); font-family: 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 24px; margin: 0 0 24px; text-align: justify; text-justify: inter-word;">
+
+    docker build -f Dockerfile -t docker-doctrine-migrations --target final
+</p>
+<p>
 
 
+</p>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</section>
 
 <section style="font-family: 'Source Code Pro', monospace ; font-weight: 200; font-size: .85rem;">
-<div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="">
 <h1>THE END</h1>
 <h2>to be continued...</h2>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<hr>
+</div>
+
+
+<div style="background: rgba(217,181,0,0.17)
+; padding: .85em; margin: 0; list-style: none;">
 
 `APP ENV:`
 -----
 `APP_ENV`=dev<br>
 `APP_SECRET`=ff647a684b3c27a710daec988484f83e<br>
 `APP_DEBUG`=true<br>
-`APP_NAME`=GALERA
-<hr>
+`APP_NAME`=GALERA.
 
 `DB`
 ---------
-`DATABASE_ALLOW_EMPTY_ROOT_PASSWORD`="no"<br>
-`DATABASE_ROOT_PASSWORD`=root<br>
-`DATABASE_LOG_CONSOLE`="yes"<br>
-`DATABASE_DRIVER`=pdo_mysql<br>
-`DATABASE_HOST`="127.0.0.1"<br>
-`DATABASE_PORT`="3306"<br>
-`DATABASE_DBNAME`=app<br>
-`DATABASE_USER`=app<br>
-`DATABASE_PASSWORD`=app<br>
-`DB_CHARSET`='UTF8'<br>
-`DATABASE_VOLUME`=".dbdata"<br>
-`DATABASE_URL`="mysql://app:app@localhost:3306/app?serverVersion=mariadb-10.6.4"<br>
-`SERVER_VERSION`="mariadb-10.6.4"<br>
+`DATABASE_ALLOW_EMPTY_ROOT_PASSWORD`="no" \
+`DATABASE_ROOT_PASSWORD`=root \
+`DATABASE_LOG_CONSOLE`="yes" \
+`DATABASE_DRIVER`=pdo_mysql \
+`DATABASE_HOST`=127.0.0.1 \
+`DATABASE_PORT`=3306 \
+`DATABASE_DBNAME`=app \
+`DATABASE_USER`=app \
+`DATABASE_PASSWORD`=app \
+`DATABASE_CHARSET`='utf8' \
+`DATABASE_URL`="mysql://app:app@localhost:3306/app?serverVersion=mariadb-10.6.4" \
+`SERVER_VERSION`='mariadb-10.6.4' 
 
 
 `mysql/mariadb`
 ---------------
-`MYSQL_ROOT_PASSWORD`=${DB_ROOT_PASSWORD}<br>
-`MYSQL_PASSWORD`=${DB_PASSWORD}<br>
-`MYSQL_HOST`=${DB_HOST}<br>
-`MYSQL_DATABASE`=${DB_DBNAME}<br>
-`MYSQL_USER`=${DB_PASSWORD}<br>
-`MYSQL_PORT`=${DB_PORT}<br>
-`MYSQL_ALLOW_EMPTY_PASSWORD`=${DB_ALLOW_EMPTY_PASSWORD}<br>
-`MYSQL_LOG_CONSOLE`=${DB_LOG_CONSOLE}<br>
-`MYSQL_CHARSET`=${DB_CHARSET}<br>
+`MYSQL_ROOT_PASSWORD`=${DATABASE_ROOT_PASSWORD} \
+`MYSQL_PASSWORD`=${DATABASE_PASSWORD} \
+`MYSQL_HOST`=${DATABASE_HOST} \
+`MYSQL_DATABASE`=${DATABASE_DBNAME} \
+`MYSQL_USER`=${DATABASE_PASSWORD} \
+`MYSQL_PORT`=${DATABASE_PORT} \
+`MYSQL_ALLOW_EMPTY_PASSWORD`=${DATABASE_ALLOW_EMPTY_ROOT_PASSWORD} \
+`MYSQL_LOG_CONSOLE`=${DATABASE_LOG_CONSOLE} \
+`MYSQL_CHARSET`=${DATABASE_CHARSET} \
 
 `rabbitmq`
 ----------
@@ -588,4 +726,60 @@ Warning The Redis(TM) database is always configured with remote access enabled. 
 `LOW_PRIORITY_MESSENGER_TRANSPORT_DSN`=amqp://rabbitmq:rabbitmq@rabbitmq:5677/%2f/?connection_timeout=5<br>
 `MAILER_DSN`=sendmail://default<br>
 </div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section>
+Test network connectivity
+
+
+`TODO`
+-----
+<ul >
+    <li>composer require doctrine/coding-standard</li>
+    <li>squizlabs/php_codesniffer</li>
+    <li>composer require --dev debug</li>
+    <li></li>
+
+!!! _*docker network inspect bridge*_
+
+
+    apt-get install iputils-ping
+    docker logs --tail 20 db
+
+
+
+
+
+
+</ul>
 </section>

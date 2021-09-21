@@ -16,14 +16,16 @@ cli:
 
 prod:
 	docker-compose -f .docker/docker-compose.prod.yml up -d --build
+	docker exec -t php-fpm bash -c 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader'
+	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
 
 composer-deploy:
 	docker exec -t php-fpm bash -c \
-		"COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --prefer-dist --all-or-nothing"
+		"COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --version"
 
 migrate-database:
-	docker exec -t php-fpm bash -c \
-		"php bin/console doctrine:migrations:migrate --no-interaction --all-or-nothing"
+	#docker exec -t php-fpm bash -c "php bin/console doctrine:database:create"
+	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:migrate --no-interaction"
 	docker exec -t php-fpm bash -c "php bin/console about"
 
 dev-acc:
@@ -41,7 +43,7 @@ db:
 	docker exec -it db bash
 php:
 	docker exec -it php-fpm bash
-
+#######################################################################################################################
 
 
 
@@ -76,16 +78,12 @@ redis:
 clear-data:
 	docker exec -t php-fpm bash -c "rm -R /app/.docker/.dbdata"
 
-
-
-
-
 db-log:
 	docker logs db
 
 db-up:
 	docker exec -it db bash
-	docker run -p 127.0.0.1:3306:3306  --name app -e MARIADB_ROOT_PASSWORD=root -d db mariadb:10.6.4
+	docker run -p 127.0.0.1:3306:3306  --name app_db -e MARIADB_ROOT_PASSWORD=root -d db mariadb:10.6.4
 #	docker run -d -p 3306:3306 --blkio-weight=250 --memory=512M  -v ~/mdbdata/mdb10:/var/lib/mysql --name mdb10 mariadb:10.0
 
 db-dump:
@@ -102,13 +100,14 @@ drop-all:
 	docker rmi $(docker images -qa) && \
 	docker volume rm $(docker volume ls -q) && \
 	docker network rm $(docker network ls -q) && \
-	docker system prune -a -f
+	docker system prune --volume -a -f
 
-sh-run:
+execute-sh:
 	sh ./run.sh
 
 
 misc:
 	docker run \
-	--name some-mariadb -v .docker/.dbdata:/var/lib/mysql -e \
+	--name some-mariadb -v \
+	.docker/.dbdata:/var/lib/mysql -e \
 	MARIADB_ROOT_PASSWORD=root -d mariadb:10.6.4
