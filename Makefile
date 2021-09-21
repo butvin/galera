@@ -20,11 +20,12 @@ prod:
 	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
 
 composer-deploy:
-	docker exec -t php-fpm bash -c \
-		"COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --version"
+	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --version"
+	docker exec -t php-fpm bash -c "php bin/console cache:clear"
 
 migrate-database:
 	#docker exec -t php-fpm bash -c "php bin/console doctrine:database:create"
+	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:sync-metadata-storage"
 	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:migrate --no-interaction"
 	docker exec -t php-fpm bash -c "php bin/console about"
 
@@ -40,7 +41,9 @@ worker-re:
 
 # technic common commands:
 db:
-	docker exec -it db bash
+	docker run -it --network docker_app_network --rm mariadb:10.6.4 mysql -h db -u app -p app
+	#docker exec -it db bash
+
 db-log:
 	docker logs db
 php:
@@ -67,7 +70,7 @@ migrate:
 		  -e DATABASE_URL='mysql://user:user_password@db/app' \
 		  -e MIGRATIONS_NAMESPACE='DoctrineMigrations' \
 		  --network=project \
-		  pashak09/docker-doctrine-migrations migrations:execute --up 'DoctrineMigrations\Version20210602174439'
+		  docker-doctrine-migrations migrations:execute --up 'DoctrineMigrations\Version20210602174439'
 
 	docker build -f Dockerfile -t docker-doctrine-migrations --target final
 
@@ -82,8 +85,14 @@ clear-data:
 	docker exec -t php-fpm bash -c "rm -R /app/.docker/.dbdata"
 
 db-up:
-	docker exec -it db bash
-	docker run -p 127.0.0.1:3306:3306  --name app_db -e MARIADB_ROOT_PASSWORD=root -d db mariadb:10.6.4
+	docker run \
+		--name db \
+		-e MYSQL_ROOT_PASSWORD=root \
+		-d mariadb:10.6.4 \
+		--character-set-server=utf8mb4 \
+		--collation-server=utf8mb4_unicode_ci
+
+	#docker run -p 127.0.0.1:3306:3306  --name db -e MARIADB_ROOT_PASSWORD=root -d db mariadb:10.6.4
 #	docker run -d -p 3306:3306 --blkio-weight=250 --memory=512M  -v ~/mdbdata/mdb10:/var/lib/mysql --name mdb10 mariadb:10.0
 
 db-dump:

@@ -51,8 +51,7 @@ services:
         restart: always
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         healthcheck:
-            test: [ 'CMD', 'mysqladmin ping -h 127.0.0.1 -u root --password=root' ]
-#            test: mysqladmin ping -h 127.0.0.1 -u root --password=root
+            test: [ 'CMD', 'mysqladmin ping -h db -u root --password=root' ]
 #            test: [ 'CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh' ]
             interval: 15s
             timeout: 5s
@@ -72,8 +71,8 @@ services:
             - ~/.composer/docker-cache/:/root/.composer:cached
             - ../:/app
         environment:
-            DATABASE_TIMEZONE: UTC
-            PHP_REDIS_SESSION_HOST: redis
+            DATABASE_TIMEZONE: 'Europe/Kiev	'
+#            PHP_REDIS_SESSION_HOST: redis
         logging:
             driver: 'json-file'
             options:
@@ -91,7 +90,7 @@ services:
 
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:latest # rabbitmq:3-management
+        image: rabbitmq:3-management
         ports:
             - "15673:15674"
             - "5677:5678"
@@ -106,7 +105,7 @@ services:
             options:
                 max-size: '1024k'
                 max-file: '2'
-#        restart: unless-stopped
+        restart: always
 
 
     redis:

@@ -6,13 +6,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG env
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
-     wget curl apt-utils ca-certificates
+     zip unzip wget curl apt-utils ca-certificates autoconf
 
 RUN apt-get install -y --no-install-recommends \
-    zip \
     iputils-ping \
     net-tools \
-    unzip \
     p7zip-full \
     librabbitmq-dev \
     libimage-exiftool-perl \

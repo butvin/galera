@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ARG env
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
-     wget curl apt-utils ca-certificates
+     wget curl autoconf apt-utils ca-certificates
 
 RUN apt-get install -y --no-install-recommends \
     zip \

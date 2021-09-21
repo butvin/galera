@@ -7,30 +7,25 @@ doctrine:
         default_connection: default
 
         connections:
+            # "MultipleActiveResultSets", "application_name", "auto_commit", "charset", "connectstring", "dbname", "dbname_suffix", "default_dbnam
+            # e", "default_table_options", "driver", "driver_class", "host", "instancename", "keep_replica", "keep_slave", "logging", "mapping_types", "memory", "options", "override_url", "password", "path", "persistent", "platform_service",
+            # "pooled", "port", "profiling", "profiling_collect_backtrace", "profiling_collect_schema_errors", "protocol", "replicas", "schema_filter", "server", "server_version", "service", "servicename", "sessionMode", "shard_choser", "shar
+            # d_choser_service", "shard_manager_class", "shards", "slaves", "sslcert", "sslcrl", "sslkey", "sslmode", "sslrootcert", "unix_socket", "url", "use_savepoints", "user", "wrapper_class".
             default:
                 # pdo_mysql, pdo_sqlite, pdo_pgsql, pdo_oci, oci8, ibm_db2, pdo_sqlsrv, mysqli, drizzle_pdo_mysql, sqlanywhere, sqlsrv
-#                driver: pdo_mysql
+                driver: pdo_mysql
 #                server_version: 'mariadb-10.6.4'
 #                host: localhost
 #                port: 3306
-                dbname: app
-                charset: utf8mb4
+#                dbname: app
+                charset: 'utf8mb4'
 #                user: app
 #                password: app
+#                unix_socket: '/run/mysqld/mysqld.sock'
 #                url: '%env(resolve:DATABASE_URL)%'
 #                url: "mysql://app:app@172.18.0.3:3306/app?serverVersion=mariadb-10.6.4"
                 url: "mysql://app:app@db:3306/app?serverVersion=mariadb-10.6.4"
-
-
-#                  "MultipleActiveResultSets", "application_name", "auto_commit", "charset", "connectstring", "dbname", "dbname_suffix", "default_dbnam
-#                 e", "default_table_options", "driver", "driver_class", "host", "instancename", "keep_replica", "keep_slave", "logging", "mapping_types", "memory", "options", "override_url", "password", "path", "persistent", "platform_service",
-#                      "pooled", "port", "profiling", "profiling_collect_backtrace", "profiling_collect_schema_errors", "protocol", "replicas", "schema_filter", "server", "server_version", "service", "servicename", "sessionMode", "shard_choser", "shar
-#                 d_choser_service", "shard_manager_class", "shards", "slaves", "sslcert", "sslcrl", "sslkey", "sslmode", "sslrootcert", "unix_socket", "url", "use_savepoints", "user", "wrapper_class".
-
-
-#
                  # pdo_mysql, pdo_sqlite, pdo_pgsql, pdo_oci, oci8, ibm_db2, pdo_sqlsrv, mysqli, drizzle_pdo_mysql, sqlanywhere, sqlsrv
-#                server_version: 'mariadb-10.6.4'
 #                server_version: 'mariadb-10.6.4'
 #                host: localhost
 #                port: 3306
@@ -38,9 +33,9 @@ doctrine:
 #                charset: utf8mb4
 #                user: app
 #                password: app
-#               default_table_options:
-#                   charset: utf8mb4
-#                   collate: utf8mb4_unicode_ci
+                default_table_options:
+                    charset: 'utf8mb4'
+                    collate: 'utf8mb4_unicode_ci'
 
 #                path: ~
 #                memory: ~
@@ -49,7 +44,7 @@ doctrine:
 #                    tsvector: string
 #                    name: [ ]
 #                url: '%env(resolve:DATABASE_URL)%'
-#                unix_socket: ~
+#                unix_socket: '/run/mysqld/mysqld.sock'
 #                persistent: ~
 #                protocol: ~
 #                service: ~
