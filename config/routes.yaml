@@ -2,6 +2,11 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
+root:
+    path: /
+    controller: App\Controller\IndexController::index
+
+
 app:
     path: /app
     controller: App\Controller\AppController::index

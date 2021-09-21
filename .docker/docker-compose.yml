@@ -1,12 +1,10 @@
 version: '3.3'
-
 services:
-
 
     nginx:
         container_name: nginx
         ports:
-            - "8080:80"
+            - "80:8080"
         build:
             context: .
             dockerfile: ./nginx/Dockerfile
@@ -38,22 +36,18 @@ services:
             HOSTNAME: localhost
             MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: app
-#            - DATABASE_URL="mysql://root:root@localhost:3306/app?serverVersion=mariadb-10.6.4"
             ALLOW_EMPTY_PASSWORD: 'no'
-#            - MYSQL_PASSWORD=app
-#            - MYSQL_USER=app
-#            - MYSQL_DATABASE=app
-#            DATABASE_URL: mysql://root:root@localhost:3306/app?serverVersion=mariadb-10.6.4
-#            MYSQL_ROOT_PASSWORD: root
+            DATABASE_URL: "mysql://app:app@db:3306/app?serverVersion=mariadb-10.6.4"
             MYSQL_PASSWORD: app
             MYSQL_USER: app
-        restart: always
+            MYSQL_DRIVER: pdo_mysql
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         healthcheck:
             test: [ 'CMD', 'mysqladmin ping -h db -u root --password=root' ]
             interval: 15s
             timeout: 5s
             retries: 6
+        restart: always
 
 
 
@@ -79,7 +73,7 @@ services:
             options:
                 max-size: '1024k'
                 max-file: '2'
-        restart: on-failure
+        restart: always
         depends_on:
             - db
 
@@ -118,13 +112,12 @@ services:
             REDIS_PASSWORD: app
         networks:
             - app_network
-        volumes:
-            - .dbdata:/bitnami/redis/data
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
             interval: 2m15s
             timeout: 7s
             retries: 4
+        restart: always
 
 
 
@@ -135,5 +128,8 @@ volumes:
 
 
 networks:
+    private_app_lan:
+        driver: bridge
+
     app_network:
         driver: bridge

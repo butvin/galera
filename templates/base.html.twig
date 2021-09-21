@@ -10,57 +10,71 @@
         {% endblock %}
 
         <style>
+            * {
+                
+            }
             html {
+                
             }
+            @import url(https://fonts.googleapis.com/css?family=Arvo:700);
+            @import url(https://fonts.googleapis.com/css?family=Seaweed+Script);
             body {
-            @import url('https://fonts.googleapis.com/css?family=Sarpanch:900');
-                display: grid;
-                grid-template-areas: ". . ." ". text ." ". . .";
-                grid-template-rows: 1fr auto 1fr;
-                grid-template-columns: 1fr auto 1fr;
-                height: 100vh;
-                width: 100vw;
-                margin: 0;
-                overflow: hidden;
-                /*background-color: #c4c4c4;*/
-                background-image: radial-gradient(circle, #333333, #222222);
+                background-color: #222;
             }
-            h1 {
-                color: #111;
-                font-family: 'Helvetica Neue', sans-serif;
-                font-size: 120px;
+            .plate {
+                width: 410px;
+                margin: 10% auto;
+            }
+            .shadow {
+                color: #fff;
+                font-family: Arvo, serif;
                 font-weight: bold;
-                letter-spacing: -1px;
-                line-height: 1;
+                text-shadow:
+                        -3px -3px 0 #222,
+                        3px -3px 0 #222,
+                        -3px 3px 0 #222,
+                        3px 3px 0 #222,
+                        4px 4px 0 #fff,
+                        5px 5px 0 #fff,
+                        6px 6px 0 #fff,
+                        7px 7px 0 #fff;
+                line-height: 0.8em;
+                letter-spacing: 0.1em;
+                transform: scaleY(0.7);
+                -webkit-transform: scaleY(0.7);
+                -moz-transform: scaleY(0.7);
+                margin:0;
                 text-align: center;
             }
-            h1 {
-                transform: skew(-12deg) rotate(-12deg);
-                grid-area: text;
-                font-family: 'Sarpanch', sans-serif;
-                font-size: 20vmin;
-                margin: 0;
-                padding: 30px;
-                color: #1d9099;
-                text-shadow: 1vmin 1vmin 0 #E79C10, -1vmin -1vmin 0 #D53A33;
-            }
-            h2 {
-                color: #111;
-                font-family: 'Open Sans', sans-serif;
-                font-size: 30px;
-                font-weight: 300;
-                line-height: 32px;
-                margin: 0 0 72px;
+            .script {
+                font-family: "Seaweed Script", serif;
+                color: #fff;
                 text-align: center;
+                font-size: 40px;
+                position: relative;
+                margin:0;
             }
-            p {
-                color: #685206;
-                font-family: 'Helvetica Neue', sans-serif;
-                font-size: 14px;
-                line-height: 24px;
-                margin: 0 0 24px;
-                text-align: justify;
-                text-justify: inter-word;
+            .script span {
+                background-color: #222;
+                padding: 0 0.3em;
+            }
+            .script:before {
+                content:"";
+                display: block;
+                position: absolute;
+                z-index:-1;
+                top: 50%;
+                width: 100%;
+                border-bottom: 3px solid #fff;
+            }
+            .text1 {
+                font-size: 60px;
+            }
+            .text2 {
+                font-size: 169px;
+            }
+            .text3 {
+                font-size: 100px;
             }
             .text-title-shadow {
                 position: absolute;
@@ -94,8 +108,15 @@
         {% endblock %}
     </head>
     <body>
-        <main>
+        <main id="app">
             <h1>Hi every one!</h1>
+            <div class="plate">
+                <p class="script"><span>butvin sergey</span></p>
+                <p class="shadow text1">CHUNKY</p>
+                <p class="shadow text2">BIG</p>
+                <p class="shadow text3">STUFF</p>
+                <p class="script"><span>with CSS</span></p>
+            </div>
             <span class="text-title-shadow">Pizda</span>
         </main>
         {% block body %}{% endblock %}

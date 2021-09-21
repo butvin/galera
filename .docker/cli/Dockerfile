@@ -1,4 +1,5 @@
 ARG PHP_VERSION='8.0.10'
+#ARG XDEBUG_VERSION='3.0.4'
 FROM php:${PHP_VERSION}-cli
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -41,7 +42,7 @@ RUN rm -rf /tmp/pear
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin && \
-    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc && \
+    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /$HOME/.bashrc && \
     composer
 
 # settings

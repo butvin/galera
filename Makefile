@@ -96,17 +96,17 @@ db-up:
 #	docker run -d -p 3306:3306 --blkio-weight=250 --memory=512M  -v ~/mdbdata/mdb10:/var/lib/mysql --name mdb10 mariadb:10.0
 
 db-dump:
-	docker exec -it db bash -c "exec mysqldump --all-databases -u root -p root" > /app/dumps/all-databases.sql
+	docker exec -it db bash -c "exec mysqldump --all-databases -u app -p app" > /app/dumps/all-databases.sql
 
-cache-clear:
+clear:
 	docker volume rm docker_dbdata
 	sudo rm -R .docker/.dbdata
-	docker run --rm -v  /app/.docker/.dbdata chmod 777 -R
-	sudo chmod 777 -R .docker/.dbdata
+#	docker run --rm -v  /app/.docker/.dbdata chmod 777 -R
+#	sudo chmod 777 -R .docker/.dbdata
 
-drop-all:
+clear-all:
 	docker stop $(docker ps -q -a) && docker rm $(docker ps -q -a) && \
-	docker rmi $(docker images -qa) && \
+	docker rmi -f $(docker images -qa) && \
 	docker volume rm $(docker volume ls -q) && \
 	docker network rm $(docker network ls -q) && \
 	docker system prune --volume -a -f

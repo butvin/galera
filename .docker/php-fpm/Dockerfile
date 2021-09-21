@@ -1,33 +1,43 @@
 ARG PHP_VERSION='8.0.10'
 FROM php:${PHP_VERSION}-fpm
 
+ARG XDEBUG_VERSION='3.0.4'
+ARG AMQP_VERSION='1.11.0beta'
+
 ENV DEBIAN_FRONTEND noninteractive
 
 ARG env
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
-     wget curl autoconf apt-utils ca-certificates
+     wget curl zip unzip libzip-dev p7zip-full ca-certificates
 
 RUN apt-get install -y --no-install-recommends \
-    zip \
+    autoconf \
     iputils-ping \
     net-tools \
-    unzip \
-    p7zip-full \
+    apt-utils \
     libimage-exiftool-perl \
     sendmail \
     librabbitmq-dev \
-    libicu-dev \
-    libzip-dev
-#  libicu-dev \
-RUN pecl install amqp-1.11.0beta
-RUN docker-php-ext-enable amqp
+    libicu-dev
 
 RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
+
+
+RUN pecl install amqp-${AMQP_VERSION}
+RUN docker-php-ext-enable amqp
+
 
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
 
+
+# xdebug
+RUN pecl install -o -f xdebug-${XDEBUG_VERSION}
+RUN docker-php-ext-enable xdebug
+RUN touch /var/log/xdebug.log
+
+# redis
 RUN pecl install -o -f redis
 RUN docker-php-ext-enable redis
 RUN rm -rf /tmp/pear
