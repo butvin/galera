@@ -1,6 +1,6 @@
 {
-    "name": "butvin/gallera",
-    "description": "the Gallera & Onlooking Group ltd.",
+    "name": "butvin/galera",
+    "description": "the Galera & Group ltd.",
     "type": "package",
     "license": "MIT",
     "minimum-stability": "dev",
@@ -12,7 +12,7 @@
     ],
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0.4",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-iconv": "*",

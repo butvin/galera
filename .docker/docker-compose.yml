@@ -47,15 +47,16 @@ services:
 #            MYSQL_ROOT_PASSWORD: root
             MYSQL_PASSWORD: app
             MYSQL_USER: app
-#            MYSQL_DATABASE: app
         restart: always
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         healthcheck:
             test: [ 'CMD', 'mysqladmin ping -h db -u root --password=root' ]
-#            test: [ 'CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh' ]
             interval: 15s
             timeout: 5s
             retries: 6
+
+
+
 
 
     php-fpm:
@@ -71,7 +72,7 @@ services:
             - ~/.composer/docker-cache/:/root/.composer:cached
             - ../:/app
         environment:
-            DATABASE_TIMEZONE: 'Europe/Kiev	'
+            DATABASE_TIMEZONE: 'UTC'
 #            PHP_REDIS_SESSION_HOST: redis
         logging:
             driver: 'json-file'
@@ -81,10 +82,9 @@ services:
         restart: on-failure
         depends_on:
             - db
-#        link:
-#            - db
-#        env_file:
-#            - ../.env
+
+
+
 
 
 
@@ -106,6 +106,9 @@ services:
                 max-size: '1024k'
                 max-file: '2'
         restart: always
+
+
+
 
 
     redis:

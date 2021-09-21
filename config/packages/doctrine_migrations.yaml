@@ -10,9 +10,9 @@ doctrine_migrations:
 #    migrations: ~
 #
 #    # Connection to use for the migrations
-    connection: default
+#    connection: default
 ##    # Entity manager to use for migrations. This overrides the "connection" setting.
-#    em: ~
+    em: default
     storage:
         # Default (SQL table) metadata storage configuration
         table_storage:
@@ -29,6 +29,7 @@ doctrine_migrations:
 #    # Adds an extra check in the generated migrations to ensure that is executed on the same database type.
     check_database_platform: true
 #    services:
+#        Doctrine\Migrations\Provider\SchemaProvider: Doctrine\DBAL\Schema
 #        Doctrine\Migrations\Provider\SchemaProvider: DbalSchema\DbalSchemaProvider
 
 #        # Custom migration sorting service id
