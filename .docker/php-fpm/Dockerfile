@@ -1,41 +1,44 @@
 ARG PHP_VERSION='8.0.10'
 FROM php:${PHP_VERSION}-fpm
 
-ARG XDEBUG_VERSION='3.0.4'
-ARG AMQP_VERSION='1.11.0beta'
-
 ENV DEBIAN_FRONTEND noninteractive
+
+ENV XDEBUG_VERSION='3.0.4'
+ENV AMQP_VERSION='1.11.0beta'
 
 ARG env
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
-     wget curl zip unzip libzip-dev p7zip-full ca-certificates
-
-RUN apt-get install -y --no-install-recommends \
-    autoconf \
-    iputils-ping \
-    net-tools \
-    apt-utils \
-    libimage-exiftool-perl \
-    sendmail \
-    librabbitmq-dev \
-    libicu-dev
-
-RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
-
-
-RUN pecl install amqp-${AMQP_VERSION}
-RUN docker-php-ext-enable amqp
-
+RUN set -eux; \
+    apt-get update && apt-get upgrade -y; \
+    apt-get install -y --no-install-recommends --no-install-suggests -y \
+        wget \
+        curl \
+        zip \
+        unzip \
+        libzip-dev \
+        p7zip-full \
+        ca-certificates \
+        autoconf \
+        iputils-ping \
+        net-tools \
+        apt-utils \
+        libimage-exiftool-perl \
+        sendmail \
+        librabbitmq-dev \
+        libicu-dev \
+     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure intl
-RUN docker-php-ext-install intl
+RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache intl
 
+# rabbitmq
+RUN pecl install amqp-${AMQP_VERSION}
+RUN docker-php-ext-enable amqp
 
 # xdebug
 RUN pecl install -o -f xdebug-${XDEBUG_VERSION}
 RUN docker-php-ext-enable xdebug
-RUN touch /var/log/xdebug.log
+RUN touch /var/log/xdebug-fpm.log
 
 # redis
 RUN pecl install -o -f redis
@@ -46,24 +49,36 @@ RUN rm -rf /tmp/pear
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin && \
-    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /$USER/.bashrc && \
-    composer
-#    composer diagnose ;
+    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc && \
+    composer && \
+    composer diagnose
+
+# todo:
+# ensure www-data user exists
+#RUN set -eux; \
+#	adduser -u 82 -D -S -G www-data www-data
 
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 RUN sed -i "/#!\/bin\/sh/aservice sendmail restart" /usr/local/bin/docker-php-entrypoint
 RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
 
-COPY www.conf /usr/local/etc/php-fpm.d
 
+COPY www.conf /usr/local/etc/php-fpm.d
 #todo: change env
 COPY dev/php.ini "$PHP_INI_DIR"/conf.d
 COPY dev/opcache.ini "$PHP_INI_DIR"/conf.d
 COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d
 
+# remove & clean temporary files
+RUN docker-php-source delete
+
+RUN set -eux; \
+    apt-get autoremove --purge -y \
+    && apt-get autoclean -y \
+    && apt-get clean -y \
+    && apt-get update
+
 WORKDIR "/app"
-
-
 #########################################################################
 #debconf: delaying package configuration, since apt-utils is not installed
 #make: Circular jit/zend_jit.lo <- jit/zend_jit.lo dependency dropped.
