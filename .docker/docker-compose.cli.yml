@@ -1,6 +1,7 @@
 version: "3.3"
 
 services:
+
     async_worker:
         build: cli
         networks:
@@ -12,6 +13,13 @@ services:
           - ..:/app
           - /var/log/app:/app/var/log
         command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vvv
+
+
+volumes:
+    dbdata:
+        driver: local
+        external: false
+
 
 networks:
     app_network:

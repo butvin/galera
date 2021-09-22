@@ -62,9 +62,8 @@ RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/s
 RUN sed -i "/#!\/bin\/sh/aservice sendmail restart" /usr/local/bin/docker-php-entrypoint
 RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
 
-
-COPY www.conf /usr/local/etc/php-fpm.d
 #todo: change env
+COPY www.conf /usr/local/etc/php-fpm.d
 COPY dev/php.ini "$PHP_INI_DIR"/conf.d
 COPY dev/opcache.ini "$PHP_INI_DIR"/conf.d
 COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d
@@ -73,13 +72,16 @@ COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d
 RUN docker-php-source delete
 
 RUN set -eux; \
-    apt-get autoremove --purge -y \
-    && apt-get autoclean -y \
-    && apt-get clean -y \
-    && apt-get update
+    apt-get autoremove --purge -y; \
+    apt-get autoclean -y; \
+    apt-get clean -y; \
+    apt-get update
+
 
 WORKDIR "/app"
 #########################################################################
+
+
 #debconf: delaying package configuration, since apt-utils is not installed
 #make: Circular jit/zend_jit.lo <- jit/zend_jit.lo dependency dropped.
 
@@ -99,11 +101,8 @@ WORKDIR "/app"
 
 
 
-
 # docker run -p 127.0.0.1:3306:3306  --name some-mariadb -e MARIADB_ROOT_PASSWORD=my-secret-pw -d mariadb:tag
-#docker run -p 127.0.0.1:3306:3306  --name db -e MARIADB_ROOT_PASSWORD=root -d mariadb:10.6.4
-
-
+# docker run -p 127.0.0.1:3306:3306  --name db -e MARIADB_ROOT_PASSWORD=root -d mariadb:10.6.4
 
 
 

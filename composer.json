@@ -10,6 +10,10 @@
             "email": "butvin.sergey@gmail.com"
         }
     ],
+    "source": {
+        "type": "git",
+        "url": "https://github.com/butvin/io-sys.git"
+    },
     "prefer-stable": true,
     "require": {
         "php": ">=8.0.4",

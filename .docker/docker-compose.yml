@@ -12,9 +12,10 @@ services:
                 env: dev
         networks:
             - app_network
-        working_dir: /app
+        working_dir: "/app"
         volumes:
             - /var/log/nginx:/var/log/nginx/
+            - dbdata
 #        depends_on:
 #            - php-fpm
 
@@ -22,34 +23,34 @@ services:
 
     db:
         container_name: db
+        image: mariadb:10.6.4
         ports:
             - "3306:3306"
-        image: mariadb:10.6.4
 #        image: bitnami/mariadb:latest
         working_dir: /app
         networks:
              - app_network
-#                ipv4_address: 172.17.0.4
+#                ipv4_address: 172.17.0.7
         volumes:
             - .dbdata:/var/lib/mysql
         environment:
-            HOSTNAME: localhost
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: app
-            ALLOW_EMPTY_PASSWORD: 'no'
             DATABASE_URL: "mysql://app:app@db:3306/app?serverVersion=mariadb-10.6.4"
+            MYSQL_ROOT_PASSWORD: root
+            ALLOW_EMPTY_PASSWORD: 'no'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+            HOSTNAME: localhost
+            MYSQL_DATABASE: app
             MYSQL_PASSWORD: app
             MYSQL_USER: app
+            MYSQL_PORT: 3306
             MYSQL_DRIVER: pdo_mysql
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         healthcheck:
-            test: [ 'CMD', 'mysqladmin ping -h db -u root --password=root' ]
+            test: [ "CMD", "mysqladmin ping -h db -u root --password=root" ]
             interval: 15s
             timeout: 5s
             retries: 6
         restart: always
-
-
 
 
 
@@ -60,13 +61,13 @@ services:
         build: php-fpm
         networks:
             - app_network
-        working_dir: /app
+        working_dir: '/app'
         volumes:
             - .dbdata:/var/lib/mysql
             - ~/.composer/docker-cache/:/root/.composer:cached
             - ../:/app
         environment:
-            DATABASE_TIMEZONE: 'UTC'
+            DATABASE_TIMEZONE: UTC
 #            PHP_REDIS_SESSION_HOST: redis
         logging:
             driver: 'json-file'
@@ -76,6 +77,7 @@ services:
         restart: always
         depends_on:
             - db
+            - nginx
 
 
 
@@ -84,7 +86,7 @@ services:
 
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3-management
+        image: rabbitmq:3.9.5-management-alpine
         ports:
             - "15673:15674"
             - "5677:5678"
