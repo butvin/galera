@@ -1,20 +1,13 @@
 {
     "name": "butvin/galera",
-    "description": "the Galera & Group ltd.",
-    "type": "package",
+    "description": "the GALERA project",
+    "keywords": [ "symfony", "docker", "php", "galera" ],
+    "homepage": "",
+    "version": "1.0.0",
+    "version_normalized": "1.0.0.0",
+    "type": "project",
     "license": "MIT",
     "minimum-stability": "dev",
-    "authors": [
-        {
-            "name": "butvin",
-            "email": "butvin.sergey@gmail.com"
-        }
-    ],
-    "source": {
-        "type": "git",
-        "url": "https://github.com/butvin/io-sys.git"
-    },
-    "prefer-stable": true,
     "require": {
         "php": ">=8.0.4",
         "ext-ctype": "*",
@@ -92,6 +85,20 @@
         "symfony/stopwatch": "5.3.*",
         "symfony/var-dumper": "5.3.*",
         "symfony/web-profiler-bundle": "5.3.*"
+    },
+    "authors": [
+        {
+            "name": "butvin",
+            "email": "butvin.sergey@gmail.com"
+        }
+    ],
+    "source": {
+        "type": "git",
+        "url": "https://github.com/butvin/io-sys.git"
+    },
+    "prefer-stable": true,
+    "support": {
+        "issues": "https://github.com/butvin/io-sys/issues"
     },
     "config": {
         "optimize-autoloader": true,
