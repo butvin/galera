@@ -1,84 +1,57 @@
-<style>
-    .title-shadow {
-        position: absolute;
-        top: 50%; 
-        right: 50%;
-        transform: translate(50%,-50%);
-        text-transform: uppercase;
-        font-family: Lucida" Grande, sans-serif;;
-        font-size: 12em;
-        font-weight: 700;
-        color: #f5f5f5;
-        text-shadow: 1px 1px 1px #919191,
-            1px 2px 1px #919191,
-            1px 3px 1px #919191,
-            1px 4px 1px #919191,
-            1px 5px 1px #919191,
-            1px 6px 1px #919191,
-            1px 7px 1px #919191,
-            1px 8px 1px #919191,
-            1px 9px 1px #919191,
-            1px 10px 1px #919191,
-        1px 18px 6px rgba(16,16,16,0.4),
-        1px 22px 10px rgba(16,16,16,0.2),
-        1px 25px 35px rgba(16,16,16,0.2),
-        1px 30px 60px rgba(16,16,16,0.4);
-    }
-</style>
-
 <main style="font-family: 'Lucida Console', monospace;">
 <h1 style="color: #E0E3DA; font-size: 7rem; font-weight: normal; letter-spacing: 12px; line-height: 1; text-align: left; height: auto;" class="title-shadow">
-GALERA.
+h1
 </h1>
-
 <h2 style="color: #111; font-family: 'Open Sans', sans-serif; font-size: 30px; font-weight: 900; line-height: 32px; margin: 0 0 72px; text-align: center">
-
+h2
 </h2>
+    
+## Docker instructions:
 
+### _HOT COMMANDS_
 
-<hr style="background: #E0E3DA; height: 2px;">
+<span style="color: tomato">
 
-`HOT ACTIONS`
-----
+`docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)`
+</span>
+<br>
+stopping & remove created containers
+***
+<span style="color: tomato">
+
+`docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"`
+</b>
+
+create account in database container (login/email/password: dev/developer@email.com/dev)
+***
 
 <b style="color: tomato">
-docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"
-</b> - <span>create account in db container.<br><small>login: dev<br>email: developer@email.com<br>password:'dev'<br></small></span>
+docker rmi $(docker images -qa)
+</b>
+
+remove all downloaded docker images
+<b style="color: tomato">
+    docker volume rm $(docker volume ls -q)</b> - remove all volumes
 <hr>
-<b style="color: tomato">docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)</b> - <span>stopping & remove all created containers</span><br>
+<b style="color: tomato">docker network rm $(docker network ls -q)</b> - remove all networks
 <hr>
-<b style="color: tomato">docker rmi $(docker images -qa)</b> - remove all downloaded docker images<br>
-<b style="color: tomato">docker volume rm $(docker volume ls -q)</b> - remove all volumes<br>
+<b style="color: tomato">docker system prune -a -f</b> - clear system from temp-files
 <hr>
-<b style="color: tomato">docker network rm $(docker network ls -q)</b> - remove all networks<br>
+<b style="color: tomato">docker network ls -q</b> - display n<hr>etworks
 <hr>
-<b style="color: tomato">docker system prune -a -f</b> - clear system from temp-files<br>
-<hr>
-<b style="color: tomato">docker network ls -q</b> - display n<hr>etworks<br>
-<hr>
-<b style="color: tomato">docker volume ls -q</b> - display active volumes<br>
+<b style="color: tomato">docker volume ls -q</b> - display active volumes
 
 
-`VOLUMES ACTIONS`
---------
-<hr>
-<ul style="list-style: none;">
-    <li>
-        <b style="color: tomato">docker volume create</b> - Create a volume
-    </li>
-    <li>
-        <b style="color: tomato">docker volume inspect</b> - Display detailed information on one or more volumes
-    </li>
-    <li>
-        <b style="color: tomato">docker volume prune</b> - Remove all unused local volumes
-    </li>
-    <li>
-        <b style="color: tomato">docker volume ls</b> - List volumes
-    </li>
-    <li>
-        <b style="color: tomato">docker volume rm</b>	- Remove one or more volumes
-    </li>
-</ul>
+### _VOLUMES ACTIONS_
+
+
+<b style="color: tomato">docker volume create</b> - Create a volume
+
+<b style="color: tomato">docker volume inspect</b> - Display detailed information on one or more volumes
+
+<b style="color: tomato">docker volume prune</b> - Remove all unused local volumes
+
+<b style="color: tomato">docker volume rm</b>	- Remove one or more volumes
 
 <hr style="background-image: linear-gradient(to right, #ea350e, #ff9600); height: 1px;">
 
