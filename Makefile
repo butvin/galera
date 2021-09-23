@@ -14,11 +14,11 @@ dev:
 cli:
 	docker-compose -f .docker/docker-compose.cli.yml up -d --build
 
-prod:
-	docker-compose -f .docker/docker-compose.prod.yml up -d --build
-	docker exec -t php-fpm bash -c 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader'
-	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
-#
+#prod:
+#	docker-compose -f .docker/docker-compose.prod.yml up -d --build
+#	docker exec -t php-fpm bash -c 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader'
+#	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
+
 composer-install-dependencies:
 	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --version"
 	docker exec -t php-fpm bash -c "php bin/console cache:clear"
@@ -34,23 +34,14 @@ doctrine-database-migrate :
 ### COMMON COMMANDS: ##################################################################################################
 db:
 	docker run -it --network docker_app_network --rm mariadb:10.6.4 mysql -h db -P 3306 -u app -p app
-make-dev-account:
-	docker exec -t php-fpm bash -c "php bin/console fos:user:create 'dev' 'development@mail.org' dev --super-admin"
-worker-log:
-	docker-compose -f .docker/docker-compose.cli.yml logs -f worker
-worker-reload:
-	docker-compose -f .docker/docker-compose.cli.yml exec worker bin/console cache:clear
-	docker-compose -f .docker/docker-compose.cli.yml restart
-db-log:
-	docker logs db
 php:
 	docker exec -it php-fpm bash
 nginx:
 	docker exec -it nginx bash
-clear:
-	docker stop $(docker ps -q -a) && \
-	docker rm $(docker ps -q -a) && \
-	sudo rm -rf .docker/.dbdata/
+redis:
+	docker exec -it redis sh
+rabbitmq:
+	docker exec -it rabbitmq sh
 #######################################################################################################################
 
 
@@ -64,6 +55,25 @@ clear:
 
 
 
+
+
+
+
+
+
+
+make-dev-account:
+	docker exec -t php-fpm bash -c "php bin/console fos:user:create 'dev' 'development@mail.org' dev --super-admin"
+
+worker-log:
+	docker-compose -f .docker/docker-compose.cli.yml logs -f worker
+
+worker-reload:
+	docker-compose -f .docker/docker-compose.cli.yml exec worker bin/console cache:clear
+	docker-compose -f .docker/docker-compose.cli.yml restart
+db-log:
+	docker logs db
+
 migrate:
 	docker run -ti \
 		  -v $PWD/src/Migrations:/migrations \
@@ -75,6 +85,7 @@ migrate:
 
 	docker build -f Dockerfile -t docker-doctrine-migrations --target final
 
+
 redis:
 	docker run \
 		-e ALLOW_EMPTY_PASSWORD=yes \
@@ -82,7 +93,11 @@ redis:
 		bitnami/redis:latest
 
 #docker stop $(docker ps -q -a) && docker rm $(docker ps -q -a)
-
+clear:
+	docker stop $(docker ps -q -a) && \
+	docker rm $(docker ps -q -a) && \
+	sudo rm -rf .docker/.dbdata/ \
+	make
 
 db-up:
 	docker run \
@@ -96,14 +111,17 @@ db-up:
 #	docker run -d -p 3306:3306 --blkio-weight=250 --memory=512M  -v ~/mdbdata/mdb10:/var/lib/mysql --name mdb10 mariadb:10.0
 
 db-all-dump:
-	docker exec -it db bash -c "exec mysqldump --all-databases -u app -p app" > /app/dumps/all-databases.sql
+	docker exec -it db bash -c "exec mysqldump --all-databases -u app -p app" > /dump/databases/all_databases.sql
+
+database-dump:
+	docker exec -it db bash -c "exec mysqldump -u app -p app app" > /dump/databases/app.sql
 
 clear-all:
 	docker stop $(docker ps -q -a) && docker rm $(docker ps -q -a) && \
 	docker rmi -f $(docker images -qa) && \
 	docker volume rm $(docker volume ls -q) && \
 	docker network rm $(docker network ls -q) && \
-	docker system prune --volume -a -f; && \
+	docker system prune -a -f && \
 	docker run --rm -v  /app/.docker/.dbdata chmod 777 -R && \
 	sudo rm -R .docker/.dbdata
 
@@ -114,7 +132,7 @@ execute-sh:
 	sh ./run.sh
 
 
-misc:
+todo:
 	docker run \
 	--name some-mariadb -v \
 	.docker/.dbdata:/var/lib/mysql -e \

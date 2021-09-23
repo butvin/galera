@@ -6,12 +6,11 @@ ENV DEBIAN_FRONTEND noninteractive
 ARG env
 
 ENV XDEBUG_VERSION='3.0.4'
-
 ENV AMQP_VERSION='1.11.0beta'
 
 RUN set -eux; \
     apt-get update && apt-get upgrade -y; \
-    apt-get install -y --no-install-recommends \
+    apt-get install -y --no-install-recommends --no-install-suggests\
         zip \
         unzip \
         wget \
@@ -29,8 +28,12 @@ RUN set -eux; \
         libicu-dev \
         sendmail \
      && rm -rf /var/lib/apt/lists/*
+#sodium
+
 
 RUN docker-php-ext-configure intl
+
+
 RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache intl
 
 # rabbitmq/amqp
@@ -54,6 +57,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     && echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc \
     && composer \
     && composer diagnose
+
+RUN echo ">>> CONTINUE..."
 
 # settings
 RUN sed -i "/en_US.UTF-8/s/^# //g" /etc/locale.gen
@@ -83,5 +88,5 @@ RUN set -eux; \
     && apt-get update
 
 WORKDIR "/app"
-
+RUN echo ">>> END..."
 CMD cron -f

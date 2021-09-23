@@ -4,7 +4,10 @@ services:
     nginx:
         container_name: nginx
         ports:
-            - "80:8080"
+            - "80:80"
+            - "443:443"
+        extra_hosts:
+            - sun.butvin:127.0.0.1
         build:
             context: .
             dockerfile: ./nginx/Dockerfile
@@ -14,16 +17,18 @@ services:
             - app_network
         working_dir: "/app"
         volumes:
+            - /etc/nginx/ssl:/etc/nginx/ssl
             - /var/log/nginx:/var/log/nginx/
             - dbdata
-#        depends_on:
-#            - php-fpm
+        env_file:
+            - ../.env
+        restart: always
 
 
 
     db:
         container_name: db
-        image: mariadb:10.6.4
+        image: mariadb:latest
         ports:
             - "3306:3306"
 #        image: bitnami/mariadb:latest
@@ -88,8 +93,8 @@ services:
         container_name: rabbitmq
         image: rabbitmq:3.9.5-management-alpine
         ports:
-            - "15673:15674"
-            - "5677:5678"
+            - "15671:15672"
+            - "5671:5672"
         environment:
             RABBITMQ_DEFAULT_USER: 'app'
             RABBITMQ_DEFAULT_PASS: 'app'
@@ -109,7 +114,10 @@ services:
 
     redis:
         container_name: redis
-        image: bitnami/redis:latest
+        ports:
+            - "49155:6379"
+        image: redis:alpine
+        working_dir: /app
         environment:
             REDIS_PASSWORD: app
         networks:

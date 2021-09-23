@@ -2,14 +2,14 @@
     "name": "butvin/galera",
     "description": "the GALERA project",
     "keywords": [ "symfony", "docker", "php", "galera" ],
-    "homepage": "",
+    "homepage": "https://www.facebook.com/bad.trip.2u",
     "version": "1.0.0",
     "version_normalized": "1.0.0.0",
     "type": "project",
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "php": ">=8.0.4",
+        "php": ">=8.0",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-iconv": "*",
@@ -94,7 +94,8 @@
     ],
     "source": {
         "type": "git",
-        "url": "https://github.com/butvin/io-sys.git"
+        "url": "https://github.com/butvin/io-sys.git",
+        "reference": "###"
     },
     "prefer-stable": true,
     "support": {
