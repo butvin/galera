@@ -27,7 +27,8 @@ doctrine-database-migrate :
 #	docker exec -t php-fpm bash -c "php bin/console cache:clear"
 #	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:sync-metadata-storage"
 	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:migrate --no-interaction"
-	docker exec -t php-fpm bash -c "composer diagnose"
+	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer diagnose"
+	docker exec -t php-fpm bash -c "php bin/console cache:clear"
 
 ### COMMON COMMANDS: ##################################################################################################
 db:
@@ -35,7 +36,7 @@ db:
 php:
 	docker exec -it php-fpm bash
 nginx:
-	docker exec -it nginx bash
+	docker exec -it nginx sh
 redis:
 	docker exec -it redis sh
 rabbitmq:
