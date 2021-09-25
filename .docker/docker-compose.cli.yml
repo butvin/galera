@@ -5,22 +5,26 @@ services:
     async_worker:
         build: cli
         networks:
-            - app_network
+            private_network:
         working_dir: /app
         container_name: async_worker
         restart: always
         volumes:
           - ..:/app
           - /var/log/app:/app/var/log
-        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vvv
+#        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vvv
 
 
-volumes:
-    dbdata:
-        driver: local
-        external: false
-
-
+#volumes:
+#    dbdata:
+#        driver: local
+#        external: false
+#
+#
 networks:
-    app_network:
+    private_network:
         driver: bridge
+#        ipam:
+#            driver: default
+#            config:
+#                - subnet: 172.0.0.0/20

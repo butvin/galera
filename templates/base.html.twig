@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{ app_name }}{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
@@ -11,14 +11,12 @@
 
         <style>
             * {
-                
             }
             html {
-                
             }
-            @import url(https://fonts.googleapis.com/css?family=Arvo:700);
-            @import url(https://fonts.googleapis.com/css?family=Seaweed+Script);
             body {
+                @import url(https://fonts.googleapis.com/css?family=Arvo:700);
+                @import url(https://fonts.googleapis.com/css?family=Seaweed+Script);
                 background-color: #222;
             }
             .plate {
@@ -106,19 +104,11 @@
         {% block javascripts %}
             {#{{ encore_entry_script_tags('app') }}#}
         {% endblock %}
+
     </head>
     <body>
         <main id="app">
-            <h1>Hi every one!</h1>
-            <div class="plate">
-                <p class="script"><span>butvin sergey</span></p>
-                <p class="shadow text1">CHUNKY</p>
-                <p class="shadow text2">BIG</p>
-                <p class="shadow text3">STUFF</p>
-                <p class="script"><span>with CSS</span></p>
-            </div>
-            <span class="text-title-shadow">Pizda</span>
+            {% block body %}{% endblock %}
         </main>
-        {% block body %}{% endblock %}
     </body>
 </html>

@@ -5,21 +5,21 @@ services:
         container_name: nginx
         ports:
             - "80:80"
-            - "443:443"
-        extra_hosts:
-            - sun.butvin:127.0.0.1
+#            - "443:443"
+#        extra_hosts:
+#            - sun.butvin.localhost:192.168.47.12
         build:
             context: .
             dockerfile: ./nginx/Dockerfile
             args:
                 env: dev
         networks:
-            - app_network
-        working_dir: "/app"
+            private_network:
+        working_dir: /app
         volumes:
-            - /etc/nginx/ssl:/etc/nginx/ssl
             - /var/log/nginx:/var/log/nginx/
-            - dbdata
+            - .dbdata
+#            - /etc/nginx/ssl:/etc/nginx/ssl
         env_file:
             - ../.env
         restart: always
@@ -28,14 +28,14 @@ services:
 
     db:
         container_name: db
-        image: mariadb:latest
+        image: mariadb:10.6.4
         ports:
             - "3306:3306"
 #        image: bitnami/mariadb:latest
         working_dir: /app
         networks:
-             - app_network
-#                ipv4_address: 172.17.0.7
+             private_network:
+#                ipv4_address: 172.17.0.2
         volumes:
             - .dbdata:/var/lib/mysql
         environment:
@@ -65,10 +65,11 @@ services:
             - "9000:9001"
         build: php-fpm
         networks:
-            - app_network
-        working_dir: '/app'
+            private_network:
+#                ipv4_address: 172.17.0.3
+        working_dir: /app
         volumes:
-            - .dbdata:/var/lib/mysql
+            - ~/www/gallera/.docker/.dbdata:/var/lib/mysql
             - ~/.composer/docker-cache/:/root/.composer:cached
             - ../:/app
         environment:
@@ -77,7 +78,7 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-size: '1024k'
+                max-size: '10M'
                 max-file: '2'
         restart: always
         depends_on:
@@ -87,20 +88,19 @@ services:
 
 
 
-
-
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3.9.5-management-alpine
+        image: rabbitmq:3.9.5-management
         ports:
             - "15671:15672"
             - "5671:5672"
         environment:
-            RABBITMQ_DEFAULT_USER: 'app'
-            RABBITMQ_DEFAULT_PASS: 'app'
+#            RABBITMQ_DEFAULT_USER: app
+#            RABBITMQ_DEFAULT_PASS: app
             RABBITMQ_DEFAULT_VHOST: '/'
         networks:
-            - app_network
+            private_network:
+#                ipv4_address: 172.17.0.9
         logging:
             driver: 'json-file'
             options:
@@ -109,37 +109,43 @@ services:
         restart: always
 
 
-
-
-
     redis:
         container_name: redis
         ports:
             - "49155:6379"
-        image: redis:alpine
+        image: redis:6.2.5-alpine
         working_dir: /app
         environment:
             REDIS_PASSWORD: app
+            REDIS_VERSION: 6.2.5
         networks:
-            - app_network
+            private_network:
+#                ipv4_address: 172.17.0.11
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
-            interval: 2m15s
-            timeout: 7s
+            interval: 1m45s
+            timeout: 5s
             retries: 4
         restart: always
 
 
-
-volumes:
-    dbdata:
-        driver: local
-        external: false
+#volumes:
+#    dbdata:
+#        driver: local
+#        external: false
 
 
 networks:
-    private_app_lan:
+    public_network:
         driver: bridge
+        external: false
 
-    app_network:
+    private_network:
         driver: bridge
+#        internal: true
+#        ipam:
+#            driver: default
+#            config:
+#                - subnet: 127.17.0.0/24
+
+

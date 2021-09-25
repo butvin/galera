@@ -9,8 +9,7 @@ ENV AMQP_VERSION='1.11.0beta'
 ARG env
 
 RUN set -eux; \
-    apt-get update && apt-get upgrade -y; \
-    apt-get install -y --no-install-recommends --no-install-suggests -y \
+    apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends --no-install-suggests -y \
         wget \
         iproute2 \
         curl \
@@ -29,87 +28,75 @@ RUN set -eux; \
         sendmail \
         librabbitmq-dev \
         libicu-dev \
+        build-essential \
      && rm -rf /var/lib/apt/lists/*
-#        build-essential \
-#        libpng-dev \
-#       iproute2
-#        libjpeg62-turbo-dev \
-#        libfreetype6-dev \
-#        locales \
-#        jpegoptim optipng pngquant gifsicle \
+
+#    libpng-dev \
+#    iproute2
+#    libjpeg62-turbo-dev \
+#    libfreetype6-dev \
+#    locales \
+#    jpegoptim optipng pngquant gifsicle \
 
 RUN docker-php-ext-configure intl
 
-RUN docker-php-ext-install \
-     zip \
-     mysqli pdo pdo_mysql intl \
-     opcache
+RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache intl exif
 #RUN docker-php-ext-install  mbstring zip exif pcntl
 #RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 #RUN docker-php-ext-install gd
 #RUN docker-php-ext-install bcmath
 #RUN docker-php-ext-install mbstring
 #RUN docker-php-ext-install sodium
-#RUN docker-php-ext-install exif
 #RUN docker-php-ext-install pcntl
+
 # rabbitmq
-
-
-RUN set -eux; \
-    pecl install amqp-${AMQP_VERSION}
-#    geoip \
-
+RUN pecl install -o -f amqp-${AMQP_VERSION}
 RUN docker-php-ext-enable amqp
-#     \geoip
 
 
-RUN  set -eux; \
-    pecl install -o -f xdebug-${XDEBUG_VERSION}
-RUN docker-php-ext-enable xdebug && \
-    touch /var/log/xdebug-fpm.log
-
+#RUN pecl install xdebug-${XDEBUG_VERSION}
+#RUN docker-php-ext-enable xdebug \
+#    && touch /var/log/xdebug-fpm.log
 
 # redis
 RUN pecl install -o -f redis # --with-php-config=/usr/local/etc/php/
-RUN docker-php-ext-enable redis && \
-    rm -rf /tmp/pear
+RUN docker-php-ext-enable redis \
+    && rm -rf /tmp/pear
 
 #todo
 #RUN set -eux; \
 #    apt-get install node   -y
 
-
 # composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
-    --install-dir=/usr/local/bin && \
-    echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> /root/.bashrc && \
-    composer && \
-    composer diagnose
+    --install-dir=/usr/local/bin \
+    && echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> $HOME/.bashrc \
+    && composer  \
+    && composer diagnose
 
-# todo:
+
 # ensure www-data user exists
 #RUN set -eux; \
+# todo:
 #	adduser -u 82 -D -S -G www-data www-data
 
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 RUN sed -i "/#!\/bin\/sh/aservice sendmail restart" /usr/local/bin/docker-php-entrypoint
 RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
 
-#todo: change env
+
 COPY www.conf /usr/local/etc/php-fpm.d
+#todo:
 COPY dev/php.ini "$PHP_INI_DIR"/conf.d
 COPY dev/opcache.ini "$PHP_INI_DIR"/conf.d
 COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d
 
 # remove & clean temporary files
 RUN docker-php-source delete
-
-RUN set -eux; \
-    apt-get autoremove --purge -y; \
-    apt-get autoclean -y; \
-    apt-get clean -y; \
-    apt-get update
+RUN apt-get autoremove --purge -y && \
+    apt-get autoclean -y && \
+    apt-get clean -y
 
 
 WORKDIR "/app"

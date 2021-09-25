@@ -1,11 +1,11 @@
 build: \
-	docker-compose-main \
+	docker-compose \
 	dev \
 	cli \
 	composer-install-dependencies \
 	doctrine-database-migrate
 
-docker-compose-main:
+docker-compose:
 	docker-compose -f .docker/docker-compose.yml up -d --build
 
 dev:
@@ -20,16 +20,14 @@ cli:
 #	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
 
 composer-install-dependencies:
-	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --version"
-	docker exec -t php-fpm bash -c "php bin/console cache:clear"
+	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction"
 
 doctrine-database-migrate :
 	#docker exec -t php-fpm bash -c "php bin/console doctrine:database:create"
-	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:sync-metadata-storage"
+#	docker exec -t php-fpm bash -c "php bin/console cache:clear"
+#	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:sync-metadata-storage"
 	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:migrate --no-interaction"
 	docker exec -t php-fpm bash -c "composer diagnose"
-
-
 
 ### COMMON COMMANDS: ##################################################################################################
 db:
@@ -93,11 +91,12 @@ redis:
 		bitnami/redis:latest
 
 #docker stop $(docker ps -q -a) && docker rm $(docker ps -q -a)
-clear:
-	docker stop $(docker ps -q -a) && \
-	docker rm $(docker ps -q -a) && \
-	sudo rm -rf .docker/.dbdata/ \
-	make
+clear-soft:
+	docker stop $(docker ps -q -a); \
+	docker rm -v $(docker ps -q -a); \
+	sudo rm -rf .docker/.dbdata; \
+	make -d --trace
+
 
 db-up:
 	docker run \
@@ -116,17 +115,14 @@ db-all-dump:
 database-dump:
 	docker exec -it db bash -c "exec mysqldump -u app -p app app" > /dump/databases/app.sql
 
-clear-all:
-	docker stop $(docker ps -q -a) && docker rm $(docker ps -q -a) && \
-	docker rmi -f $(docker images -qa) && \
-	docker volume rm $(docker volume ls -q) && \
-	docker network rm $(docker network ls -q) && \
-	docker system prune -a -f && \
-	docker run --rm -v  /app/.docker/.dbdata chmod 777 -R && \
-	sudo rm -R .docker/.dbdata
+clear:
+	docker stop $(docker ps -qa) && docker rm -v $(docker ps -qa); \
+	docker system prune -a -f; \
+	sudo rm -R .docker/.dbdata; \
+	make -d --trace
 
 clear-hard:
-	bash ./.docker/docker-execute.sh  --debugger
+	bash ./.docker/clear-hard.sh
 
 execute-sh:
 	sh ./run.sh

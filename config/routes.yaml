@@ -8,5 +8,6 @@ root:
 
 
 app:
-    path: /app
+    path: /application
     controller: App\Controller\AppController::index
+    methods: [GET, HEAD, POST]

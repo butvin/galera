@@ -1,16 +1,13 @@
-#ARG VERSION_NGINX='1.21.3'
-#FROM nginx:${VERSION_NGINX}
-
-#ARG VERSION_NGINX='1.21.3'
-FROM docker.io/bitnami/nginx:1.21.3
-
-
+ARG VERSION_NGINX='1.21.3'
+FROM nginx:${VERSION_NGINX}-alpine
 ARG env
 
+ENV VERSION_NGINX='1.21.3'
+
+
+
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-
-#RUN rm /etc/nginx/conf.d/default.conf
-
+RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx/conf.d/${env}/ /etc/nginx/conf.d/
 
 CMD ["nginx", "-g", "daemon off;"]
