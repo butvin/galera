@@ -1,10 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
+{% block title %}{{ app_name }}{% endblock %}
 
 {% block body %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-</div>
+<section class="container-fluid">
+    <div class="plate">
+        <p class="script"><span>developers BOX</span></p>
+        <p class="shadow text1">Symfony 5.3</p>
+        <p class="shadow text3">Nginx 1.21.3</p>
+        <p class="shadow text2">PHP 8</p>
+        <p class="shadow text3">DOCKER</p>
+        <p class="script"><span>with xDebug & Opcache</span></p>
+    </div>
+    <hr>
+    <div>
+        <pre>
+            {{ (data) }}
+        </pre>
+    </div>
+</section>
 {% endblock %}

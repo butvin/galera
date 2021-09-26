@@ -1,29 +1,6 @@
 version: '3.3'
 services:
 
-    nginx:
-        container_name: nginx
-        ports:
-            - "80:80"
-#            - "443:443"
-#        extra_hosts:
-#            - sun.butvin.localhost:192.168.47.12
-        build:
-            context: .
-            dockerfile: ./nginx/Dockerfile
-            args:
-                env: dev
-        networks:
-            private_network:
-        working_dir: /app
-        volumes:
-            - /var/log/nginx:/var/log/nginx/
-            - .dbdata
-#            - /etc/nginx/ssl:/etc/nginx/ssl
-        env_file:
-            - ../.env
-        restart: always
-
 
 
     db:
@@ -31,60 +8,82 @@ services:
         image: mariadb:10.6.4
         ports:
             - "3306:3306"
-#        image: bitnami/mariadb:latest
         working_dir: /app
-        networks:
-             private_network:
-#                ipv4_address: 172.17.0.2
         volumes:
             - .dbdata:/var/lib/mysql
+        env_file:
+            - ../.env
         environment:
             DATABASE_URL: "mysql://app:app@db:3306/app?serverVersion=mariadb-10.6.4"
             MYSQL_ROOT_PASSWORD: root
             ALLOW_EMPTY_PASSWORD: 'no'
             MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
-            HOSTNAME: localhost
             MYSQL_DATABASE: app
             MYSQL_PASSWORD: app
             MYSQL_USER: app
             MYSQL_PORT: 3306
             MYSQL_DRIVER: pdo_mysql
-        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-        healthcheck:
-            test: [ "CMD", "mysqladmin ping -h db -u root --password=root" ]
-            interval: 15s
-            timeout: 5s
-            retries: 6
         restart: always
+    #        networks:
+    #             private_network:
+    #                ipv4_address: 172.17.0.2
+#        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        healthcheck:
+            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "--password=root" ]
+            interval: 12s
+            timeout: 5s
+            retries: 4
 
 
 
     php-fpm:
         container_name: php-fpm
         ports:
-            - "9000:9001"
+            - "9000:9000"
         build: php-fpm
-        networks:
-            private_network:
-#                ipv4_address: 172.17.0.3
         working_dir: /app
-        volumes:
-            - ~/www/gallera/.docker/.dbdata:/var/lib/mysql
-            - ~/.composer/docker-cache/:/root/.composer:cached
-            - ../:/app
         environment:
             DATABASE_TIMEZONE: UTC
-#            PHP_REDIS_SESSION_HOST: redis
+        volumes:
+            - ~/.composer/docker-cache/:/root/.composer:cached
+            - ../:/app
+        restart: always
+        depends_on:
+            - db
+    #            PHP_REDIS_SESSION_HOST: redis
+    #        networks:
+    #            private_network:
+    #                ipv4_address: 172.17.0.3
         logging:
             driver: 'json-file'
             options:
                 max-size: '10M'
                 max-file: '2'
-        restart: always
-        depends_on:
-            - db
-            - nginx
 
+    nginx:
+        container_name: nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        build:
+            context: .
+            dockerfile: ./nginx/Dockerfile
+            args:
+                env: dev
+#        networks:
+#            private_network:
+#                ipv4_address: 172.17.0.2
+#        extra_hosts:
+#            - sun.butvin.localhost:192.168.47.12
+#        env_file:
+#            - ../.env
+        working_dir: /app
+        volumes:
+            - /var/log/nginx:/var/log/nginx/
+            - /etc/nginx/ssl:/etc/nginx/ssl
+        depends_on:
+            - php-fpm
+        restart: always
 
 
 
@@ -92,14 +91,14 @@ services:
         container_name: rabbitmq
         image: rabbitmq:3.9.5-management
         ports:
-            - "15671:15672"
-            - "5671:5672"
+            - "15672:15672"
+            - "5672:5672"
         environment:
-#            RABBITMQ_DEFAULT_USER: app
-#            RABBITMQ_DEFAULT_PASS: app
-            RABBITMQ_DEFAULT_VHOST: '/'
-        networks:
-            private_network:
+            RABBITMQ_DEFAULT_USER: app
+            RABBITMQ_DEFAULT_PASS: app
+            RABBITMQ_DEFAULT_VHOST: /
+#        networks:
+#            private_network:
 #                ipv4_address: 172.17.0.9
         logging:
             driver: 'json-file'
@@ -118,30 +117,41 @@ services:
         environment:
             REDIS_PASSWORD: app
             REDIS_VERSION: 6.2.5
-        networks:
-            private_network:
+#        networks:
+#            private_network:
 #                ipv4_address: 172.17.0.11
         healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
+            test: [ "CMD", "redis-cli", "ping" ]
             interval: 1m45s
             timeout: 5s
             retries: 4
         restart: always
 
+    async_consumer:
+        build: cli
+        working_dir: /app
+#        container_name: async_consumer
+#        networks:
+#            private_network:
+        restart: always
+        volumes:
+            - ..:/app
+            - /var/log/app:/app/var/log
+        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vvv
 
-#volumes:
-#    dbdata:
+volumes:
+    dbdata:
 #        driver: local
 #        external: false
 
 
-networks:
-    public_network:
-        driver: bridge
-        external: false
-
-    private_network:
-        driver: bridge
+#networks:
+#    public_network:
+#        driver: bridge
+#        external: false
+#
+#    private_network:
+#        driver: bridge
 #        internal: true
 #        ipam:
 #            driver: default

@@ -3,7 +3,7 @@
     "description": "the GALERA project",
     "keywords": [ "symfony", "docker", "php", "galera" ],
     "homepage": "https://www.facebook.com/bad.trip.2u",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "version_normalized": "1.0.0.0",
     "type": "project",
     "license": "MIT",

@@ -9,7 +9,8 @@ ENV AMQP_VERSION='1.11.0beta'
 ARG env
 
 RUN set -eux; \
-    apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends --no-install-suggests -y \
+    apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends --no-install-suggests -y \
         wget \
         iproute2 \
         curl \
@@ -20,16 +21,19 @@ RUN set -eux; \
         p7zip-full \
         ca-certificates \
         autoconf \
-        iputils-ping \
-        net-tools \
-        apt-utils \
-        bridge-utils \
         libimage-exiftool-perl \
         sendmail \
         librabbitmq-dev \
         libicu-dev \
         build-essential \
-     && rm -rf /var/lib/apt/lists/*
+        fish\
+        iputils-ping \
+        net-tools \
+        apt-utils \
+        bridge-utils \
+    && pecl install amqp-$AMQP_VERSION \
+    && pecl install redis \
+    && rm -rf /var/lib/apt/lists/*
 
 #    libpng-dev \
 #    iproute2
@@ -50,8 +54,9 @@ RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache intl exif
 #RUN docker-php-ext-install pcntl
 
 # rabbitmq
-RUN pecl install -o -f amqp-${AMQP_VERSION}
-RUN docker-php-ext-enable amqp
+#RUN pecl install -o -f amqp-${AMQP_VERSION}
+RUN docker-php-ext-enable amqp redis \
+    && rm -rf /tmp/pear
 
 
 #RUN pecl install xdebug-${XDEBUG_VERSION}
@@ -59,9 +64,9 @@ RUN docker-php-ext-enable amqp
 #    && touch /var/log/xdebug-fpm.log
 
 # redis
-RUN pecl install -o -f redis # --with-php-config=/usr/local/etc/php/
-RUN docker-php-ext-enable redis \
-    && rm -rf /tmp/pear
+#RUN pecl install -o -f redis # --with-php-config=/usr/local/etc/php/
+#RUN docker-php-ext-enable redis \
+#    && rm -rf /tmp/pear
 
 #todo
 #RUN set -eux; \
@@ -72,7 +77,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin \
     && echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> $HOME/.bashrc \
-    && composer  \
+    && composer -V \
     && composer diagnose
 
 
@@ -90,7 +95,7 @@ COPY www.conf /usr/local/etc/php-fpm.d
 #todo:
 COPY dev/php.ini "$PHP_INI_DIR"/conf.d
 COPY dev/opcache.ini "$PHP_INI_DIR"/conf.d
-COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d
+#COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d
 
 # remove & clean temporary files
 RUN docker-php-source delete

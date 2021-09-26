@@ -2,17 +2,17 @@ version: "3.3"
 
 services:
 
-    async_worker:
+    async_consumer:
         build: cli
-        networks:
-            private_network:
+#        networks:
+#            private_network:
         working_dir: /app
-        container_name: async_worker
+#        container_name: async_worker
         restart: always
         volumes:
           - ..:/app
           - /var/log/app:/app/var/log
-#        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vvv
+        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=7 -vvv
 
 
 #volumes:
@@ -21,9 +21,9 @@ services:
 #        external: false
 #
 #
-networks:
-    private_network:
-        driver: bridge
+#networks:
+#    private_network:
+#        driver: bridge
 #        ipam:
 #            driver: default
 #            config:

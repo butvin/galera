@@ -1,7 +1,5 @@
 build: \
 	docker-compose \
-	dev \
-	cli \
 	composer-install-dependencies \
 	doctrine-database-migrate
 
@@ -14,33 +12,33 @@ dev:
 cli:
 	docker-compose -f .docker/docker-compose.cli.yml up -d --build
 
-#prod:
-#	docker-compose -f .docker/docker-compose.prod.yml up -d --build
-#	docker exec -t php-fpm bash -c 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader'
-#	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
+prod:
+	docker-compose -f .docker/docker-compose.prod.yml up -d --build
+	docker exec -t php-fpm bash -c 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader'
+	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
 
 composer-install-dependencies:
-	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction"
+	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install"
 
-doctrine-database-migrate :
-	#docker exec -t php-fpm bash -c "php bin/console doctrine:database:create"
-#	docker exec -t php-fpm bash -c "php bin/console cache:clear"
-#	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:sync-metadata-storage"
+doctrine-database-migrate:
 	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:migrate --no-interaction"
-	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer diagnose"
+	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:sync-metadata-storage"
 	docker exec -t php-fpm bash -c "php bin/console cache:clear"
-
 ### COMMON COMMANDS: ##################################################################################################
 db:
-	docker run -it --network docker_app_network --rm mariadb:10.6.4 mysql -h db -P 3306 -u app -p app
+	docker run -it --network docker_private_network --rm mariadb:10.6.4 mysql -h db -P 3306 -u app -p app
 php:
 	docker exec -it php-fpm bash
 nginx:
-	docker exec -it nginx sh
+	docker exec -it nginx bash
 redis:
 	docker exec -it redis sh
 rabbitmq:
 	docker exec -it rabbitmq sh
+clear-hard:
+	sh ./.docker/clear-hard.sh
+clear-soft:
+	sh ./.docker/clear-soft.sh
 #######################################################################################################################
 
 
@@ -74,7 +72,7 @@ db-log:
 	docker logs db
 
 migrate:
-	docker run -ti \
+	docker run -it \
 		  -v $PWD/src/Migrations:/migrations \
 		  -e MIGRATIONS_PATH='/migrations' \
 		  -e DATABASE_URL='mysql://user:user_password@db/app' \
@@ -84,12 +82,6 @@ migrate:
 
 	docker build -f Dockerfile -t docker-doctrine-migrations --target final
 
-
-redis:
-	docker run \
-		-e ALLOW_EMPTY_PASSWORD=yes \
-		-v /path/to/redis-persistence:/bitnami/redis/data \
-		bitnami/redis:latest
 
 #docker stop $(docker ps -q -a) && docker rm $(docker ps -q -a)
 clear-soft:
@@ -122,8 +114,7 @@ clear:
 	sudo rm -R .docker/.dbdata; \
 	make -d --trace
 
-clear-hard:
-	bash ./.docker/clear-hard.sh
+
 
 execute-sh:
 	sh ./run.sh

@@ -6,25 +6,28 @@
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
+{#            {{ encore_entry_link_tags('app') }}#}
         {% endblock %}
 
         <style>
+            @import url(https://fonts.googleapis.com/css?family=Arvo:400);
+            @import url(https://fonts.googleapis.com/css?family=Seaweed+Script);
+            @import url(http://fonts.googleapis.com/css?family=Kavoon);
             * {
-            }
-            html {
+                margin: 0;
+                padding: 0;
             }
             body {
-                @import url(https://fonts.googleapis.com/css?family=Arvo:700);
-                @import url(https://fonts.googleapis.com/css?family=Seaweed+Script);
-                background-color: #222;
+                font-family: "Seaweed Script", sans-serif;
+                background-color: rgba(229, 230, 223, 0.98);
             }
             .plate {
-                width: 410px;
-                margin: 10% auto;
+                background-image: radial-gradient(circle farthest-side, #fceabb, #f8b500);
+                width: 100%;
+                margin: 0 auto;
             }
             .shadow {
-                color: #fff;
+                color: whitesmoke;
                 font-family: Arvo, serif;
                 font-weight: bold;
                 text-shadow:
@@ -46,14 +49,19 @@
             }
             .script {
                 font-family: "Seaweed Script", serif;
-                color: #fff;
+                /*color: #fff;*/
+                /*color: #fffff3;*/
+                /*color: #FF7052;*/
+                color: #6D5ACF
+;
+            ;
                 text-align: center;
                 font-size: 40px;
                 position: relative;
                 margin:0;
             }
             .script span {
-                background-color: #222;
+                background-color: #000133;
                 padding: 0 0.3em;
             }
             .script:before {
@@ -66,13 +74,18 @@
                 border-bottom: 3px solid #fff;
             }
             .text1 {
-                font-size: 60px;
+                /*color: rgba(255, 99, 71, 1);*/
+                color: rgba(109, 90, 207, 0.95);
+                font-size: 40px;
             }
             .text2 {
-                font-size: 169px;
+                color: rgba(181, 167, 226, 1);
+                font-size: 120px;
             }
             .text3 {
-                font-size: 100px;
+                color: #6D5ACF;
+                /*color: rgba(255, 99, 71, 1);*/
+                font-size: 80px;
             }
             .text-title-shadow {
                 position: absolute;
@@ -99,12 +112,53 @@
                 1px 25px 35px rgba(16,16,16,0.2),
                 1px 30px 60px rgba(16,16,16,0.4);
             }
-        </style>
+            .key-meh {
+                background-image: linear-gradient(to right, #8360c3, #2ebf91);
+            }
+            .dusty-grass {
+                background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+            }
+            .amin {
+                background-image: linear-gradient(to right, #8e2de2, #4a00e0);
+            }
+            .sublime-light {
+                background-image: linear-gradient(to right, #fc5c7d, #6a82fb);
+            }
+            .megatron {
+                background-image: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d);
+            }
+            .blue-raspberry {
+                background-image: linear-gradient(to right, #00b4db, #0083b0);
+            }
+            .yellow-mango {
+                background-image: radial-gradient(circle farthest-side, #fceabb, #f8b500);
+            }
+            .stellar {
+                background-image: radial-gradient( circle farthest-corner at 22.4% 21.7%, rgba(4,189,228,.2) 0%, rgba(2,83,185,.2) 100.2% );
+            }
+            .non-to-dusk {
+                background-image: linear-gradient(to right, #ff6e7f, #bfe9ff);
+            }
+            .sunrise {
+                background-image: linear-gradient(to right, #ff512f, #f09819);
+            }
+            .superman {
+                background-image: linear-gradient(to right, #0099f7, #f11712);
+            }
+            .orange-coral {
+                background-image: linear-gradient(to right, #ff9966, #ff5e62);
+            }
+            .deep-sea-space {
+                background-image: linear-gradient(to right, #2c3e50, #4ca1af);
+            }
 
+            .fio {
+                color: #8F8CE7;
+            }
+        </style>
         {% block javascripts %}
             {#{{ encore_entry_script_tags('app') }}#}
         {% endblock %}
-
     </head>
     <body>
         <main id="app">
