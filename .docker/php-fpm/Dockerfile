@@ -8,32 +8,36 @@ ENV AMQP_VERSION='1.11.0beta'
 
 ARG env
 
+# libpng-dev needed by "gd" extension
+# libzip-dev needed by "zip" extension
+# libicu-dev for intl extension
+# libpg-dev for connection to postgres database
+# autoconf needed by "redis" extension
 RUN set -eux; \
     apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends --no-install-suggests -y \
-        wget \
+        curl wget libzip-dev libicu-dev zip unzip p7zip-full sendmail ca-certificates \
+        bash-completion \
         iproute2 \
-        curl \
-        zip \
-        unzip \
-        libzip-dev \
+        gnupg \
         libxml2 \
-        p7zip-full \
-        ca-certificates \
         autoconf \
+        libpng-dev \
+        libjpeg-dev \
         libimage-exiftool-perl \
-        sendmail \
         librabbitmq-dev \
-        libicu-dev \
         build-essential \
-        fish\
+        fish \
         iputils-ping \
         net-tools \
         apt-utils \
         bridge-utils \
+        libfreetype6-dev \
+        htop \
     && pecl install amqp-$AMQP_VERSION \
     && pecl install redis \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean
+#    && rm -rf /var/lib/apt/lists/*
 
 #    libpng-dev \
 #    iproute2
@@ -41,10 +45,10 @@ RUN set -eux; \
 #    libfreetype6-dev \
 #    locales \
 #    jpegoptim optipng pngquant gifsicle \
-
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-configure intl
 
-RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache intl exif
+RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache intl exif gd
 #RUN docker-php-ext-install  mbstring zip exif pcntl
 #RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 #RUN docker-php-ext-install gd
@@ -72,6 +76,14 @@ RUN docker-php-ext-enable amqp redis \
 #RUN set -eux; \
 #    apt-get install node   -y
 
+# Using Ubuntu
+#curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+#sudo apt-get install -y nodejs
+
+# Using Debian, as root
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y nodejs
+
 # composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
@@ -80,11 +92,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     && composer -V \
     && composer diagnose
 
+# install 2 Composer
+#COPY ${project_root}/docker/php-fpm/docker-install-composer /usr/local/bin/docker-install-composer
+#
+#RUN chmod +x /usr/local/bin/docker-install-composer && \
+#    docker-install-composer
 
-# ensure www-data user exists
-#RUN set -eux; \
-# todo:
-#	adduser -u 82 -D -S -G www-data www-data
 
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 RUN sed -i "/#!\/bin\/sh/aservice sendmail restart" /usr/local/bin/docker-php-entrypoint

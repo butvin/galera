@@ -66,7 +66,9 @@
         "symfony/webpack-encore-bundle": "^1.12",
         "symfony/yaml": "5.3.*",
         "timostamm/doctrine-fixed-timezone": "^1.1",
+        "twig/cssinliner-extra": "^3.3",
         "twig/extra-bundle": "^3.3",
+        "twig/inky-extra": "^3.3",
         "twig/intl-extra": "^3.3",
         "twig/markdown-extra": "^3.3",
         "twig/twig": "^3.0"
@@ -97,6 +99,9 @@
         "issues": "https://github.com/butvin/io-sys/issues"
     },
     "config": {
+        "platform": {
+            "php": "8.0.10"
+        },
         "optimize-autoloader": true,
         "preferred-install": {
             "*": "dist"

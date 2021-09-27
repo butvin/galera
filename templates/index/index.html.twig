@@ -3,18 +3,22 @@
 {% block title %}{{ app_name }}{% endblock %}
 
 {% block body %}
+    {% set app_name_title = 'Galera.' %}
 
 <section class="container-fluid">
     <div class="plate">
         <p class="script"><span>developers BOX</span></p>
         <p class="shadow text1">Symfony 5.3</p>
         <p class="shadow text3">Nginx 1.21.3</p>
-        <p class="shadow text2 ">PHP 8</p>
+        <p class="shadow text3 ">PHP 8</p>
+        <p class="shadow text2 ">{{ app_name_title }}</p>
         <p class="shadow text3">DOCKER</p>
         <p class="script"><span>with xDebug & Opcache</span></p>
     </div>
     <hr>
-    <div class="container sublime-light">
+    <div class="container">
+        <h1  class="text3">Galera.</h1>
+        <h2 class="text1">Social project</h2>
         <pre>
             {{ (data) }}
         </pre>

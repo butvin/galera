@@ -23,7 +23,7 @@ Encore
     .addEntry('app', './assets/app.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/controllers.json')
+    // .enableStimulusBridge('./assets/controllers.json')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -45,9 +45,9 @@ Encore
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
-    .configureBabel((config) => {
-        config.plugins.push('@babel/plugin-proposal-class-properties');
-    })
+    // .configureBabel((config) => {
+    //     config.plugins.push('@babel/plugin-proposal-class-properties');
+    // })
 
     // enables @babel/preset-env polyfills
     .configureBabelPresetEnv((config) => {
