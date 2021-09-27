@@ -28,7 +28,7 @@ doctrine-database-migrate:
 db:
 	docker run -it --network docker_private_network --rm mariadb:10.6.4 mysql -h db -P 3306 -u app -p app
 php:
-	docker exec -it php-fpm bash
+	docker exec -it php-fpm bash -c "fish"
 nginx:
 	docker exec -it nginx bash
 redis:
@@ -84,11 +84,11 @@ migrate:
 
 
 #docker stop $(docker ps -q -a) && docker rm $(docker ps -q -a)
-clear-soft:
-	docker stop $(docker ps -q -a); \
-	docker rm -v $(docker ps -q -a); \
-	sudo rm -rf .docker/.dbdata; \
-	make -d --trace
+#clear-soft:
+#	docker stop $(docker ps -q -a); \
+#	docker rm -v $(docker ps -q -a); \
+#	sudo rm -rf .docker/.dbdata; \
+#	make -d --trace
 
 
 db-up:

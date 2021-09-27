@@ -2,15 +2,19 @@ version: '3.3'
 services:
 
 
-
     db:
         container_name: db
         image: mariadb:10.6.4
         ports:
+        # To allow the host machine to access the ports below, modify the lines below.
+        # For example, to allow the host to connect to port 3306 on the container, you would change
+        # "3306" to "3306:3306". Where the first port is exposed to the host and the second is the container port.
+        # See https://docs.docker.com/compose/compose-file/#ports for more information.
             - "3306:3306"
         working_dir: /app
         volumes:
             - .dbdata:/var/lib/mysql
+            - ..:/app
         env_file:
             - ../.env
         environment:
@@ -33,7 +37,6 @@ services:
             interval: 12s
             timeout: 5s
             retries: 4
-
 
 
     php-fpm:
@@ -60,6 +63,7 @@ services:
                 max-size: '10M'
                 max-file: '2'
 
+
     nginx:
         container_name: nginx
         ports:
@@ -80,11 +84,11 @@ services:
         working_dir: /app
         volumes:
             - /var/log/nginx:/var/log/nginx/
+            - ..:/app
             - /etc/nginx/ssl:/etc/nginx/ssl
         depends_on:
             - php-fpm
         restart: always
-
 
 
     rabbitmq:

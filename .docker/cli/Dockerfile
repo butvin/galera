@@ -9,15 +9,19 @@ ENV AMQP_VERSION='1.11.0beta'
 
 RUN set -eux; \
     apt-get update && apt-get upgrade -y; \
-    apt-get install -y --no-install-recommends \
-        curl wget zip unzip p7zip-full librabbitmq-dev libzip-dev sendmail \
+    apt-get install -y --no-install-recommends --no-install-suggests -y \
+        zip \
+        unzip \
+        p7zip-full \
+        librabbitmq-dev \
+        libzip-dev \
+        sendmail \
         libimage-exiftool-perl \
-        ca-certificates \
         locales \
-        libicu-dev \
+        ca-certificates curl wget libicu-dev \
     && pecl install -o -f amqp-$AMQP_VERSION \
     && pecl install -o -f redis \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean -y
 
 RUN docker-php-ext-configure intl
 
@@ -45,8 +49,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     && echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> $HOME/.bashrc \
     && composer -V
 
-# locales & languages
-RUN sed -i "/en_US.UTF-8/s/^# //g" /etc/locale.gen \
+# install locales and switch to en_US.utf8 in order to enable UTF-8 support
+# see http://jaredmarkell.com/docker-and-locales/ from where was this code taken
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
     && locale-gen
 
 ENV LANG en_US.UTF-8
@@ -60,14 +65,13 @@ RUN sed -i "/#!\/bin\/sh/aservice sendmail restart" /usr/local/bin/docker-php-en
 RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts' /usr/local/bin/docker-php-entrypoint
 
 
-# Config ini files
 COPY php.ini "$PHP_INI_DIR"/conf.d
-
 #COPY xdebug.ini "$PHP_INI_DIR"/conf.d
 
 RUN docker-php-source delete
 
-RUN apt-get autoremove --purge -y \
+RUN rm -rf /var/lib/apt/lists/* \
+    && apt-get autoremove --purge -y \
     && apt-get autoclean -y \
     && apt-get clean -y
 
