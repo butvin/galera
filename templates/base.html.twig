@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+        <title>{% block title %}{{ app_name }}{% endblock %}</title>
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
         <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
@@ -12,16 +12,13 @@
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
 
-        <title>{% block title %}App{% endblock %}</title>
-
         {% block stylesheets %}
-            {{ encore_entry_link_tags('styles') }}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
-
     </head>
     <body>
         <main id="app">

@@ -1,11 +1,12 @@
 const Encore = require('@symfony/webpack-encore');
+const PurgeCssPlugin = require('purgecss-webpack-plugin');
+const glob = require('glob-all');
+const path = require('path');
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
-
-const path = require('path');
 
 Encore
     .setOutputPath('public/build/') // directory where compiled assets will be stored
@@ -18,9 +19,17 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addStyleEntry('styles', './assets/styles/app.scss')
+    // .addEntry('css', './assets/styles/app.css')
+    // .addStyleEntry('styles', './assets/styles/app.scss')
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     // .enableStimulusBridge('./assets/controllers.json')
+
+    // .copyFiles({
+    //     from: './assets/root/',
+    //     to: '../[name].[hash:8].[ext]',// optional target path, relative to the output dir. if versioning is enabled, add the file hash too
+    //     pattern: '/\.(png|ico|jpeg)$/'  // only copy files matching this pattern
+    // })
+
     // .copyFiles({
     //     from: './assets/root/',
         //     to: 'images/[path][name].[hash:8].[ext]'
@@ -57,17 +66,14 @@ Encore
         config.corejs = 3;
     })
     .enableSassLoader()
-
+    .enablePostCssLoader()
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
-
     // uncomment if you use React
     //.enableReactPreset()
-
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
     .enableIntegrityHashes(Encore.isProduction())
-
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
 ;
