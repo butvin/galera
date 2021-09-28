@@ -1,4 +1,5 @@
- - https://github.com/butvin/io-sys/wiki/Begin
+ - Symfony Cli https://github.com/butvin/io-sys/wiki/Begin
+ - 
 ***
 # Galera
     
@@ -7,7 +8,12 @@
 ### _HOT COMMANDS_
 
 
-`docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)` - stopping & remove created containers
+`docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)`
+
+
+
+
+stopping & remove created containers
 
 ***
 
