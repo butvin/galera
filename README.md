@@ -5,15 +5,14 @@
     
 ## Docker instructions:
 
-![image](https://user-images.githubusercontent.com/4057096/135031226-ef4acc44-0b3f-4427-9538-e67c393bc01e.png)
 
 
 ### _HOT COMMANDS_
 
+![image](https://user-images.githubusercontent.com/4057096/135031783-552868ac-193f-44c6-ab59-e712b28f6300.png)
 
-`docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)`
 
-
+ docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 
 
 stopping & remove created containers
