@@ -3,23 +3,23 @@
 {% block title %}Index{% endblock %}
 
 {% block body %}
-    {% set app_name_title = 'Galera.' %}
-
-<section class="container-fluid">
-    <div class="plate">
-        <p class="kaligrafic"><span>developers BOX</span></p>
-        <p class="shadow text1">Symfony 5.3</p>
-        <p class="shadow text3">Nginx 1.21.3</p>
-        <p class="shadow text3 ">PHP 8.0.10</p>
-        <p class="shadow text2 ">{{ app_name_title }}</p>
-        <p class="shadow text3">DOCKER</p>
-        <p class="kaligrafic"><span>with RabbitMq as messenger broker & Opcache (xDebug optionally)</span></p>
-    </div>
-    <div class="container">
-        <h2>Social project</h2>
-        <pre>
-            {{ (data) }}
-        </pre>
-    </div>
-</section>
+    {% set app_name_title = 'Galera Pr ltd.' %}
+    <section class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="plate">
+                    <p class="script"><span>Symfony 5.3</span></p>
+                    <p class="shadow text1">RabbitMQ</p>
+                    <p class="shadow text2">PHP&nbsp;8</p>
+                    <p class="shadow text3">REDIS</p>
+                    <p class="script"><span>on Nginx</span></p>
+                </div>
+            </div>
+            <div class="row">
+                <pre>
+                    {{ (data) }}
+                </pre>
+            </div>
+        </div>
+    </section>
 {% endblock %}

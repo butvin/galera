@@ -16,13 +16,12 @@ ARG env
 RUN set -eux; \
     apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends --no-install-suggests -y \
-        curl git wget libzip-dev libicu-dev zip unzip p7zip-full sendmail ca-certificates \
+        curl wget libzip-dev libicu-dev zip unzip p7zip-full sendmail ca-certificates \
         acl \
         locales \
         libmcrypt-dev \
         libssl-dev \
         libxslt-dev \
-        bash-completion \
         iproute2 \
         gnupg \
         libxml2 \
@@ -39,31 +38,24 @@ RUN set -eux; \
         apt-utils \
         bridge-utils \
         libfreetype6-dev \
-        htop \
     && pecl install amqp-$AMQP_VERSION \
+    && pecl install xdebug-$XDEBUG_VERSION \
     && pecl install redis \
-    && apt-get clean
+    && apt-get clean  \
+#    libjpeg62-turbo-dev jpegoptim\
 #    && rm -rf /var/lib/apt/lists/*
 
-
-#    libjpeg62-turbo-dev \
-#    jpegoptim optipng pngquant gifsicle \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-configure intl
 
 RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache intl exif gd xsl
-#RUN docker-php-ext-install  mbstring zip exif pcntl
+#RUN docker-php-ext-install  mbstring  pcntl
 #RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
-#RUN docker-php-ext-install gd
 #RUN docker-php-ext-install bcmath
-#RUN docker-php-ext-install mbstring
-#RUN docker-php-ext-install sodium
-#RUN docker-php-ext-install pcntl
 
-# rabbitmq
-#RUN pecl install -o -f amqp-${AMQP_VERSION}
 RUN docker-php-ext-enable \
     amqp \
+    xdebug \
     redis \
     && rm -rf /tmp/pear
 
@@ -77,23 +69,18 @@ RUN docker-php-ext-enable \
 #RUN docker-php-ext-enable redis \
 #    && rm -rf /tmp/pear
 
-#todo
-#RUN set -eux; \
-#    apt-get install node   -y
-
-
-
 # nodejs/npm
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
-    && apt-get install -y nodejs
+    && apt-get install -y nodejs \
+    && npm install
 
 
 # Symfony CLI
-RUN wget https://get.symfony.com/cli/installer -O - | bash \
-    && mv $HOME/.symfony/bin/symfony /usr/local/bin/symfony
+RUN wget https://get.symfony.com/cli/installer -O - | bash; \
+    mv $HOME/.symfony/bin/symfony /usr/local/bin/symfony
 
 
-# composer
+# Composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin \
@@ -114,7 +101,7 @@ RUN sed -i '/#!\/bin\/sh/aecho "$(hostname -i)\t$(hostname) $(hostname).localhos
 
 
 COPY www.conf /usr/local/etc/php-fpm.d
-#todo:
+
 COPY dev/php.ini "$PHP_INI_DIR"/conf.d
 COPY dev/opcache.ini "$PHP_INI_DIR"/conf.d
 COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d

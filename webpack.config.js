@@ -66,7 +66,9 @@ Encore
         config.corejs = 3;
     })
     .enableSassLoader()
-    .enablePostCssLoader()
+    // .enablePostCssLoader()
+
+
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
     // uncomment if you use React
