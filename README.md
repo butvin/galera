@@ -5,6 +5,9 @@
     
 ## Docker instructions:
 
+![image](https://user-images.githubusercontent.com/4057096/135031226-ef4acc44-0b3f-4427-9538-e67c393bc01e.png)
+
+
 ### _HOT COMMANDS_
 
 
