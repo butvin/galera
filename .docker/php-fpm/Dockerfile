@@ -3,7 +3,7 @@ FROM php:${PHP_VERSION}-fpm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-#ENV XDEBUG_VERSION='3.0.4'
+ARG XDEBUG_VERSION='3.0.4'
 ARG AMQP_VERSION='1.11.0beta'
 ARG env
 
@@ -17,6 +17,7 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends --no-install-suggests -y \
         curl wget libzip-dev libicu-dev zip unzip p7zip-full libimage-exiftool-perl sendmail ca-certificates \
         acl \
+        git \
         locales \
         libmcrypt-dev \
         libssl-dev \
@@ -40,7 +41,6 @@ RUN set -eux; \
     && pecl install amqp-$AMQP_VERSION \
     && pecl install redis \
     && apt-get clean
-#    libjpeg62-turbo-dev jpegoptim\
 #    && rm -rf /var/lib/apt/lists/*
 
 #RUN docker-php-ext-configure gd --with-freetype --with-jpeg
@@ -49,16 +49,12 @@ RUN docker-php-ext-configure intl
 RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache intl exif xsl
 #RUN docker-php-ext-install  mbstring  pcntl bcmath
 #RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
-
-RUN docker-php-ext-enable \
-    amqp \
-    redis \
-&& rm -rf /tmp/pear
+RUN docker-php-ext-enable amqp redis
 
 # xdebug
 RUN pecl install xdebug-${XDEBUG_VERSION}
 RUN docker-php-ext-enable xdebug \
-    && touch /var/log/xdebug-fpm.log
+    && touch /var/log/xdebug.log
 
 ## redis
 #RUN pecl install -o -f redis # --with-php-config=/usr/local/etc/php/
@@ -104,6 +100,7 @@ COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d
 RUN docker-php-source delete
 
 RUN apt-get autoremove --purge -y \
+    && rm -rf /tmp/pear \
     && apt-get autoclean -y \
     && apt-get clean -y
 
