@@ -4,6 +4,7 @@ module.exports = {
         "es2021": true
     },
     "extends": [
+        "eslint:recommended",
         "standard"
     ],
     "parser": "@typescript-eslint/parser",
@@ -15,5 +16,7 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
+        "semi": ["error", "always"],
+        "quotes": ["error", "double"]
     }
 };
