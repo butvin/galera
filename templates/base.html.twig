@@ -21,8 +21,14 @@
         {% endblock %}
     </head>
     <body>
-        <main id="app">
+        <header id="app-header">
+            {% block header %}{% endblock %}
+        </header>
+        <main id="app-main" class="container-fluid">
             {% block body %}{% endblock %}
         </main>
+        <footer id="app-footer">
+            {% block footer %}{% endblock %}
+        </footer>
     </body>
 </html>

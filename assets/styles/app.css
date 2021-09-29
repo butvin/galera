@@ -1,7 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Arvo:700);
 @import url(https://fonts.googleapis.com/css?family=Seaweed+Script);
 body {
-    background: radial-gradient(circle farthest-side, #fceabb, #f8b500);
+}
+main {
 }
 .plate {
     width: 410px;

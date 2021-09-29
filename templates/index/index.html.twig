@@ -2,24 +2,35 @@
 
 {% block title %}Index{% endblock %}
 
+{% block header %}
+<section class="blue-raspberry">
+    <div class="row">
+        <h1>header section</h1>
+    </div>
+    <!--
+    <div class="plate">
+        <p class="script"><span>Symfony 5.3</span></p>
+        <p class="shadow text1">RabbitMQ</p>
+        <p class="shadow text2">PHP&nbsp;8</p>
+        <p class="shadow text3">REDIS</p>
+        <p class="script"><span>on Nginx</span></p>
+    </div>
+    -->
+</section>
+{% endblock %}
+
 {% block body %}
-    {% set app_name_title = 'Galera Pr ltd.' %}
-    <section class="container-fluid">
-        <div class="container">
-            <div class="row">
-                <div class="plate">
-                    <p class="script"><span>Symfony 5.3</span></p>
-                    <p class="shadow text1">RabbitMQ</p>
-                    <p class="shadow text2">PHP&nbsp;8</p>
-                    <p class="shadow text3">REDIS</p>
-                    <p class="script"><span>on Nginx</span></p>
-                </div>
-            </div>
-            <div class="row">
-                <pre>
-                    {{ (data) }}
-                </pre>
-            </div>
-        </div>
-    </section>
+{% set app_name_title = 'Galera Pr ltd.' %}
+<section class="key-meh">
+    <h1>body section</h1>
+    <h2>{{ data }}</h2>
+</section>
+{% endblock %}
+
+{% block footer %}
+<section class="sunrise">
+    <div>
+        <h1>footer section</h1>
+    </div>
+</section>
 {% endblock %}

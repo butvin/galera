@@ -1,15 +1,10 @@
 version: '3.3'
 services:
 
-
     db:
         container_name: db
         image: mariadb:10.6.4
         ports:
-        # To allow the host machine to access the ports below, modify the lines below.
-        # For example, to allow the host to connect to port 3306 on the container, you would change
-        # "3306" to "3306:3306". Where the first port is exposed to the host and the second is the container port.
-        # See https://docs.docker.com/compose/compose-file/#ports for more information.
             - "3306:3306"
         working_dir: /app
         volumes:
@@ -20,24 +15,17 @@ services:
         environment:
             DATABASE_URL: "mysql://app:app@db:3306/app?serverVersion=mariadb-10.6.4"
             MYSQL_ROOT_PASSWORD: root
-            ALLOW_EMPTY_PASSWORD: 'no'
             MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
             MYSQL_DATABASE: app
             MYSQL_PASSWORD: app
             MYSQL_USER: app
-            MYSQL_PORT: 3306
             MYSQL_DRIVER: pdo_mysql
         restart: always
-    #        networks:
-    #             private_network:
-    #                ipv4_address: 172.17.0.2
-#        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         healthcheck:
             test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "--password=root" ]
-            interval: 12s
+            interval: 15s
             timeout: 5s
             retries: 4
-
 
     php-fpm:
         container_name: php-fpm
@@ -53,16 +41,11 @@ services:
         restart: always
         depends_on:
             - db
-    #            PHP_REDIS_SESSION_HOST: redis
-    #        networks:
-    #            private_network:
-    #                ipv4_address: 172.17.0.3
         logging:
             driver: 'json-file'
             options:
                 max-size: '10M'
                 max-file: '2'
-
 
     nginx:
         container_name: nginx
@@ -74,13 +57,8 @@ services:
             dockerfile: ./nginx/Dockerfile
             args:
                 env: dev
-#        networks:
-#            private_network:
-#                ipv4_address: 172.17.0.2
-#        extra_hosts:
-#            - sun.butvin.localhost:192.168.47.12
-#        env_file:
-#            - ../.env
+        env_file:
+            - ../.env
         working_dir: /app
         volumes:
             - /var/log/nginx:/var/log/nginx/
@@ -89,7 +67,6 @@ services:
         depends_on:
             - php-fpm
         restart: always
-
 
     rabbitmq:
         container_name: rabbitmq
@@ -101,16 +78,12 @@ services:
             RABBITMQ_DEFAULT_USER: app
             RABBITMQ_DEFAULT_PASS: app
             RABBITMQ_DEFAULT_VHOST: /
-#        networks:
-#            private_network:
-#                ipv4_address: 172.17.0.9
         logging:
             driver: 'json-file'
             options:
                 max-size: '1024k'
                 max-file: '2'
         restart: always
-
 
     redis:
         container_name: redis
@@ -121,9 +94,6 @@ services:
         environment:
             REDIS_PASSWORD: app
             REDIS_VERSION: 6.2.5
-#        networks:
-#            private_network:
-#                ipv4_address: 172.17.0.11
         healthcheck:
             test: [ "CMD", "redis-cli", "ping" ]
             interval: 1m45s
@@ -134,32 +104,11 @@ services:
     async_consumer:
         build: cli
         working_dir: /app
-#        container_name: async_consumer
-#        networks:
-#            private_network:
         restart: always
         volumes:
             - ..:/app
             - /var/log/app:/app/var/log
-        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vvv
+        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vv
 
 volumes:
     dbdata:
-#        driver: local
-#        external: false
-
-
-#networks:
-#    public_network:
-#        driver: bridge
-#        external: false
-#
-#    private_network:
-#        driver: bridge
-#        internal: true
-#        ipam:
-#            driver: default
-#            config:
-#                - subnet: 127.17.0.0/24
-
-

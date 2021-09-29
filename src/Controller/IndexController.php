@@ -10,10 +10,8 @@ class IndexController extends AbstractController
 {
     public function index(Request $request): Response
     {
-        $data = $request;
-
         return $this->render('index/index.html.twig', [
-            'data' => $data,
+            'data' => self::class,
         ]);
     }
 }

@@ -1,4 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
+const debug = require('debug');
 const PurgeCssPlugin = require('purgecss-webpack-plugin');
 const glob = require('glob-all');
 const path = require('path');
@@ -30,15 +31,7 @@ Encore
     //     pattern: '/\.(png|ico|jpeg)$/'  // only copy files matching this pattern
     // })
 
-    // .copyFiles({
-    //     from: './assets/root/',
-        //     to: 'images/[path][name].[hash:8].[ext]'
-        // to: './.',
-        // if versioning is enabled, add the file hash too
-        //to: 'images/[path][name].[hash:8].[ext]',
-        // only copy files matching this pattern
-        // pattern: /\.(png|svg|xml|json)$/
-    // })
+
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -55,6 +48,16 @@ Encore
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     // .enableVersioning(Encore.isProduction())  // enables hashed filenames (e.g. app.abc123.css)
+
+    // .copyFiles({
+    //     from: './assets/root/',
+    //     to: 'images/[path][name].[hash:8].[ext]'
+    // to: './.',
+    // if versioning is enabled, add the file hash too
+    //to: 'images/[path][name].[hash:8].[ext]',
+    // only copy files matching this pattern
+    // pattern: /\.(png|svg|xml|json)$/
+    // })
 
     .configureBabel((config) => {
         config.plugins.push('@babel/plugin-proposal-class-properties');
