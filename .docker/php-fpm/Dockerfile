@@ -55,10 +55,10 @@ RUN docker-php-ext-enable \
     redis \
 && rm -rf /tmp/pear
 
-## xdebug
-#RUN pecl install xdebug-${XDEBUG_VERSION}
-#RUN docker-php-ext-enable xdebug \
-#    && touch /var/log/xdebug-fpm.log
+# xdebug
+RUN pecl install xdebug-${XDEBUG_VERSION}
+RUN docker-php-ext-enable xdebug \
+    && touch /var/log/xdebug-fpm.log
 
 ## redis
 #RUN pecl install -o -f redis # --with-php-config=/usr/local/etc/php/
@@ -66,8 +66,9 @@ RUN docker-php-ext-enable \
 #    && rm -rf /tmp/pear
 
 # nodejs/npm
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
-    && apt-get install -y nodejs
+RUN set -eux; \
+    curl -fsSL https://deb.nodesource.com/setup_14.x | bash - ; \
+    apt-get install -y nodejs
 
 # Symfony CLI
 RUN wget https://get.symfony.com/cli/installer -O - | bash; \

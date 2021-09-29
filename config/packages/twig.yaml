@@ -2,10 +2,28 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-
     globals:
-        app_name: '%kernel.environment%'
+        app_name:
+            value: 'APP_NAME_VALUE'
+#    form_themes:
+#        - form_div_layout.html.twig
+    autoescape: name
+    autoescape_service: null
+    autoescape_service_method: null
+#    cache: /app/var/cache/dev/twig
+    charset: UTF-8
+    paths: {  }
+    date:
+        format: 'F j, Y H:i'
+        interval_format: '%d days'
+        timezone: null
+    number_format:
+        decimals: 0
+        decimal_point: .
+        thousands_separator: ','
 
-#when@test:
-#    twig:
-#        strict_variables: true
+
+
+when@test:
+    twig:
+        strict_variables: true
