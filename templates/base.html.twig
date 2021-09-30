@@ -20,11 +20,11 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
+    <body class="min-h-screen text-gray-900 bg-gray-50 leading-tight">
         <header id="app-header">
             {% block header %}{% endblock %}
         </header>
-        <main id="app-main" class="container-fluid">
+        <main id="app-main">
             {% block body %}{% endblock %}
         </main>
         <footer id="app-footer">

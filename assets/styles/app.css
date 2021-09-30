@@ -9,7 +9,7 @@ main {
     margin: 10% auto;
 }
 .shadow {
-    color: #fff;
+    color: #fffff3;
     font-family: 'Arvo', serif;
     font-weight: bold;
     text-shadow:
@@ -31,7 +31,7 @@ main {
 }
 .script {
     font-family: "Seaweed Script", serif;
-    color: #fff;
+    color: #fffff3;
     text-align: center;
     font-size: 40px;
     position: relative;
@@ -48,14 +48,14 @@ main {
     z-index:-1;
     top: 50%;
     width: 100%;
-    border-bottom: 3px solid #fff;
+    border-bottom: 3px solid #fffff3;
 }
 .text1 {
-    font-size: 47px;
+    font-size: 42px;
 }
 .text2 {
-    font-size: 124px;
+    font-size: 92px;
 }
 .text3 {
-    font-size: 88px;
+    font-size: 62px;
 }

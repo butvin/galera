@@ -3,6 +3,8 @@ const debug = require('debug');
 const PurgeCssPlugin = require('purgecss-webpack-plugin');
 const glob = require('glob-all');
 const path = require('path');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
@@ -13,6 +15,7 @@ Encore
     .setOutputPath('public/build/') // directory where compiled assets will be stored
     .setPublicPath('/build') // public path used by the web server to access the output path
     // .setManifestKeyPrefix('build/') // only needed for CDN's or sub-directory deploy
+
     /*
      * ENTRY CONFIG
      *
@@ -21,23 +24,19 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     // .addEntry('css', './assets/styles/app.css')
-    // .addStyleEntry('styles', './assets/styles/app.scss')
+    .addStyleEntry('tailwindcss', './assets/styles/tailwind.css')
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     // .enableStimulusBridge('./assets/controllers.json')
 
     // .copyFiles({
-    //     from: './assets/root/',
-    //     to: '../[name].[hash:8].[ext]',// optional target path, relative to the output dir. if versioning is enabled, add the file hash too
-    //     pattern: '/\.(png|ico|jpeg)$/'  // only copy files matching this pattern
+    //     from: './assets/images/static',
+    //     to: 'images/static/[path][name].[hash:8].[ext]', // optional target path, relative to the output dir. if versioning is enabled, add the file hash too
+    //     pattern: '/\.(png|ico|jpeg|jpg|gif|svg)$/'  // only copy files matching this pattern
     // })
-
-
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
-
-    // will require an extra script tag for runtime.js
-    // but, you probably want this, unless you're building a single-page app
+    // will require an extra script tag for runtime.js but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
 
     /*
@@ -47,22 +46,15 @@ Encore
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
-    // .enableVersioning(Encore.isProduction())  // enables hashed filenames (e.g. app.abc123.css)
-
-    // .copyFiles({
-    //     from: './assets/root/',
-    //     to: 'images/[path][name].[hash:8].[ext]'
-    // to: './.',
-    // if versioning is enabled, add the file hash too
-    //to: 'images/[path][name].[hash:8].[ext]',
-    // only copy files matching this pattern
-    // pattern: /\.(png|svg|xml|json)$/
-    // })
-
+    .enableVersioning(!Encore.isProduction())  // enables hashed filenames (e.g. app.abc123.css)
+    .enableIntegrityHashes(Encore.isProduction())
+    .copyFiles({
+        from: './assets/images/static',
+        to: 'images/static/[name].[hash:12].[ext]'
+    })
     .configureBabel((config) => {
         config.plugins.push('@babel/plugin-proposal-class-properties');
     })
-
     // enables @babel/preset-env polyfills
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
@@ -78,7 +70,7 @@ Encore
     //.enableReactPreset()
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
-    .enableIntegrityHashes(Encore.isProduction())
+    // .enableIntegrityHashes(Encore.isProduction())
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
 ;
@@ -90,7 +82,7 @@ Encore
 
 module.exports = Encore.getWebpackConfig();
 
-// const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+
 // const manifestOpt = {};
 //
 // module.exports = {
