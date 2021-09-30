@@ -1,0 +1,60 @@
+{
+    "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "@symfony/stimulus-bridge": "^2.0.0",
+        "@symfony/webpack-encore": "^1.6.1",
+        "autoprefixer": "^10.3.6",
+        "core-js": "^3.0.0",
+        "cross-env": "^7.0.3",
+        "cuid": "^2.1.8",
+        "debug": "^4.3.2",
+        "dotenv": "^10.0.0",
+        "file-loader": "^6.2.0",
+        "glob-all": "^3.2.1",
+        "jquery": "^3.6.0",
+        "lodash": "^4.17.21",
+        "multer": "^1.4.3",
+        "nanit": "^0.3.1",
+        "path": "^0.12.7",
+        "postcss": "^8.3.8",
+        "postcss-custom-properties": "^12.0.0",
+        "postcss-load-config": "^3.1.0",
+        "postcss-loader": "^6.1.1",
+        "purgecss-webpack-plugin": "^4.0.3",
+        "regenerator-runtime": "^0.13.2",
+        "stimulus": "^2.0.0",
+        "tailwindcss": "^2.2.16",
+        "webpack-manifest-plugin": "^4.0.2",
+        "webpack-nano": "^1.1.1",
+        "webpack-notifier": "^1.6.0"
+    },
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "postcss": {
+        "parser": "sugarss",
+        "map": false,
+        "plugins": {
+            "postcss-plugin": {}
+        }
+    },
+    "dependencies": {
+        "@tailwindcss/aspect-ratio": "^0.2.1",
+        "@tailwindcss/forms": "^0.3.4",
+        "@tailwindcss/line-clamp": "^0.2.1",
+        "@tailwindcss/typography": "^0.4.1",
+        "ansi-regex": "^6.0.1",
+        "moment": "^2.29.1",
+        "node-sass": "^6.0.1",
+        "postcss-import": "^14.0.2",
+        "postcss-plugin": "^1.0.0",
+        "postcss-scss": "^4.0.1",
+        "sass-loader": "^12.1.0",
+        "sugarss": "^4.0.1"
+    }
+}

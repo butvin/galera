@@ -4,7 +4,7 @@ module.exports = {
         "es2021": true
     },
     "extends": [
-        "eslint:recommended",
+        // "eslint:recommended",
         "standard"
     ],
     "parser": "@typescript-eslint/parser",
@@ -13,7 +13,7 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        // "@typescript-eslint"
     ],
     "rules": {
         "semi": ["error", "always"],

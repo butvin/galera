@@ -1,5 +1,10 @@
-@import url(https://fonts.googleapis.com/css?family=Arvo:700);
-@import url(https://fonts.googleapis.com/css?family=Seaweed+Script);
+@import url('https://fonts.googleapis.com/css?family=Arvo:700');
+@import url("https://fonts.googleapis.com/css?family=Seaweed+Script");
+
+@tailwind 'base';
+@tailwind components;
+@tailwind utilities;
+
 body {
 }
 main {
