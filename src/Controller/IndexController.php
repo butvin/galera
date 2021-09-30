@@ -11,7 +11,10 @@ class IndexController extends AbstractController
     public function index(Request $request): Response
     {
         return $this->render('index/index.html.twig', [
-            'data' => self::class,
+            'data' => [
+                'index' => self::class,
+                'request' => $request,
+            ],
         ]);
     }
 }
