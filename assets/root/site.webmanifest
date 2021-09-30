@@ -1,7 +1,6 @@
 {
-    "name": "Galera",
-    "short_name": "Galera project",
-    "description": "Galera Web 2.0 Application",
+    "name": "",
+    "short_name": "",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

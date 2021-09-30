@@ -13,15 +13,16 @@
         <meta name="theme-color" content="#ffffff">
 
         {% block stylesheets %}
-{#            {{ encore_entry_link_tags('tailwindcss') }}#}
+            {{ encore_entry_link_tags('tailwind') }}
             {{ encore_entry_link_tags('app') }}
+            {{ encore_entry_link_tags('main') }}
         {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body class="min-h-screen text-gray-50 bg-gray-300">
+    <body class="min-h-screen">
         <header id="app-header">
             {% block header %}{% endblock %}
         </header>

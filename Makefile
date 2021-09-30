@@ -32,8 +32,9 @@ set-permissions:
 	docker exec -t php-fpm bash -c "bash /app/permissions.sh"
 
 npm-install-dependencies:
-	docker exec -t php-fpm bash -c "npm i -g npm"
-	docker exec -t php-fpm bash -c "npm install"
+	docker exec -t php-fpm bash -c "npm i -g npm && npm install"
+	docker exec -t php-fpm bash -c "npx tailwindcss -o ./assets/styles/tailwind.css"
+	docker exec -t php-fpm bash -c "npm run dev"
 
 info:
 	docker exec -t php-fpm bash -c "php bin/console about && npm version"
