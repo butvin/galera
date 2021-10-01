@@ -5,10 +5,10 @@ const postCssAutoReset = require('postcss-autoreset')
 
 module.exports = {
     plugins: [
+        postCssAutoReset(),
         require('postcss-import'),
         tailwind('./tailwind.config.js'),
         require('postcss-100vh-fix'),
-        // postCssAutoReset(),
         require('autoprefixer'),
         postCssImport,
         postCssUrl({ url: 'copy', useHash: true }),

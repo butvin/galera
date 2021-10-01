@@ -1,12 +1,13 @@
 const Encore = require('@symfony/webpack-encore')
-
+const path = require('path')
+const glob = require('glob-all')
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
-const path = require('path')
+
 const debug = require('debug')
-const glob = require('glob-all')
+
 
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
@@ -67,22 +68,23 @@ Encore.setOutputPath('public/build/') // directory where compiled assets will be
 // });
 module.exports = Encore.getWebpackConfig();
 
-module.exports = {
-    plugins: [
-        new MiniCssExtractPlugin(),
-    ],
-    module: {
-        rules: [{
-            test: /\.css$/i,
-            use: [
-                MiniCssExtractPlugin.loader,
-                "css-loader",
-            ],
-        }],
-    },
-};
+// module.exports = {
+//     plugins: [
+//         new MiniCssExtractPlugin(),
+//     ],
+//     module: {
+//         rules: [{
+//             test: /\.css$/i,
+//             use: [
+//                 MiniCssExtractPlugin.loader,
+//                 "css-loader",
+//             ],
+//         }],
+//     },
+// };
 
 // module.exports = {
+//     mode: 'development',
 //     entry: './assets/app.js',
 //     output: {
 //         filename: 'app.js',
@@ -111,13 +113,10 @@ module.exports = {
 //     },
 //     plugins: [
 //         new MiniCssExtractPlugin({
-//             filename: "[name][min].css",
+//             filename: "[name].css",
 //         }),
 //         new PurgeCssPlugin({
-//             paths: glob.sync(
-//                 `${PATHS.src}/**/ * `,
-//                 { nodir: true }
-//             ),
+//             paths: glob.sync(`${PATHS.src}/**/ * `, { nodir: true }),
 //         }),
 //     ]
 // };
