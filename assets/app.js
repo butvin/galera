@@ -1,8 +1,14 @@
-// import '@fortawesome/fontawesome-free/css/all.min.css';
-// import '@fortawesome/fontawesome-free/js/all.js';
+/** Main javascript entrypoint content here is. */
 import 'tailwindcss/tailwind.css'
-import './styles/app.scss'
+
+/** FontAwesome 5 */
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/js/all.min.js';
+
+/** Import CSS & SCSS files */
+import './styles/app.css'
 import './styles/main.scss'
 
-console.log(`this > 'assets/app.js' ${this}`)
+//test
+console.log(`>>> 'assets/app.js' ${this}`)
 

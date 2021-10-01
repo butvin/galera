@@ -1,15 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Arvo:700');
-@import url('https://fonts.googleapis.com/css?family=Seaweed+Script');
-
 @import "tailwindcss/base";
 /*@import "./custom-base-styles.css";*/
-
 @import "tailwindcss/components";
 /*@import "./custom-components.css";*/
-
 @import "tailwindcss/utilities";
 /*@import "./custom-utilities.css";*/
 
+body {
+    background: green;
+}
 /*@tailwind base;*/
 /*@tailwind components;*/
 /*@tailwind utilities;*/

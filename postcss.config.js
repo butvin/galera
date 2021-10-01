@@ -1,17 +1,16 @@
-const tailwind = require('tailwindcss');
+const tailwind = require('tailwindcss')
+const postCssUrl = require('postcss-url')
+const postCssImport = require('postcss-import')
+const postCssAutoReset = require('postcss-autoreset')
 
 module.exports = {
     plugins: [
         require('postcss-import'),
         tailwind('./tailwind.config.js'),
         require('postcss-100vh-fix'),
-        require('tailwindcss'),
-        // require('postcss-autoreset')(),
+        // postCssAutoReset(),
         require('autoprefixer'),
-        require('postcss-import'),
-        require('postcss-url')({
-            url: 'copy',
-            useHash: true
-        }),
+        postCssImport,
+        postCssUrl({ url: 'copy', useHash: true }),
     ]
 };
