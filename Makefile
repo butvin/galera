@@ -1,10 +1,9 @@
 build: \
 	docker-compose \
-	composer-install-dependencies \
-	doctrine-database-migrate \
-	set-permissions \
-	npm-install-dependencies \
-	info
+	install-dependencies \
+	migrate \
+	permissions \
+	dashboard
 
 docker-compose:
 	docker-compose -f .docker/docker-compose.yml up -d --build
@@ -28,7 +27,7 @@ doctrine-database-migrate:
 	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:sync-metadata-storage"
 	docker exec -t php-fpm bash -c "php bin/console cache:clear"
 
-set-permissions:
+permissions:
 	docker exec -t php-fpm bash -c "bash /app/permissions.sh"
 
 npm-install-dependencies:
@@ -36,11 +35,24 @@ npm-install-dependencies:
 	docker exec -t php-fpm bash -c "npx tailwindcss -o ./assets/styles/tailwind.css"
 	docker exec -t php-fpm bash -c "npm run dev"
 
-info:
+install-dependencies: \
+	composer-install-dependencies \
+	npm-install-dependencies
+
+migrate: \
+	doctrine-database-migrate
+
+dashboard:
 	docker exec -t php-fpm bash -c "php bin/console about && npm version"
+	docker ps --format 'table {{ .Names}}\t{{ .Status}}\t{{ .Ports}}';
+
 
 php:
 	docker exec -it php-fpm bash -c "fish"
+
+npm-nodejs:
+	docker exec -it php-fpm bash -c "npm version"
+	docker exec -it php-fpm bash -c 'npm run watch'
 
 nginx:
 	docker exec -it nginx bash

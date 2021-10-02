@@ -9,7 +9,8 @@ docker network rm $(docker network ls -q); \
 docker system prune -af; \
 sudo rm -rf .docker/.dbdata/*; \
 
-make -d \
+make \
+    --debug=basic \
     --warn-undefined-variables \
     --trace \
 ;
