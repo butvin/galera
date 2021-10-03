@@ -5,9 +5,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
-
 const debug = require('debug')
-
 
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
@@ -23,7 +21,7 @@ Encore.setOutputPath('public/build/') // directory where compiled assets will be
     .setManifestKeyPrefix('build/') // only needed for CDN's or sub-directory deploy
     .addEntry('app', './assets/app.js')
     .addStyleEntry('main', './assets/styles/main.scss')
-    // .addStyleEntry('tailwind', './assets/styles/tailwind.css')
+    .addStyleEntry('tailwind', './assets/styles/tailwind.css')
     // .enableStimulusBridge('./assets/controllers.json') // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .splitEntryChunks() // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .enableSingleRuntimeChunk()  // will require an extra script tag for runtime.js but, you probably want this, unless you're building a single-page app
@@ -32,22 +30,18 @@ Encore.setOutputPath('public/build/') // directory where compiled assets will be
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
     .enableIntegrityHashes(Encore.isProduction())
-
     .copyFiles({
         from: './assets/images/static',
         to: 'images/static/[name].[ext]'
     })
-
     .copyFiles({
         from: './assets/images/',
         to: 'images/[name].[ext]v=[hash:12]'
     })
-
     .copyFiles({
         from: './assets/root/',
         to: '../[name].[ext]'
     })
-
     .configureBabel((config) => {
         config.plugins.push('@babel/plugin-proposal-class-properties');
     })
@@ -59,64 +53,13 @@ Encore.setOutputPath('public/build/') // directory where compiled assets will be
     .enablePostCssLoader()
     //.enableTypeScriptLoader() // uncomment if you use TypeScript
     //.enableReactPreset() // uncomment if you use React
-    // .autoProvidejQuery() // uncomment if you're having problems with a jQuery plugin
+    //.autoProvidejQuery() // uncomment if you're having problems with a jQuery plugin
 ;
 
 //##Using Encore.configureLoaderRule()
 // Encore.configureLoaderRule('stylus', loaderRule => {
 //     loaderRule.test = /\.(jsx?|vue)$/
 // });
+
 module.exports = Encore.getWebpackConfig();
 
-// module.exports = {
-//     plugins: [
-//         new MiniCssExtractPlugin(),
-//     ],
-//     module: {
-//         rules: [{
-//             test: /\.css$/i,
-//             use: [
-//                 MiniCssExtractPlugin.loader,
-//                 "css-loader",
-//             ],
-//         }],
-//     },
-// };
-
-// module.exports = {
-//     mode: 'development',
-//     entry: './assets/app.js',
-//     output: {
-//         filename: 'app.js',
-//         path: path.join(__dirname, 'public/build/')
-//     },
-//     optimization: {
-//         splitChunks: {
-//             cacheGroups: {
-//                 styles: {
-//                     name: 'styles',
-//                     test: /\.css$/,
-//                     chunks: 'all',
-//                     enforce: true
-//                 }
-//             }
-//         }
-//     },
-//     module: {
-//         rules: [{
-//             test: /\.css$/,
-//             use: [
-//                 MiniCssExtractPlugin.loader,
-//                 "css-loader"
-//             ]
-//         }]
-//     },
-//     plugins: [
-//         new MiniCssExtractPlugin({
-//             filename: "[name].css",
-//         }),
-//         new PurgeCssPlugin({
-//             paths: glob.sync(`${PATHS.src}/**/ * `, { nodir: true }),
-//         }),
-//     ]
-// };

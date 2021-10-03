@@ -1,22 +1,20 @@
 {
     "name": "butvin/galera",
-    "description": "the GALERA project",
-    "keywords": [ "symfony", "docker", "php", "galera" ],
-    "homepage": "https://www.facebook.com/bad.trip.2u",
-    "version": "0.0.1",
-    "version_normalized": "1.0.0.0",
+    "description": "Galera is a box, which contain",
+    "version_normalized": "0.4.1.05",
     "type": "project",
     "license": "MIT",
     "minimum-stability": "dev",
+    "homepage": "https://www.facebook.com/bad.trip.2u",
     "require": {
         "php": ">=8.0",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-iconv": "*",
+        "ext-intl": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
         "ext-zip": "*",
-        "ext-intl": "*",
         "composer/package-versions-deprecated": "1.11.99.4",
         "doctrine/annotations": "^1.13",
         "doctrine/doctrine-bundle": "^2.4",
@@ -90,6 +88,15 @@
         "symfony/var-dumper": "5.3.*",
         "symfony/web-profiler-bundle": "5.3.*"
     },
+    "keywords": [
+        "symfony",
+        "docker",
+        "php 8",
+        "nginx",
+        "rabbitmq",
+        "redis",
+        "tailwind"
+    ],
     "authors": [
         {
             "name": "butvin",

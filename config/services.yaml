@@ -6,22 +6,20 @@
 #imports:
 #    - { resource: 'legacy_config.php' }
 parameters:
-    app.admin_email: 'something@example.com'
-    app.enable_v2_protocol: true
-    app.supported_locales: ['en', 'ru', 'ua']
+    app.admin_email: '%env(string:APP_ADMIN_EMAIL)%'
+    app.enable_v2_protocol: '%env(bool:V2_PROTOCOL)%'
+    app.supported_locales: '%env(resolve:SUPPORTED_LOCALES)%' # app.supported_locales: ['en', 'ru', 'ua']
+    app.sender_email: '%env(string:APP_SENDER_EMAIL)%'
+#    app.sender_email: '%env(APP_SENDER_EMAIL)%'
     # binary content parameters (encode the contents with base64_encode())
 #    app.some_parameter: !!binary VGhpcyBpcyBhIEJlbGwgY2hhciAH
     # PHP constants as parameter values
 #    app.some_constant: !php/const JSON_ERROR_NONE
 #    app.another_constant: !php/const App\Entity\App::MAX_ITEMS
-
 services:
-    # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
-
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -31,7 +29,6 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
-
     Doctrine\Migrations\Version\DbalMigrationFactory: ~
 #    App\Migrations\Factory\MigrationFactoryDecorator:
 #        decorates: Doctrine\Migrations\Version\DbalMigrationFactory

@@ -1,4 +1,5 @@
 version: '3.3'
+
 services:
 
     db:
@@ -68,22 +69,22 @@ services:
             - php-fpm
         restart: always
 
-    rabbitmq:
-        container_name: rabbitmq
-        image: rabbitmq:3.9.5-management
-        ports:
-            - "15672:15672"
-            - "5672:5672"
-        environment:
-            RABBITMQ_DEFAULT_USER: app
-            RABBITMQ_DEFAULT_PASS: app
-            RABBITMQ_DEFAULT_VHOST: /
-        logging:
-            driver: 'json-file'
-            options:
-                max-size: '1024k'
-                max-file: '2'
-        restart: always
+#    rabbitmq:
+#        container_name: rabbitmq
+#        image: rabbitmq:3.9.5-management
+#        ports:
+#            - "15672:15672"
+#            - "5672:5672"
+#        environment:
+#            RABBITMQ_DEFAULT_USER: app
+#            RABBITMQ_DEFAULT_PASS: app
+#            RABBITMQ_DEFAULT_VHOST: /
+#        logging:
+#            driver: 'json-file'
+#            options:
+#                max-size: '1024k'
+#                max-file: '2'
+#        restart: always
 
     redis:
         container_name: redis
@@ -100,15 +101,6 @@ services:
             timeout: 5s
             retries: 4
         restart: always
-
-    async_consumer:
-        build: cli
-        working_dir: /app
-        restart: always
-        volumes:
-            - ..:/app
-            - /var/log/app:/app/var/log
-        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vv
 
 volumes:
     dbdata:

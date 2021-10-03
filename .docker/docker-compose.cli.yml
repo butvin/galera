@@ -4,15 +4,12 @@ services:
 
     async_consumer:
         build: cli
-#        networks:
-#            private_network:
         working_dir: /app
-#        container_name: async_worker
         restart: always
         volumes:
-          - ..:/app
-          - /var/log/app:/app/var/log
-        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=7 -vvv
+            - ..:/app
+            - /var/log/app:/app/var/log
+        command: php -d memory_limit=2048 bin/console messenger:consume async_priority_high --limit=12 -vv
 
 
 #volumes:
