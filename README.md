@@ -9,13 +9,13 @@
 ![image](https://user-images.githubusercontent.com/4057096/135031783-552868ac-193f-44c6-ab59-e712b28f6300.png)
 
     docker stop $(docker ps -a -q) && docker rm -f -v -l $(docker ps -a -q)
-_stopping & remove created containers, they volumes & links_
+> _stopping & remove created containers, they volumes & links_
 
     docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"
-_create account in database container (login/email/password: dev/developer@email.com/dev)_
+> _create account in database container (login/email/password: dev/developer@email.com/dev)_
 
     docker rmi $(docker images -qa)
-_remove all downloaded docker images_
+>_remove all downloaded docker images_
 
 
     docker volume rm $(docker volume ls -q)
