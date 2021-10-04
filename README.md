@@ -12,18 +12,24 @@
 ![image](https://user-images.githubusercontent.com/4057096/135031783-552868ac-193f-44c6-ab59-e712b28f6300.png)
 
 
- docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+***
+
+    docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 
 
-stopping & remove created containers
+_stopping & remove created containers
 
 ***
 
-`docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"` - create account in database container (login/email/password: dev/developer@email.com/dev)
+    docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"
+    
+_create account in database container (login/email/password: dev/developer@email.com/dev)
 
 ***
 
-`docker rmi $(docker images -qa)` - remove all downloaded docker images
+    docker rmi $(docker images -qa)
+
+_remove all downloaded docker images
 
 ***
 
