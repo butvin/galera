@@ -14,52 +14,68 @@
 
 ***
 
-    docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+    docker stop $(docker ps -a -q) && docker rm -f -v -l $(docker ps -a -q)
 
 
-_stopping & remove created containers
+_stopping & remove created containers, they volumes & links_
 
 ***
 
     docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"
     
-_create account in database container (login/email/password: dev/developer@email.com/dev)
+_create account in database container (login/email/password: dev/developer@email.com/dev)_
 
 ***
 
     docker rmi $(docker images -qa)
 
-_remove all downloaded docker images
+_remove all downloaded docker images_
 
 ***
 
-`docker volume rm $(docker volume ls -q)` - remove all volumes
+    docker volume rm $(docker volume ls -q)
+
+_remove all volumes_
 
 ***
 
-`docker rm -v $(docker ps -aq)`  Все без исключения контейнеры будут удалены
+    docker rm -v $(docker ps -aq)
+
+_Все без исключения контейнеры будут удалены & volumes_
 
 
-`docker rm -v $(docker ps -q)`  Все активные контейнеры будут удалены
+    docker rm -v $(docker ps -q) 
+
+_Все активные контейнеры будут удалены_
 
 
-`docker rm -v $(docker ps -aq -f status=exited)`  Удаление всех неактивных контейнеров
+    docker rm -v $(docker ps -aq -f status=exited) 
 
-***
-
-`docker network rm $(docker network ls -q)` - remove all networks
-
-***
-
-`docker system prune -a -f` - clear system from temp-files
+_Удаление всех неактивных контейнеров_
 
 ***
 
-`docker network ls -q` - display networks
+    docker network rm $(docker network ls -q)
+    
+_remove all networks_
 
 ***
 
-`docker volume ls -q` - display active volumes
+    docker system prune -a -f
+
+_clear system from all_
+
+***
+
+`docker network ls -q` - 
+
+_display networks_
+
+***
+
+`docker volume ls -q` - 
+
+_display active volumes_
 
 
 ### _VOLUMES ACTIONS_
