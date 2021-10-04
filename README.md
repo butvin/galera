@@ -1,6 +1,5 @@
  - Symfony Cli https://github.com/butvin/io-sys/wiki/Symfony-Cli
  - Galera Box 1.0 https://github.com/butvin/io-satelite-system/wiki/Galera-Box-1.0
-
 ***
 # Galera
 
@@ -10,7 +9,7 @@
 
     docker stop $(docker ps -a -q) && docker rm -f -v -l $(docker ps -a -q)
 > _stopping & remove created containers, they volumes & links_
-
+***
     docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"
 > _create account in database container (login/email/password: dev/developer@email.com/dev)_
 
