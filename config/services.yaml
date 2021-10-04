@@ -9,7 +9,10 @@ parameters:
     app.admin_email: '%env(string:APP_ADMIN_EMAIL)%'
     app.enable_v2_protocol: '%env(bool:V2_PROTOCOL)%'
     app.supported_locales: '%env(resolve:SUPPORTED_LOCALES)%' # app.supported_locales: ['en', 'ru', 'ua']
-    app.sender_email: '%env(string:APP_SENDER_EMAIL)%'
+
+    app.sender_email: '%app.admin_email%'
+    # Parsed as 'https://symfony.com/?foo=%s&amp;bar=%d'
+    url_pattern: 'https://symfony.com/?foo=%%s&amp;bar=%%d'
 #    app.sender_email: '%env(APP_SENDER_EMAIL)%'
     # binary content parameters (encode the contents with base64_encode())
 #    app.some_parameter: !!binary VGhpcyBpcyBhIEJlbGwgY2hhciAH
