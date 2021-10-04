@@ -1,89 +1,86 @@
  - Symfony Cli https://github.com/butvin/io-sys/wiki/Symfony-Cli
  - Galera Box 1.0 https://github.com/butvin/io-satelite-system/wiki/Galera-Box-1.0
+
 ***
-# Galera 
+# Galera
+
 ## Docker instructions
 
-### `HOT` Command
-
 ![image](https://user-images.githubusercontent.com/4057096/135031783-552868ac-193f-44c6-ab59-e712b28f6300.png)
-***
+
     docker stop $(docker ps -a -q) && docker rm -f -v -l $(docker ps -a -q)
 _stopping & remove created containers, they volumes & links_
 
-
     docker exec -t php-fpm bash -c "php bin/console fos:user:create dev developer@email.com dev --super-admin"
-    
 _create account in database container (login/email/password: dev/developer@email.com/dev)_
 
-
     docker rmi $(docker images -qa)
-
 _remove all downloaded docker images_
 
 
     docker volume rm $(docker volume ls -q)
-
 _remove all volumes_
 
 
     docker rm -v $(docker ps -aq)
-
 _Все без исключения контейнеры будут удалены & volumes_
 
 
     docker rm -v $(docker ps -q) 
-
 _Все активные контейнеры будут удалены_
 
 
     docker rm -v $(docker ps -aq -f status=exited) 
-
 _Удаление всех неактивных контейнеров_
 
 
     docker network rm $(docker network ls -q)
-    
 _remove all networks_
 
 
     docker system prune -a -f
-
 _clear system from all_
 
 
-`docker network ls -q` - 
-
+    docker network ls -q
 _display networks_
 
-
-`docker volume ls -q` - 
-
+    docker volume ls -q
 _display active volumes_
 
+## _VOLUMES ACTIONS_
 
-### _VOLUMES ACTIONS_
 
+`docker volume create $VOLUME_NAME`
+- Create a volume
 
-`docker volume create $VOLUME_NAME` - Create a volume
+> docker volume inspect $VOLUME_NAME
+_Display detailed information on one or more volumes_
 
-`docker volume inspect $VOLUME_NAME` - Display detailed information on one or more volumes
+> docker volume prune $VOLUME_NAME
+_Remove prune local volumes_
 
-<b style="color: tomato">docker volume prune $VOLUME_NAME</b> - Remove all unused local volumes
+> docker volume rm $VOLUME_NAME
+_Remove one or more volumes_
 
-`docker volume rm $VOLUME_NAME` - Remove one or more volumes
+```
+    #!/usr/bin/env bash
+    #shellcheck disable=SC2046
+    docker stop $(docker ps -q -a); \
+    docker rm -fvl $(docker ps -qa); \
+    ## ! Drop all pulled images
+    #docker rmi --force $(docker images -qa); \
+    docker volume rm -f $(docker volume ls -q); \
+    docker network rm $(docker network ls -q); \
+    docker system prune -af; \
+    sudo rm -rf .docker/.dbdata/*; \
 
-***
-
-`docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)`
-
-`docker volume rm $(docker volume ls -q)`
-
-`docker network rm $(docker network ls -q)`
-
-`docker rmi $(docker images -qa)`
-
-`docker system prune -a -f`
+    make \
+        --debug=basic \
+        --warn-undefined-variables \
+        --trace \
+    ;
+```
 
 `sudo lsof -nP | grep LISTEN`
 
