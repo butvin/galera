@@ -20,10 +20,10 @@ production:
 	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
 
 install-dependencies:
-	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --ansi --no-interaction --no-scripts --prefer-dist"
-		#"COMPOSER_MEMORY_LIMIT=-1 composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist"
+	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer i --ansi --no-interaction --no-scripts --prefer-dist"
 	docker exec -t php-fpm bash -c "npm install -g npm && npm install"
 	docker exec -it php-fpm bash -c "npm run dev"
+	#"COMPOSER_MEMORY_LIMIT=-1 composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist"
 
 database-migrate:
 	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:sync-metadata-storage"
@@ -35,12 +35,13 @@ permissions:
 summary:
 	docker exec -t php-fpm bash -c "php bin/console about && npm version"
 	docker ps --format 'table {{ .Names }}\t{{ .Status }}\t{{ .Ports }}'
+
 #----------------------------------------------------------------------------------------------------------------------
 db:
 	docker exec -i -t db bash -c "mysql --host=localhost -uroot --password=root --port=3306 app"
 
 npm:
-	docker exec -it php-fpm bash -c "npm run dev && npm run watch"
+	docker exec -i -t php-fpm bash -c "npm run dev && npm run watch"
 
 nginx:
 	docker exec -it nginx bash
@@ -51,8 +52,12 @@ php:
 php-c-c:
 	docker exec -t php-fpm bash -c "php bin/console cache:clear"
 
+ps:
+	docker ps --format 'table {{ .Names }}\t{{ .Status }}\t{{ .Ports }}'
+
 re:
 	sh ./.docker/rebuild-containers.sh
+
 clear-soft:
 	sh ./.docker/clear-soft.sh
 

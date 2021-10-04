@@ -1,0 +1,15 @@
+twig_extra:
+    cache:
+        enabled: false
+    html:
+        enabled: false
+    markdown:
+        enabled: true
+    intl:
+        enabled: true
+    cssinliner:
+        enabled: true
+    inky:
+        enabled: true
+    string:
+        enabled: false

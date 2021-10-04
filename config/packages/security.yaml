@@ -26,3 +26,65 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+
+# DEFAULTS:
+
+#security:
+#    enable_authenticator_manager: true
+#    password_hashers:
+#        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+#            algorithm: auto
+#            migrate_from: {  }
+#            hash_algorithm: sha512
+#            key_length: 40
+#            ignore_case: false
+#            encode_as_base64: true
+#            iterations: 5000
+#            cost: null
+#            memory_cost: null
+#            time_cost: null
+#    providers:
+#        users_in_memory:
+#            memory:
+#                users: {  }
+#    firewalls:
+#        dev:
+#            pattern: ^/(_(profiler|wdt)|css|images|js)/
+#            security: false
+#            methods: {  }
+#            user_checker: security.user_checker
+#            stateless: false
+#            lazy: false
+#            required_badges: {  }
+#        main:
+#            lazy: true
+#            provider: users_in_memory
+#            methods: {  }
+#            security: true
+#            user_checker: security.user_checker
+#            stateless: false
+#            required_badges: {  }
+#    access_control: {  }
+#    access_decision_manager:
+#        strategy: affirmative
+#        allow_if_all_abstain: false
+#        allow_if_equal_granted_denied: true
+#    encoders:
+#        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+#            algorithm: auto
+#            migrate_from: {  }
+#            hash_algorithm: sha512
+#            key_length: 40
+#            ignore_case: false
+#            encode_as_base64: true
+#            iterations: 5000
+#            cost: null
+#            memory_cost: null
+#            time_cost: null
+#    access_denied_url: null
+#    session_fixation_strategy: migrate
+#    hide_user_not_found: true
+#    always_authenticate_before_granting: false
+#    erase_credentials: true
+#    role_hierarchy: {  }
+

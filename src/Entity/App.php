@@ -12,8 +12,6 @@ use Gedmo\Mapping\Annotation\SoftDeleteable;
  */
 class App
 {
-//    use Timestampable;
-//    use SoftDeleteable;
 
     /**
      * @ORM\Id

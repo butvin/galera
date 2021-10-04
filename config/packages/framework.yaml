@@ -1,6 +1,7 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     assets:
+        enabled: true
         json_manifest_path: "%kernel.project_dir%/public/build/manifest.json"
     secret: '%env(APP_SECRET)%'
     validation: { enable_annotations: true }
@@ -19,7 +20,7 @@ framework:
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
 
 
-    #    session:
+#    session:
 #        handler_id: session.handler.native_file
 #        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
 #        cookie_secure: auto
@@ -30,9 +31,260 @@ framework:
     php_errors:
         log: true
 
-
 #when@test:
 #    framework:
 #        test: true
 #        session:
 #            storage_factory_id: session.storage.factory.mock_file
+
+
+
+#    Current configuration for extension with alias "framework"
+#    ==========================================================
+#
+#framework:
+#    router:
+#        resource: 'kernel::loadRoutes'
+#        type: service
+#        enabled: true
+#        utf8: true
+#        default_uri: null
+#        http_port: 80
+#        https_port: 443
+#        strict_requirements: true
+#    assets:
+#        json_manifest_path: /app/public/build/manifest.json
+#        enabled: true
+#        version_strategy: null
+#        version: null
+#        version_format: '%%s?%%s'
+#        base_path: ''
+#        base_urls: {  }
+#        packages: {  }
+#    cache:
+#        prefix_seed: _/app.App_KernelDevDebugContainer
+#        app: cache.adapter.filesystem
+#        system: cache.adapter.system
+#        directory: /app/var/cache/dev/pools
+#        default_redis_provider: 'redis://localhost'
+#        default_memcached_provider: 'memcached://localhost'
+#        default_pdo_provider: database_connection
+#        pools: {  }
+#    secret: '%env(APP_SECRET)%'
+#    validation:
+#        enable_annotations: true
+#        email_validation_mode: html5
+#        enabled: true
+#        static_method:
+#            - loadValidatorMetadata
+#        translation_domain: validators
+#        mapping:
+#            paths: {  }
+#        not_compromised_password:
+#            enabled: true
+#            endpoint: null
+#        auto_mapping: {  }
+#    translator:
+#        fallbacks:
+#            - en
+#            - en
+#        enabled_locales:
+#            - en
+#            - ru
+#        default_path: /app/translations
+#        enabled: true
+#        logging: false
+#        formatter: translator.formatter.default
+#        cache_dir: /app/var/cache/dev/translations
+#        paths: {  }
+#        pseudo_localization:
+#            enabled: false
+#            accents: true
+#            expansion_factor: !!float 1
+#            brackets: true
+#            parse_html: false
+#            localizable_html_attributes: {  }
+#        providers: {  }
+#    csrf_protection:
+#        enabled: false
+#    http_method_override: false
+#    session:
+#        handler_id: session.handler.native_file
+#        cookie_secure: auto
+#        cookie_samesite: lax
+#        storage_factory_id: session.storage.factory.native
+#        save_path: /app/var/sessions/dev
+#        enabled: true
+#        storage_id: session.storage.native
+#        cookie_httponly: true
+#        gc_probability: 1
+#        metadata_update_threshold: 0
+#    php_errors:
+#        log: true
+#        throw: true
+#    mailer:
+#        dsn: '%env(MAILER_DSN)%'
+#        enabled: true
+#        message_bus: null
+#        transports: {  }
+#        headers: {  }
+#    messenger:
+#        serializer:
+#            default_serializer: messenger.transport.symfony_serializer
+#            symfony_serializer:
+#                format: json
+#                context: {  }
+#        transports:
+#            async_priority_low:
+#                dsn: '%env(LOW_PRIORITY_MESSENGER_TRANSPORT_DSN)%'
+#                serializer: null
+#                options: {  }
+#                failure_transport: null
+#                retry_strategy:
+#                    service: null
+#                    max_retries: 3
+#                    delay: 1000
+#                    multiplier: 2
+#                    max_delay: 0
+#            async_priority_high:
+#                dsn: '%env(HIGH_PRIORITY_MESSENGER_TRANSPORT_DSN)%'
+#                retry_strategy:
+#                    max_retries: 3
+#                    delay: 750
+#                    multiplier: 2
+#                    max_delay: 0
+#                    service: null
+#                serializer: null
+#                options: {  }
+#                failure_transport: null
+#            sync:
+#                dsn: 'sync://'
+#                serializer: null
+#                options: {  }
+#                failure_transport: null
+#                retry_strategy:
+#                    service: null
+#                    max_retries: 3
+#                    delay: 1000
+#                    multiplier: 2
+#                    max_delay: 0
+#            failed:
+#                dsn: 'doctrine://default?queue_name=failed'
+#                serializer: null
+#                options: {  }
+#                failure_transport: null
+#                retry_strategy:
+#                    service: null
+#                    max_retries: 3
+#                    delay: 1000
+#                    multiplier: 2
+#                    max_delay: 0
+#        routing: {  }
+#        buses:
+#            command_bus:
+#                middleware:
+#                    -
+#                        id: doctrine_ping_connection
+#                        arguments: {  }
+#                    -
+#                        id: doctrine_close_connection
+#                        arguments: {  }
+#                    -
+#                        id: doctrine_transaction
+#                        arguments: {  }
+#                    -
+#                        id: router_context
+#                        arguments: {  }
+#                default_middleware: true
+#        enabled: true
+#        failure_transport: null
+#        default_bus: null
+#    default_locale: en
+#    profiler:
+#        only_exceptions: false
+#        enabled: true
+#        collect: true
+#        only_main_requests: false
+#        only_master_requests: false
+#        dsn: 'file:/app/var/cache/dev/profiler'
+#    ide: null
+#    trusted_hosts: {  }
+#    trusted_headers:
+#        - x-forwarded-for
+#        - x-forwarded-port
+#        - x-forwarded-proto
+#    error_controller: error_controller
+#    form:
+#        enabled: true
+#        csrf_protection:
+#            enabled: null
+#            field_name: _token
+#        legacy_error_messages: true
+#    http_cache:
+#        enabled: false
+#        debug: true
+#        private_headers: {  }
+#    esi:
+#        enabled: false
+#    ssi:
+#        enabled: false
+#    fragments:
+#        enabled: false
+#        hinclude_default_template: null
+#        path: /_fragment
+#    workflows:
+#        enabled: false
+#        workflows: {  }
+#    request:
+#        enabled: false
+#        formats: {  }
+#    annotations:
+#        enabled: true
+#        cache: php_array
+#        file_cache_dir: /app/var/cache/dev/annotations
+#        debug: true
+#    serializer:
+#        enabled: true
+#        enable_annotations: true
+#        mapping:
+#            paths: {  }
+#    property_access:
+#        enabled: true
+#        magic_call: false
+#        magic_get: true
+#        magic_set: true
+#        throw_exception_on_invalid_index: false
+#        throw_exception_on_invalid_property_path: true
+#    property_info:
+#        enabled: true
+#    web_link:
+#        enabled: true
+#    lock:
+#        enabled: false
+#        resources:
+#            default:
+#                - flock
+#    disallow_search_engine_index: true
+#    http_client:
+#        enabled: false
+#        scoped_clients: {  }
+#    secrets:
+#        enabled: true
+#        vault_directory: '/app/config/secrets/%env(default:kernel.environment:APP_RUNTIME_ENV)%'
+#        local_dotenv_file: /app/.env.dev.local
+#        decryption_env_var: 'base64:default::SYMFONY_DECRYPTION_SECRET'
+#    notifier:
+#        enabled: false
+#        chatter_transports: {  }
+#        texter_transports: {  }
+#        notification_on_failed_messages: false
+#        channel_policy: {  }
+#        admin_recipients: {  }
+#    rate_limiter:
+#        enabled: false
+#        limiters: {  }
+#    uid:
+#        enabled: false
+#        default_uuid_version: 6
+#        name_based_uuid_version: 5
+#        time_based_uuid_version: 6

@@ -7,6 +7,12 @@ webpack_encore:
     # Set attributes that will be rendered on all script and link tags
     script_attributes:
         defer: true
+#    crossorigin: false
+#    preload: false
+#    cache: false
+    strict_mode: true
+    builds: { }
+    link_attributes: { }
         # Uncomment (also under link_attributes) if using Turbo Drive
         # https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change
         # 'data-turbo-track': reload
@@ -33,3 +39,16 @@ webpack_encore:
     # Cache the entrypoints.json (rebuild Symfony's cache when entrypoints.json changes)
     # Put in config/packages/prod/webpack_encore.yaml
     # cache: true
+
+    # DEFAULT
+#webpack_encore:
+#    output_path: /app/public/build
+#    script_attributes:
+#        defer: true
+#    crossorigin: false
+#    preload: false
+#    cache: false
+#    strict_mode: true
+#    builds: { }
+#    link_attributes: { }
+

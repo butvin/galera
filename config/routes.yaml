@@ -6,7 +6,6 @@ root:
     path: /
     controller: App\Controller\IndexController::index
 
-
 app:
     path: /application
     controller: App\Controller\AppController::index

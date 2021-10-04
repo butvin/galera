@@ -1,5 +1,16 @@
 # Read the documentation: https://symfony.com/doc/current/bundles/StofDoctrineExtensionsBundle/index.html
 # See the official DoctrineExtensions documentation for more details: https://github.com/Atlantic18/DoctrineExtensions/tree/master/doc/
+#stof_doctrine_extensions:
+#    default_locale: en_US
+#    orm:
+#        default:
+#            timestampable: true
+#            softdeleteable: true
+#            sortable: true
+#            tree: true
+
+
+
 stof_doctrine_extensions:
     default_locale: en_US
     orm:
@@ -8,3 +19,29 @@ stof_doctrine_extensions:
             softdeleteable: true
             sortable: true
             tree: true
+            translatable: false
+            blameable: false
+            sluggable: false
+            loggable: false
+            uploadable: false
+            reference_integrity: false
+#    mongodb: {  }
+#    class:
+#        translatable: Gedmo\Translatable\TranslatableListener
+#        timestampable: Gedmo\Timestampable\TimestampableListener
+#        blameable: Gedmo\Blameable\BlameableListener
+#        sluggable: Gedmo\Sluggable\SluggableListener
+#        tree: Gedmo\Tree\TreeListener
+#        loggable: Gedmo\Loggable\LoggableListener
+#        sortable: Gedmo\Sortable\SortableListener
+#        softdeleteable: Gedmo\SoftDeleteable\SoftDeleteableListener
+#        uploadable: Gedmo\Uploadable\UploadableListener
+#        reference_integrity: Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
+#    uploadable:
+#        default_file_path: null
+#        mime_type_guesser_class: Stof\DoctrineExtensionsBundle\Uploadable\MimeTypeGuesserAdapter
+#        default_file_info_class: Stof\DoctrineExtensionsBundle\Uploadable\UploadedFileInfo
+#        validate_writable_directory: true
+#    translation_fallback: false
+#    persist_default_translation: false
+#    skip_translation_on_load: false

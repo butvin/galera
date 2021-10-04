@@ -1,3 +1,15 @@
 sensio_framework_extra:
     router:
         annotations: false
+    request:
+        converters: true
+        auto_convert: true
+        disable: {  }
+    view:
+        annotations: true
+#    cache:
+#        annotations: true
+#    security:
+#        annotations: true
+#        expression_language: sensio_framework_extra.security.expression_language.default
+

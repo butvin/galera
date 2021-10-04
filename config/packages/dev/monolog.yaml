@@ -17,3 +17,150 @@ monolog:
             type: console
             process_psr_3_messages: false
             channels: ["!event", "!doctrine", "!console"]
+
+
+# DEFAULTS
+#monolog:
+#    handlers:
+#        main:
+#            type: stream
+#            path: /app/var/log/dev.log
+#            level: debug
+#            channels:
+#                type: exclusive
+#                elements:
+#                    - event
+#            priority: 0
+#            bubble: true
+#            app_name: null
+#            include_stacktraces: false
+#            process_psr_3_messages: null
+#            file_permission: null
+#            use_locking: false
+#            filename_format: '{filename}-{date}'
+#            date_format: Y-m-d
+#            ident: false
+#            logopts: 1
+#            facility: user
+#            max_files: 0
+#            action_level: WARNING
+#            activation_strategy: null
+#            stop_buffering: true
+#            passthru_level: null
+#            excluded_404s: {  }
+#            excluded_http_codes: {  }
+#            accepted_levels: {  }
+#            min_level: DEBUG
+#            max_level: EMERGENCY
+#            buffer_size: 0
+#            flush_on_overflow: false
+#            exchange_name: log
+#            message_format: text
+#            api_version: null
+#            channel: null
+#            bot_name: Monolog
+#            use_attachment: true
+#            use_short_attachment: false
+#            include_extra: false
+#            icon_emoji: null
+#            notify: false
+#            nickname: Monolog
+#            use_ssl: true
+#            title: null
+#            host: null
+#            port: 514
+#            index: monolog
+#            document_type: logs
+#            ignore_error: false
+#            config: {  }
+#            members: {  }
+#            to_email: {  }
+#            content_type: null
+#            headers: {  }
+#            mailer: null
+#            lazy: true
+#            time: 60
+#            deduplication_level: 400
+#            store: null
+#            hub_id: null
+#            client_id: null
+#            auto_log_stacks: false
+#            release: null
+#            environment: null
+#            message_type: 0
+#            tags: {  }
+#            console_formatter_options: {  }
+#            nested: false
+#        console:
+#            type: console
+#            process_psr_3_messages: false
+#            channels:
+#                type: exclusive
+#                elements:
+#                    - event
+#                    - doctrine
+#                    - console
+#            priority: 0
+#            level: DEBUG
+#            bubble: true
+#            app_name: null
+#            include_stacktraces: false
+#            path: /app/var/log/dev.log
+#            file_permission: null
+#            use_locking: false
+#            filename_format: '{filename}-{date}'
+#            date_format: Y-m-d
+#            ident: false
+#            logopts: 1
+#            facility: user
+#            max_files: 0
+#            action_level: WARNING
+#            activation_strategy: null
+#            stop_buffering: true
+#            passthru_level: null
+#            excluded_404s: {  }
+#            excluded_http_codes: {  }
+#            accepted_levels: {  }
+#            min_level: DEBUG
+#            max_level: EMERGENCY
+#            buffer_size: 0
+#            flush_on_overflow: false
+#            exchange_name: log
+#            message_format: text
+#            api_version: null
+#            channel: null
+#            bot_name: Monolog
+#            use_attachment: true
+#            use_short_attachment: false
+#            include_extra: false
+#            icon_emoji: null
+#            notify: false
+#            nickname: Monolog
+#            use_ssl: true
+#            title: null
+#            host: null
+#            port: 514
+#            index: monolog
+#            document_type: logs
+#            ignore_error: false
+#            config: {  }
+#            members: {  }
+#            to_email: {  }
+#            content_type: null
+#            headers: {  }
+#            mailer: null
+#            lazy: true
+#            time: 60
+#            deduplication_level: 400
+#            store: null
+#            hub_id: null
+#            client_id: null
+#            auto_log_stacks: false
+#            release: null
+#            environment: null
+#            message_type: 0
+#            tags: {  }
+#            console_formatter_options: {  }
+#            nested: false
+#    use_microseconds: true
+#    channels: {  }
