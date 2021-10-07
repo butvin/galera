@@ -91,11 +91,7 @@
     "keywords": [
         "symfony",
         "docker",
-        "php 8",
-        "nginx",
-        "rabbitmq",
-        "redis",
-        "tailwind"
+        "php"
     ],
     "authors": [
         {

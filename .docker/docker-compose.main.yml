@@ -69,22 +69,22 @@ services:
             - php-fpm
         restart: always
 
-#    rabbitmq:
-#        container_name: rabbitmq
-#        image: rabbitmq:3.9.5-management
-#        ports:
-#            - "15672:15672"
-#            - "5672:5672"
-#        environment:
-#            RABBITMQ_DEFAULT_USER: app
-#            RABBITMQ_DEFAULT_PASS: app
-#            RABBITMQ_DEFAULT_VHOST: /
-#        logging:
-#            driver: 'json-file'
-#            options:
-#                max-size: '1024k'
-#                max-file: '2'
-#        restart: always
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3.9.5-management
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+        environment:
+            RABBITMQ_DEFAULT_USER: app
+            RABBITMQ_DEFAULT_PASS: app
+            RABBITMQ_DEFAULT_VHOST: /
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '1024k'
+                max-file: '2'
+        restart: always
 
     redis:
         container_name: redis

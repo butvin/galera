@@ -1,5 +1,9 @@
 ###> common ###
-
+/node_modules/
+_temp/
+/vendor/
+.idea
+.vscode/
 ###< common ###
 
 ###> symfony/framework-bundle ###
@@ -7,13 +11,9 @@
 /.env.local.php
 /.env.*.local
 .docker/.dbdata/
-_temp/
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
-/vendor/
-.idea
-.vscode/
 ###< symfony/framework-bundle ###
 
 
@@ -30,7 +30,7 @@ _temp/
 
 
 ###> symfony/webpack-encore-bundle ###
-/node_modules/
+#/node_modules/
 /public/build/
 npm-debug.log
 yarn-error.log

@@ -1,23 +1,39 @@
 version: '3.3'
 
-services:
+#services:
 
-    rabbitmq:
-        container_name: rabbitmq
-        image: rabbitmq:3.9.5-management
-        ports:
-            - "15672:15672"
-            - "5672:5672"
-        environment:
-            RABBITMQ_DEFAULT_USER: app
-            RABBITMQ_DEFAULT_PASS: app
-            RABBITMQ_DEFAULT_VHOST: /
-        logging:
-            driver: 'json-file'
-            options:
-                max-size: '1024k'
-                max-file: '2'
-        restart: always
+#    rabbitmq:
+#        container_name: rabbitmq
+#        image: rabbitmq:3.9.5-management
+#        ports:
+#            - "15672:15672"
+#            - "5672:5672"
+#        environment:
+#            RABBITMQ_DEFAULT_USER: app
+#            RABBITMQ_DEFAULT_PASS: app
+#            RABBITMQ_DEFAULT_VHOST: /
+#        logging:
+#            driver: 'json-file'
+#            options:
+#                max-size: '1024k'
+#                max-file: '2'
+#        restart: always
+
+#    redis:
+#        container_name: redis
+#        ports:
+#            - "49155:6379"
+#        image: redis:6.2.5-alpine
+#        working_dir: /app
+#        environment:
+#            REDIS_PASSWORD: app
+#            REDIS_VERSION: 6.2.5
+#        healthcheck:
+#            test: [ "CMD", "redis-cli", "ping" ]
+#            interval: 1m45s
+#            timeout: 5s
+#            retries: 4
+#        restart: always
 
 volumes:
     dbdata:

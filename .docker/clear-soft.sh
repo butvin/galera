@@ -1,13 +1,9 @@
-#!/usr/bin/env sh
-#shellcheck disable=SC2046
+#!/usr/bin/env bash
+# shellcheck disable=SC2046
 docker stop $(docker ps -q -a); \
 docker rm $(docker ps -qa); \
-#docker network rm $(docker network ls -q); \
-
+docker network rm $(docker network ls -q); \
 sudo rm -rf .docker/.dbdata; \
-
-make \
-    --debug=basic \
+make --debug=all \
     --warn-undefined-variables \
-    --trace \
-;
+    --trace

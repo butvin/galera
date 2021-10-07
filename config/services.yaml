@@ -6,10 +6,11 @@
 #imports:
 #    - { resource: 'legacy_config.php' }
 parameters:
+    app.name: 'galera'
     app.admin_email: '%env(string:APP_ADMIN_EMAIL)%'
     app.enable_v2_protocol: '%env(bool:V2_PROTOCOL)%'
     app.supported_locales: '%env(resolve:SUPPORTED_LOCALES)%' # app.supported_locales: ['en', 'ru', 'ua']
-
+    # app.supported_locales: ['en', 'ru', 'ua']
     app.sender_email: '%app.admin_email%'
     # Parsed as 'https://symfony.com/?foo=%s&amp;bar=%d'
     url_pattern: 'https://symfony.com/?foo=%%s&amp;bar=%%d'

@@ -10,11 +10,12 @@ class IndexController extends AbstractController
 {
     public function index(Request $request): Response
     {
+        $data = new \DateTime('1988-10-24');
+//        $data = new \DateTime();
+
+
         return $this->render('index/index.html.twig', [
-            'data' => [
-                'index' => self::class,
-                'request' => $request,
-            ],
+            'data' => $data
         ]);
     }
 }

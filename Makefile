@@ -1,40 +1,43 @@
 build: \
-	up \
+	main \
+	cli \
 	install-dependencies \
 	database-migrate \
-	permissions \
+	set-permissions \
 	summary
 
-up:
-	docker-compose \
-		-f .docker/docker-compose.common.yml \
-		-f .docker/docker-compose.dev.yml \
-		-f .docker/docker-compose.cli.yml \
-		up -d --build
+main:
+	docker-compose -f .docker/docker-compose.main.yml up -d --build
 
-production:
-	##ATTENTION: Not delete! Comment/uncomment on 'prod' environment.
+dev:
+	docker-compose -f .docker/docker-compose.dev.yml up -d --build
+
+cli:
+	docker-compose -f .docker/docker-compose.cli.yml up -d --build
+
+prod:
 	cp ./.env ./.env.prod
 	docker-compose -f .docker/docker-compose.prod.yml up -d --build
 	docker exec -t php-fpm bash -c 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader'
 	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
 
 install-dependencies:
-	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer i --ansi --no-interaction --no-scripts --prefer-dist"
+	docker exec -t php-fpm bash -c "COMPOSER_MEMORY_LIMIT=-1 composer i --ansi --no-interaction --no-progress --no-scripts --prefer-dist"
 	docker exec -t php-fpm bash -c "npm install -g npm && npm install"
 	docker exec -it php-fpm bash -c "npm run dev"
-	#"COMPOSER_MEMORY_LIMIT=-1 composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist"
 
 database-migrate:
 	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:sync-metadata-storage"
 	docker exec -t php-fpm bash -c "php bin/console doctrine:migrations:migrate --no-interaction"
 	docker exec -t php-fpm bash -c "php bin/console cache:clear"
 
-permissions:
+set-permissions:
 	docker exec -t php-fpm bash -c "bash ./permissions.sh"
+
 summary:
-	docker exec -t php-fpm bash -c "php bin/console about && npm version"
-	docker ps --format 'table {{ .Names }}\t{{ .Status }}\t{{ .Ports }}'
+	docker exec -t php-fpm bash -c \
+		"set -e; php bin/console about && npm version && symfony self:version"
+	docker ps --format 'table \t{{ .Names }}\t{{ .Status }}\t{{ .Ports }}'
 
 #----------------------------------------------------------------------------------------------------------------------
 db:
@@ -49,11 +52,11 @@ nginx:
 php:
 	docker exec -it php-fpm bash
 #docker exec -t php-fpm bash -c "npx tailwindcss -o ./assets/styles/tailwind.css"
-php-c-c:
+php-cc:
 	docker exec -t php-fpm bash -c "php bin/console cache:clear"
 
 ps:
-	docker ps --format 'table {{ .Names }}\t{{ .Status }}\t{{ .Ports }}'
+	docker ps --format 'table {{ .Names }}\t\t{{ .Status }}\t{{ .Size }}'
 
 re:
 	sh ./.docker/rebuild-containers.sh
