@@ -32,7 +32,11 @@ services:
         container_name: php-fpm
         ports:
             - "9000:9000"
-        build: php-fpm
+        build:
+            context: ./php-fpm
+            dockerfile: ./Dockerfile
+            args:
+                env: dev
         working_dir: /app
         environment:
             DATABASE_TIMEZONE: UTC

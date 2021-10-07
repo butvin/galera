@@ -17,12 +17,9 @@ RUN set -eux; \
         libimage-exiftool-perl \
         locales \
         ca-certificates \
-        libicu-dev \
     && apt-get clean -y
 
-RUN docker-php-ext-configure intl
-
-RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache intl
+RUN docker-php-ext-install zip mysqli pdo pdo_mysql opcache
 
 RUN pecl update-channels
 
@@ -41,9 +38,6 @@ RUN docker-php-ext-enable redis && \
 #        --install-dir=/usr/local/bin \
 #    && echo "alias composer='COMPOSER_MEMORY_LIMIT=-1 composer'" >> $HOME/.bashrc \
 #    && composer -V
-
-# install locales and switch to en_US.utf8 in order to enable UTF-8 support
-# see http://jaredmarkell.com/docker-and-locales/ from where was this code taken
 
 RUN sed -i \
     -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' \

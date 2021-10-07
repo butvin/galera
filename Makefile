@@ -16,7 +16,7 @@ cli:
 	docker-compose -f .docker/docker-compose.cli.yml up -d --build
 
 prod:
-	cp ./.env ./.env.prod
+	cp .env .env.prod
 	docker-compose -f .docker/docker-compose.prod.yml up -d --build
 	docker exec -t php-fpm bash -c 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader'
 	docker exec -t php-fpm bash -c 'bin/console doctrine:migrations:migrate --no-interaction'
@@ -38,10 +38,9 @@ summary:
 	docker exec -t php-fpm bash -c \
 		"set -e; php bin/console about && npm version && symfony self:version"
 	docker ps --format 'table \t{{ .Names }}\t{{ .Status }}\t{{ .Ports }}'
-
 #----------------------------------------------------------------------------------------------------------------------
 db:
-	docker exec -i -t db bash -c "mysql --host=localhost -uroot --password=root --port=3306 app"
+	docker exec -i -t db bash -c "mysql --host=localhost -u root --password=root --port=3306 app"
 
 npm:
 	docker exec -i -t php-fpm bash -c "npm run dev && npm run watch"

@@ -89,6 +89,9 @@ RUN set -eux; \
 #RUN chmod +x /usr/local/bin/docker-install-composer && \
 #    docker-install-composer
 
+# install locales and switch to en_US.utf8 in order to enable UTF-8 support
+# see http://jaredmarkell.com/docker-and-locales/ from where was this code taken
+
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 RUN sed -i "/#!\/bin\/sh/aservice sendmail restart" /usr/local/bin/docker-php-entrypoint
 
@@ -99,8 +102,8 @@ RUN sed -i \
 COPY www.conf /usr/local/etc/php-fpm.d
 
 COPY dev/php.ini "$PHP_INI_DIR"/conf.d
-COPY dev/opcache.ini "$PHP_INI_DIR"/conf.d
-COPY dev/xdebug.ini "$PHP_INI_DIR"/conf.d
+#COPY $APP_ENV/opcache.ini "$PHP_INI_DIR"/conf.d
+#COPY $APP_ENV/xdebug.ini "$PHP_INI_DIR"/conf.d
 
 RUN docker-php-source delete
 
