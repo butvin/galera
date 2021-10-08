@@ -6,59 +6,9 @@ $dark: #222;
 
 body {
     font-family: "Arvo", serif;
-    background: rgba(255, 99, 71, 0.24) !important;
+    background: #fefefe;
     min-height: 100vh;
     font-size: 2.5em;
-    background: #efefef;
     letter-spacing: -1px;
-}
-
-.shadow {
-    color: #fffff3;
-    font-family: "Arvo", serif;
-    font-weight: bold;
-    text-shadow: -3px -3px 0 #222,
-    3px -3px 0 #222,
-    -3px 3px 0 #222,
-    3px 3px 0 #222,
-    4px 4px 0 #fffff3,
-    5px 5px 0 #fffff3,
-    6px 6px 0 #fffff3,
-    7px 7px 0 #fffff3;
-    line-height: 0.8em;
-    letter-spacing: 0.1em;
-    transform: scaleY(0.7);
-    -webkit-transform: scaleY(0.7);
-    -moz-transform: scaleY(0.7);
-    margin: 0;
-    text-align: center;
-}
-
-.script {
-    font-family: "Seaweed Script", serif;
-    color: #fffff3;
-    text-align: center;
-    font-size: 40px;
-    position: relative;
-    margin: 0;
-    span {
-        background-color: #222;
-        padding: 0 0.3em;
-        &::before {
-            content: "";
-            display: block;
-            position: absolute;
-            z-index: -1;
-            top: 50%;
-            width: 100%;
-            border-bottom: 3px solid #fffff3;
-        }
-    }
-}
-.text1 {
-    font-size: 120px;
-}
-
-.text2 {
-    font-size: 42px;
+    color: #222;
 }

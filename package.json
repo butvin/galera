@@ -1,5 +1,6 @@
 {
 	"dependencies": {
+		"bootstrap": "^5.1.2",
 		"modern-normalize": "^1.1.0"
 	},
 	"devDependencies": {
@@ -44,7 +45,7 @@
 		"test": "npm version"
 	},
 	"name": "galera",
-	"version": "0.4.1",
+	"version": "1.0.0",
 	"description": "Symfony Framework 5.3.9 on PHP 8.0.10 with xDebug 3.0.4 composer 2+ npm 7+ on php-fpm docker container redis container rabbit container.",
 	"main": ".eslintrc.js",
 	"private": true,

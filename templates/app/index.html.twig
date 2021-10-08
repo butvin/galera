@@ -3,11 +3,23 @@
 {% block title %}{{ app_name|capitalize }}{% endblock %}
 
 {% block body %}
-    <section>
-        <h1 class="shadow text1">{{ app_name|upper }}</h1>
-        <h2 class="text2">Request object:</h2>
-        <p>
-            {{ data|raw }}
-        </p>
-    </section>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="h1">{{ app_name|upper }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2 class="h2">Request object:</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <pre>{{ data }}</pre>
+            </div>
+        </div>
+    </div>
 {% endblock %}
