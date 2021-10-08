@@ -2,11 +2,8 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-root:
+index:
     path: /
-    controller: App\Controller\IndexController::index
-
-app:
-    path: /application
     controller: App\Controller\AppController::index
     methods: [GET, HEAD, POST]
+

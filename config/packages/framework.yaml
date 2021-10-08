@@ -1,14 +1,16 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
-    assets:
-        enabled: true
-        json_manifest_path: "%kernel.project_dir%/public/build/manifest.json"
     secret: '%env(APP_SECRET)%'
     validation: { enable_annotations: true }
     translator: { fallbacks: ['en'] }
     csrf_protection: false
     http_method_override: false
-
+    assets:
+        enabled: true
+        json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
+        version_strategy: null
+        version: null
+        version_format: '%%s?%%s'
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
 

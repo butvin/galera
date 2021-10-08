@@ -1,39 +1,11 @@
-/*@import 'node_modules/modern-normalize/modern-normalize.css';*/
+@import 'main.scss';
 
 /*@import "tailwindcss/base";*/
 /*@import "tailwindcss/components";*/
 /*@import "tailwindcss/utilities";*/
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/*@import "tailwindcss/tailwind";*/
-
-/*@tailwind base;*/
-/*@tailwind components;*/
-/*@tailwind utilities;*/
-
-/*@tailwind typography;*/
-
-body {
-    /*background:  linear-gradient(to right, #f11712, #FF6600, #ffa41b, #0ccc68, #00a8cc, #0099f7, rgba(143, 140, 231, 1));*/
-    /*background:  linear-gradient(to right, red, orangered, yellow, green, blue, #0099f7, #8e2de2);*/
-    /*background:  #222222;*/
-    /*color: #cccccc;*/
-    /*color: #2A7292;*/
-}
-
-
-/*.galera-color-lemon {*/
-/*color: rgba(255, 236, 148, 0.99) !important;*/
-/*}*/
-/*.galera-color-blue {*/
-/*    color: #00a8cc !important;*/
-/*}*/
-/*.galera-color-orange {*/
-/*    color: #ffa41b !important;*/
-/*}*/
-/*.galera-color-orange-2 {*/
-/*    color: #FF6600 !important;*/
-/*}*/
-/*.galera-color-yellow {*/
-/*    color: #ffc045 !important;*/
-/*}*/
+/*@import 'node_modules/modern-normalize/modern-normalize.css';*/
