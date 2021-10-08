@@ -1,13 +1,16 @@
  - Symfony Cli https://github.com/butvin/io-sys/wiki/Symfony-Cli
  - Galera Box 1.0 https://github.com/butvin/io-satelite-system/wiki/Galera-Box-1.0
+ - 
+
 ***
-# Galera
 
-## Docker instructions
+# *Galera Box 1.0.0*
 
-![image](https://user-images.githubusercontent.com/4057096/135031783-552868ac-193f-44c6-ab59-e712b28f6300.png)
+## *Docker instructions*
 
-    docker stop $(docker ps -a -q) && docker rm -f -v -l $(docker ps -a -q)
+```lang=bash
+docker stop $(docker ps -a -q) && docker rm -f -v -l $(docker ps -a -q)
+```
 > _stopping & remove created containers, they volumes & links_
 
 ***
@@ -123,13 +126,15 @@ _Remove one or more volumes_
 
 ***
 
-###Script automatic set permissions for directories (SF-4.4)
+### *Script automatic set permissions for directories (SF:4.4-5.3)*
 
-    #!bin/sh<br>
-    HTTPDUSER=$(ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\ -f1)<br>
-    sudo setfacl -dR -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX var<br>
-    sudo setfacl -R -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX var<br>
+```sh
 
+ #!bin/sh<br>
+ HTTPDUSER=$(ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\ -f1)<br>
+ sudo setfacl -dR -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX var<br>
+ sudo setfacl -R -m u:"$HTTPDUSER":rwX -m u:$(whoami):rwX var<br>
+```
 
 ***
 
@@ -158,7 +163,7 @@ Also, can see a full list env values by running:
 
 `php bin/console debug:config doctrine` displays the actual config values used by current app
 
-##Containers, tools & features in Docker</h2>
+## Containers, tools & features in Docker</h2>
 
 
 > https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-ru/
@@ -168,12 +173,12 @@ Also, can see a full list env values by running:
 https://docs.docker.com/engine/install/ubuntu/
 ---------------------------------------------------
 
-UNINSTALL
+### UNINSTALL
 ---------
       sudo apt-get purge docker-ce docker-ce-cli containerd.io
       sudo rm -rf /var/lib/docker
 
-INSTALL
+### INSTALL
 -------
       sudo apt-get update
       sudo apt-get install \
@@ -775,7 +780,7 @@ Percona **XtraBackup** — это утилита для горячего рез�
 
 О том, как работать с XtraBackup можно узнать по ссылке: 
 
-_https://vc.ru/dev/158815-sozdanie-rezervnoy-kopii-mysql-pri-pomoshchi-utility-xtrabackup_
+https://vc.ru/dev/158815-sozdanie-rezervnoy-kopii-mysql-pri-pomoshchi-utility-xtrabackup
 
 
 
