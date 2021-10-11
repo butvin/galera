@@ -63,20 +63,20 @@ _display active volumes_
 ***
 ## _VOLUMES ACTIONS_
 
-
 `docker volume create $VOLUME_NAME`
 - Create a volume
 
-> docker volume inspect $VOLUME_NAME
+`docker volume inspect $VOLUME_NAME`
 _Display detailed information on one or more volumes_
 
-> docker volume prune $VOLUME_NAME
+`docker volume prune $VOLUME_NAME`
 _Remove prune local volumes_
 
-> docker volume rm $VOLUME_NAME
+`docker volume rm $VOLUME_NAME`
 _Remove one or more volumes_
 
-```
+### Script for clear everything:)
+```bash
     #!/usr/bin/env bash
     #shellcheck disable=SC2046
     docker stop $(docker ps -q -a); \
@@ -91,12 +91,12 @@ _Remove one or more volumes_
     make \
         --debug=basic \
         --warn-undefined-variables \
-        --trace \
-    ;
+        --trace
 ```
 
 `sudo lsof -nP | grep LISTEN`
 
+Output:
 
     sudo kill -9 1548
     sudo systemctl stop docker
@@ -104,16 +104,12 @@ _Remove one or more volumes_
     sudo systemctl status docker
     docker ps -a -s (with size)
 
-`docker run -it --add-host db-static:86.75.30.9 ubuntu cat /etc/hosts`  adds localhost uri to /etc/hosts
-
-***
+`docker run -it --add-host db-static:86.75.30.9 ubuntu cat /etc/hosts` 
+_adds localhost uri to /etc/hosts_
 
 `docker run --name mariadb -e ALLOW_EMPTY_PASSWORD=yes bitnami/mariadb:latest`
 
-***
-
 `curl -sSL https://raw.githubusercontent.com/bitnami/bitnami-docker-mariadb/master/docker-compose.yml > docker-compose.yml`
-
 
 `docker-compose up -d`
 
@@ -128,7 +124,7 @@ _Remove one or more volumes_
 
 ### *Script automatic set permissions for directories (SF:4.4-5.3)*
 
-```sh
+```bash
 
  #!bin/sh<br>
  HTTPDUSER=$(ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\ -f1)<br>
@@ -140,46 +136,57 @@ _Remove one or more volumes_
 
 `docker-php-ext-configure`
 
-`docker system df -v`   displays information regarding the amount of disk space used by the docker daemon
+`docker system df -v`   
+_displays information regarding the amount of disk space used by the docker daemon_
+
+`docker stop $(docker ps -qa) && docker rm $(docker ps -qa)`
+_Stop & Drop all containers_
+
+`docker system df`
+_Show docker disk usage_
+
+`docker system events`
+_Get real time events from the server_
+
+`docker system info`
+_Display system-wide information_
+
+`docker system prune  -f`
+_Remove unused data_
+
 ***
-`docker stop $(docker ps -qa) && docker rm $(docker ps -qa)`    Stop & Drop all containers
-`docker system df`       Show docker disk usage
-***
-`docker system events`    Get real time events from the server
-***
-`docker system info`     Display system-wide information
-***
-`docker system prune  -f`   Remove unused data
 
 Also, can see a full list env values by running:
 
     php bin/console debug:container --env-vars
     php bin/console debug:container --parameters
 
-`php bin/console config:dump-reference doctrine` displays the default config values DEFINED by Symfony
+`php bin/console config:dump-reference doctrine`
+_displays the default config values DEFINED by Symfony_
 
 
 
 
-`php bin/console debug:config doctrine` displays the actual config values used by current app
-
-## Containers, tools & features in Docker</h2>
-
-
-> https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-ru/
+`php bin/console debug:config doctrine` 
+_displays the actual config values used by current app_
 
 ***
 
+# Containers, tools & features in Docker ##
+
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-ru/
+--------------------------------------------------------------------------------------------------
+
 https://docs.docker.com/engine/install/ubuntu/
----------------------------------------------------
+---------------------------------------------
 
 ### UNINSTALL
----------
+--------------
       sudo apt-get purge docker-ce docker-ce-cli containerd.io
       sudo rm -rf /var/lib/docker
 
 ### INSTALL
--------
+------------
       sudo apt-get update
       sudo apt-get install \
          apt-transport-https \
@@ -188,11 +195,11 @@ https://docs.docker.com/engine/install/ubuntu/
          gnupg-agent \
          software-properties-common
 
-***
+```bash
 
-> curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+`curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -`
 
-    sudo apt-key fingerprint 0EBFCD88
+`sudo apt-key fingerprint 0EBFCD88`
 
     sudo add-apt-repository \
        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
@@ -202,17 +209,15 @@ https://docs.docker.com/engine/install/ubuntu/
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io
 
-***
+
 
 `sudo rm -rf .docker/.dbdata/`
 
 `sudo rm -rf composer.lock`
 
-***
-
 `cd ../usr/local/etc/php/conf.d/`
 
-***
+```
 
 ###WARNING: Found orphan containers (redis, database, rabbitmq) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
 
@@ -221,12 +226,11 @@ https://docs.docker.com/engine/install/ubuntu/
 
 debconf: delaying package configuration, since apt-utils is not installed
 ----------------------------------------------------
+```bash
     ARG XDEBUG_VERSION=2.9.2
     RUN apk add --no-cache $PHPIZE_DEPS \
         && pecl install xdebug-${XDEBUG_VERSION}cat \
         && docker-php-ext-enable xdebug  \
-
-***
 
     RUN apk add --no-cache \
         git \
@@ -235,10 +239,11 @@ debconf: delaying package configuration, since apt-utils is not installed
         g++ \
         make \
         openssl-dev
+```
 
-***
-
-#### Install xdebug
+### Install xDebug
+-------------------
+```bash
     RUN docker-php-source extract \
         && pecl install xdebug \
         && echo "xdebug.remote_enable=on\n" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -250,8 +255,7 @@ debconf: delaying package configuration, since apt-utils is not installed
         && docker-php-source delete \
         && rm -rf /tmp/*
 
-
-***
+```
 
 `WORKDIR /var/www/html`
 ---------------------
@@ -264,45 +268,43 @@ debconf: delaying package configuration, since apt-utils is not installed
 
 #### xDebug ext with VSCODE
 
-    `ENV` `XDEBUG_VERSION`=`2.9.2`<br>
-    `RUN` apk --no-cache add --virtual `.build-deps`  
-    `g++` `autoconf` `make` `pecl` install xdebug-${`XDEBUG_VERSION`} && \
-        docker-php-ext-enable `xdebug` && \
-        apk del `.build-deps` && \
-        rm -r `/tmp/pear/*` && \
-        echo -e "`xdebug.remote_enable=1`\
-            `xdebug.remote_autostart=1` \
-            `xdebug.remote_connect_back=0` \
-            `xdebug.remote_port=3223` \
-            `xdebug.idekey`=`'VSCODE'` \
-            `xdebug.remote_log`=`/var/www/html/xdebug.log` \
-            `xdebug.remote_host=host.docker.internal`" >> `/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini`
+
+     ENV XDEBUG_VERSION = 2.9.2 
+     RUN  apk --no-cache add --virtual  .build-deps   
+     g++   autoconf   make   pecl  install xdebug-${ XDEBUG_VERSION } && \
+     docker-php-ext-enable  xdebug  && \
+     apk del  .build-deps  && \
+     rm -r  /tmp/pear/*  && \
+     echo -e " xdebug.remote_enable=1 \
+             xdebug.remote_autostart=1  \
+             xdebug.remote_connect_back=0  \
+             xdebug.remote_port=3223  \
+             xdebug.idekey = 'VSCODE'  \
+             xdebug.remote_log = /var/www/html/xdebug.log  \
+             xdebug.remote_host=host.docker.internal " >>  /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini 
 
 
 
-#### Change TimeZone
-
+### Change TimeZone
+--------------------
     RUN apk add --update tzdata
     ENV TZ=Europe/Bucharest    
 
-#### Personal IP
-
+### Personal IP
+----------------
     ip address
     ifconfig
     hostname -I
 
-> >https://matthewsetter.com/setup-step-debugging-php-xdebug3-docker/ </small>
+https://matthewsetter.com/setup-step-debugging-php-xdebug3-docker/
+---------------------------------------------------------------------
 
-***
-
-### `docker-compose config`
-
-Usage: config [options]
-Options:
+    docker-compose config
+    
+    Usage: config [options]
+    Options:
 
 `--resolve-image-digests` - Pin image tags to digest
-
-
 `--no-interpolate` - Don't interpolate environment variables.<br>
 `-q, --quiet` - Only validate the configuration, don't print anything.<br>
 `--services` - Print the service names, one per line.<br>
@@ -310,34 +312,29 @@ Options:
 `--hash="*"` - Print the service config hash, one per line. Set "service1, service2" for a list of specified services or use the wildcard symbol to display all services.
 
 
-
-
-<hr>
-
 ## R&nbsp;E&nbsp;D&nbsp;I&nbsp;S
 
-_Redis(TM)_ 
+_Redis(TM)_
+-----------
 
-_https://registry.hub.docker.com/r/bitnami/redis#configuration_
+https://registry.hub.docker.com/r/bitnami/redis#configuration
+-------------------------------------------------------------
 
 `bridge-utils`
 --------------
 
-***
-
-    shell
+```bash
     sudo apt-get install bridge-utils -y
     brctl show
-
-###ip a
-
+```
+ip a
+-----
 bridge-utils command utility `brctl show` and use it to list the Linux bridges on your Docker host.
 
+> Use the `ip` command to view details of the `docker0` bridge
 
-Use the `ip` command to view details of the `docker0` bridge
 
-
-```dockerfile            
+```bash     
 docker run --name redis -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
 curl -sSL https://raw.githubusercontent
 com/bitnami/bitnami-docker-redis/master/docker-compose.yml > docker-compose.yml
@@ -345,13 +342,11 @@ docker-compose up -d
 docker pull bitnami/redis:[TAG]
 ```
 
-#####you can also build the image yourself:
-
-
+### You can also build the image yourself:
+------------------------------------------
 
 `docker build -t bitnami/redis:latest 'https://github.com/bitnami/bitnami-docker-redis.git#master:6.2/debian-10'`
 
-***
 
 `Step 1`
 --------
@@ -434,11 +429,13 @@ For security reasons, you may want to disable some commands. You can specify the
 
 REDIS_DISABLE_COMMANDS: Comma-separated list of Redis(TM) commands to disable. Defaults to empty.
 
-
-<h3>docker run --name redis -e REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG bitnami/redis:latest</h3>
+```bash
+docker run --name redis -e REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG bitnami/redis:latest
+```
 
 
 Alternatively, modify the docker-compose.yml file present in this repository:
+-----------------------------------------------------------------------------
 
     services:
       redis:
@@ -459,14 +456,11 @@ As specified in the docker-compose, `FLUSHDB` and `FLUSHALL` commands are disabl
 Passing extra command-line flags to the redis service command is possible by adding them as arguments to run.sh script:
 
 
-```dockerfile
-
+```bash
 docker run \
     --name redis \
     -e ALLOW_EMPTY_PASSWORD=yes \
     bitnami/redis:latest /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
-    
-    
 ```
 
 ***
