@@ -1,3 +1,16 @@
+# MakeFile. Just run this command: make
+app_dir=${CURDIR}
+app_name=${APP_NAME}
+docker_dir=docker_infrastructure
+
+ifndef APP_ENV
+	include .env
+	# Determine if .env.local file exist
+	ifneq ("$(wildcard .env.local)","")
+		include .env.local
+	endif
+endif
+
 build: \
 	main \
 	cli \
